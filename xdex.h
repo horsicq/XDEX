@@ -29,20 +29,14 @@ class XDEX: public XBinary
     Q_OBJECT
 public:
 
-    struct MAP_ITEM
-    {
-        quint16 nType;
-        quint32 nCount;
-        quint32 nOffset;
-    };
-
     XDEX(QIODevice *__pDevice);
     virtual bool isValid();
     quint32 _getVersion();
 
     bool isBigEndian();
 
-    QByteArray getHeader_magic();
+    quint32 getHeader_magic();
+    quint32 getHeader_version();
     quint32 getHeader_checksum();
     QByteArray getHeader_signature();
     quint32 getHeader_file_size();
@@ -66,19 +60,29 @@ public:
     quint32 getHeader_data_size();
     quint32 getHeader_data_off();
 
-    QList<MAP_ITEM> getMapItems();
+    XDEX_DEF::HEADER getHeader();
+    quint32 getHeaderSize();
+
+    QList<XDEX_DEF::MAP_ITEM> getMapItems();
+
+    static bool isMapItemPresent(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems);
+
     static QMap<quint64, QString> getTypes();
     static QMap<quint64, QString> getTypesS();
 
-    static MAP_ITEM getMapItem(quint16 nType,QList<MAP_ITEM> *pMapItems);
+    static XDEX_DEF::MAP_ITEM getMapItem(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
-    QList<QString> getStrings(QList<MAP_ITEM> *pMapItems);
-    QString _getString(MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian);
-    QString _geTypeItemtString(MAP_ITEM map_stringIdItem,MAP_ITEM map_typeIdItem, quint32 nIndex, bool bIsBigEndian);
+    QList<quint32> getList_STRING_ID_ITEM();
+    QList<quint32> getList_TYPE_ID_ITEM();
+    QList<quint32> getList_TYPE_ID_ITEM(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
+
+    QList<QString> getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
+    QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian);
+    QString _geTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem,XDEX_DEF::MAP_ITEM map_typeIdItem, quint32 nIndex, bool bIsBigEndian);
     QList<quint32> _getTypeList(qint64 nOffset, bool bIsBigEndian);
 
-    QList<QString> getTypeItemStrings(QList<MAP_ITEM> *pMapItems,QList<QString> *pListStrings);
-    void getProtoIdItems(QList<MAP_ITEM> *pMapItems);
+    QList<QString> getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,QList<QString> *pListStrings);
+    void getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 };
 
 #endif // XDEX_H

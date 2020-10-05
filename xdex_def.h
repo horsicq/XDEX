@@ -27,7 +27,8 @@ namespace XDEX_DEF
 {
 struct HEADER
 {
-    quint8 magic[8];
+    quint32 magic; // always LE
+    quint32 version; // always LE
     quint32 checksum;
     quint8 signature[20];
     quint32 file_size;
@@ -50,6 +51,13 @@ struct HEADER
     quint32 class_defs_off;
     quint32 data_size;
     quint32 data_off;
+};
+
+struct MAP_ITEM
+{
+    quint16 nType;
+    quint32 nCount;
+    quint32 nOffset;
 };
 
 const quint16 TYPE_HEADER_ITEM=0x0000;
