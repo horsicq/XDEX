@@ -60,6 +60,23 @@ struct MAP_ITEM
     quint32 nOffset;
 };
 
+struct STRING_ITEM_ID
+{
+    quint32 string_data_off;
+};
+
+struct TYPE_ITEM_ID
+{
+    quint32 descriptor_idx;
+};
+
+struct PROTO_ITEM_ID
+{
+    quint32 shorty_idx;
+    quint32 return_type_idx;
+    quint32 parameters_off;
+};
+
 const quint16 TYPE_HEADER_ITEM=0x0000;
 const quint16 TYPE_STRING_ID_ITEM=0x0001;
 const quint16 TYPE_TYPE_ID_ITEM=0x0002;
