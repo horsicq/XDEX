@@ -77,6 +77,20 @@ struct PROTO_ITEM_ID
     quint32 parameters_off;
 };
 
+struct FIELD_ITEM_ID
+{
+    quint16 class_idx;
+    quint16 type_idx;
+    quint32 name_idx;
+};
+
+struct METHOD_ITEM_ID
+{
+    quint16 class_idx;
+    quint16 proto_idx;
+    quint32 name_idx;
+};
+
 const quint16 TYPE_HEADER_ITEM=0x0000;
 const quint16 TYPE_STRING_ID_ITEM=0x0001;
 const quint16 TYPE_TYPE_ID_ITEM=0x0002;

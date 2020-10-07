@@ -407,6 +407,52 @@ QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_I
     return listResult;
 }
 
+QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems)
+{
+    QList<XDEX_DEF::FIELD_ITEM_ID> listResult;
+
+    XDEX_DEF::MAP_ITEM mapItem=getMapItem(XDEX_DEF::TYPE_FIELD_ID_ITEM,pListMapItems);
+    bool bIsBigEndian=isBigEndian();
+
+    for(quint32 i=0;i<mapItem.nCount;i++)
+    {
+        qint64 nOffset=mapItem.nOffset+sizeof(XDEX_DEF::FIELD_ITEM_ID)*i;
+
+        XDEX_DEF::FIELD_ITEM_ID record={};
+
+        record.class_idx=read_int16(nOffset+offsetof(XDEX_DEF::FIELD_ITEM_ID,class_idx),bIsBigEndian);
+        record.type_idx=read_int16(nOffset+offsetof(XDEX_DEF::FIELD_ITEM_ID,type_idx),bIsBigEndian);
+        record.name_idx=read_int32(nOffset+offsetof(XDEX_DEF::FIELD_ITEM_ID,name_idx),bIsBigEndian);
+
+        listResult.append(record);
+    }
+
+    return listResult;
+}
+
+QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems)
+{
+    QList<XDEX_DEF::METHOD_ITEM_ID> listResult;
+
+    XDEX_DEF::MAP_ITEM mapItem=getMapItem(XDEX_DEF::TYPE_METHOD_ID_ITEM,pListMapItems);
+    bool bIsBigEndian=isBigEndian();
+
+    for(quint32 i=0;i<mapItem.nCount;i++)
+    {
+        qint64 nOffset=mapItem.nOffset+sizeof(XDEX_DEF::METHOD_ITEM_ID)*i;
+
+        XDEX_DEF::METHOD_ITEM_ID record={};
+
+        record.class_idx=read_int16(nOffset+offsetof(XDEX_DEF::METHOD_ITEM_ID,class_idx),bIsBigEndian);
+        record.proto_idx=read_int16(nOffset+offsetof(XDEX_DEF::METHOD_ITEM_ID,proto_idx),bIsBigEndian);
+        record.name_idx=read_int32(nOffset+offsetof(XDEX_DEF::METHOD_ITEM_ID,name_idx),bIsBigEndian);
+
+        listResult.append(record);
+    }
+
+    return listResult;
+}
+
 QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems)
 {
     QList<QString> listResult;
