@@ -3,10 +3,13 @@ DEPENDPATH += $$PWD
 
 
 HEADERS += \
+    $$PWD/xandroidbinary.h \
+    $$PWD/xandroidbinary_def.h \
     $$PWD/xdex.h \
     $$PWD/xdex_def.h
 
 SOURCES += \
+    $$PWD/xandroidbinary.cpp \
     $$PWD/xdex.cpp
 
 

@@ -1,4 +1,4 @@
-// copyright (c) 2020 hors<horsicq@gmail.com>
+// copyright (c) 2019-2020 hors<horsicq@gmail.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -91,6 +91,18 @@ struct METHOD_ITEM_ID
     quint32 name_idx;
 };
 
+struct CLASS_ITEM_DEF
+{
+    quint32 class_idx;
+    quint32 access_flags;
+    quint32 superclass_idx;
+    quint32 interfaces_off;
+    quint32 source_file_idx;
+    quint32 annotations_off;
+    quint32 class_data_off;
+    quint32 static_values_off;
+};
+
 const quint16 TYPE_HEADER_ITEM=0x0000;
 const quint16 TYPE_STRING_ID_ITEM=0x0001;
 const quint16 TYPE_TYPE_ID_ITEM=0x0002;
@@ -111,12 +123,5 @@ const quint16 TYPE_DEBUG_INFO_ITEM=0x2003;
 const quint16 TYPE_ANNOTATION_ITEM=0x2004;
 const quint16 TYPE_ENCODED_ARRAY_ITEM=0x2005;
 const quint16 TYPE_ANNOTATIONS_DIRECTORY_ITEM=0x2006;
-
-struct proto_id_item
-{
-    quint32 shorty_idx;
-    quint32 return_type_idx;
-    quint32 parameters_off;
-};
 }
 #endif // XDEX_DEF_H
