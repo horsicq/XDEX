@@ -45,6 +45,11 @@ quint32 XDEX::_getVersion()
     return nVersion;
 }
 
+QString XDEX::getVersion()
+{
+    return read_ansiString(4);
+}
+
 bool XDEX::isBigEndian()
 {
     quint32 nEndian=read_uint32(offsetof(XDEX_DEF::HEADER,endian_tag));

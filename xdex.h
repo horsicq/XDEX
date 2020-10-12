@@ -32,8 +32,9 @@ public:
     XDEX(QIODevice *__pDevice);
     virtual bool isValid();
     quint32 _getVersion();
+    virtual QString getVersion();
 
-    bool isBigEndian();
+    virtual bool isBigEndian();
 
     quint32 getHeader_magic();
     quint32 getHeader_version();
