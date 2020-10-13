@@ -222,6 +222,76 @@ void XDEX::setHeader_map_off(quint32 value)
     write_uint32(offsetof(XDEX_DEF::HEADER,map_off),value,isBigEndian());
 }
 
+void XDEX::setHeader_string_ids_size(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,string_ids_size),value,isBigEndian());
+}
+
+void XDEX::setHeader_string_ids_off(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,string_ids_off),value,isBigEndian());
+}
+
+void XDEX::setHeader_type_ids_size(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,type_ids_size),value,isBigEndian());
+}
+
+void XDEX::setHeader_type_ids_off(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,type_ids_off),value,isBigEndian());
+}
+
+void XDEX::setHeader_proto_ids_size(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,proto_ids_size),value,isBigEndian());
+}
+
+void XDEX::setHeader_proto_ids_off(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,proto_ids_off),value,isBigEndian());
+}
+
+void XDEX::setHeader_field_ids_size(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,field_ids_size),value,isBigEndian());
+}
+
+void XDEX::setHeader_field_ids_off(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,field_ids_off),value,isBigEndian());
+}
+
+void XDEX::setHeader_method_ids_size(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,method_ids_size),value,isBigEndian());
+}
+
+void XDEX::setHeader_method_ids_off(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,method_ids_off),value,isBigEndian());
+}
+
+void XDEX::setHeader_class_defs_size(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,class_defs_size),value,isBigEndian());
+}
+
+void XDEX::setHeader_class_defs_off(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,class_defs_off),value,isBigEndian());
+}
+
+void XDEX::setHeader_data_size(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,data_size),value,isBigEndian());
+}
+
+void XDEX::setHeader_data_off(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,data_off),value,isBigEndian());
+}
+
 XDEX_DEF::HEADER XDEX::getHeader()
 {
     XDEX_DEF::HEADER result={};

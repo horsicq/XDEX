@@ -70,6 +70,20 @@ public:
     void setHeader_link_size(quint32 value);
     void setHeader_link_off(quint32 value);
     void setHeader_map_off(quint32 value);
+    void setHeader_string_ids_size(quint32 value);
+    void setHeader_string_ids_off(quint32 value);
+    void setHeader_type_ids_size(quint32 value);
+    void setHeader_type_ids_off(quint32 value);
+    void setHeader_proto_ids_size(quint32 value);
+    void setHeader_proto_ids_off(quint32 value);
+    void setHeader_field_ids_size(quint32 value);
+    void setHeader_field_ids_off(quint32 value);
+    void setHeader_method_ids_size(quint32 value);
+    void setHeader_method_ids_off(quint32 value);
+    void setHeader_class_defs_size(quint32 value);
+    void setHeader_class_defs_off(quint32 value);
+    void setHeader_data_size(quint32 value);
+    void setHeader_data_off(quint32 value);
 
     XDEX_DEF::HEADER getHeader();
     quint32 getHeaderSize();
