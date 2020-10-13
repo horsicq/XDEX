@@ -92,8 +92,8 @@ public:
 
     static bool isMapItemPresent(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
-    static QMap<quint64, QString> getTypes();
-    static QMap<quint64, QString> getTypesS();
+    static QMap<quint64,QString> getTypes();
+    static QMap<quint64,QString> getTypesS();
 
     static XDEX_DEF::MAP_ITEM getMapItem(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
@@ -106,9 +106,9 @@ public:
     QList<XDEX_DEF::CLASS_ITEM_DEF> getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
 
     QList<QString> getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
-    QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian);
-    QString _geTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem,XDEX_DEF::MAP_ITEM map_typeItemId, quint32 nIndex, bool bIsBigEndian);
-    QList<quint32> _getTypeList(qint64 nOffset, bool bIsBigEndian);
+    QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem,quint32 nIndex,bool bIsBigEndian);
+    QString _geTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem,XDEX_DEF::MAP_ITEM map_typeItemId,quint32 nIndex,bool bIsBigEndian);
+    QList<quint32> _getTypeList(qint64 nOffset,bool bIsBigEndian);
 
     QList<QString> getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,QList<QString> *pListStrings);
     void getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
