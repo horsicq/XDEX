@@ -177,6 +177,21 @@ quint32 XDEX::getHeader_data_off()
     return read_uint32(offsetof(XDEX_DEF::HEADER,data_off),isBigEndian());
 }
 
+void XDEX::setHeader_magic(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,magic),value,false);
+}
+
+void XDEX::setHeader_version(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,version),value,false);
+}
+
+void XDEX::setHeader_checksum(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,checksum),value,isBigEndian());
+}
+
 XDEX_DEF::HEADER XDEX::getHeader()
 {
     XDEX_DEF::HEADER result={};
