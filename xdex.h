@@ -64,6 +64,12 @@ public:
     void setHeader_magic(quint32 value);
     void setHeader_version(quint32 value);
     void setHeader_checksum(quint32 value);
+    void setHeader_file_size(quint32 value);
+    void setHeader_header_size(quint32 value);
+    void setHeader_endian_tag(quint32 value);
+    void setHeader_link_size(quint32 value);
+    void setHeader_link_off(quint32 value);
+    void setHeader_map_off(quint32 value);
 
     XDEX_DEF::HEADER getHeader();
     quint32 getHeaderSize();

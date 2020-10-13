@@ -192,6 +192,36 @@ void XDEX::setHeader_checksum(quint32 value)
     write_uint32(offsetof(XDEX_DEF::HEADER,checksum),value,isBigEndian());
 }
 
+void XDEX::setHeader_file_size(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,file_size),value,isBigEndian());
+}
+
+void XDEX::setHeader_header_size(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,header_size),value,isBigEndian());
+}
+
+void XDEX::setHeader_endian_tag(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,endian_tag),value,isBigEndian());
+}
+
+void XDEX::setHeader_link_size(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,link_size),value,isBigEndian());
+}
+
+void XDEX::setHeader_link_off(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,link_off),value,isBigEndian());
+}
+
+void XDEX::setHeader_map_off(quint32 value)
+{
+    write_uint32(offsetof(XDEX_DEF::HEADER,map_off),value,isBigEndian());
+}
+
 XDEX_DEF::HEADER XDEX::getHeader()
 {
     XDEX_DEF::HEADER result={};
