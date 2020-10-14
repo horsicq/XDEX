@@ -117,6 +117,7 @@ public:
     QString getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings);
     QString getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings);
 
+    static QMap<quint64,QString> getHeaderMagics();
     static QMap<quint64,QString> getHeaderVersions();
     static QMap<quint64,QString> getHeaderEndianness();
 };

@@ -760,11 +760,20 @@ QString XDEX::getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId, XDEX_DEF
     return sResult;
 }
 
+QMap<quint64, QString> XDEX::getHeaderMagics()
+{
+    QMap<quint64, QString> mapResult;
+
+    mapResult.insert(0x0A786564,"Magic");
+
+    return mapResult;
+}
+
 QMap<quint64, QString> XDEX::getHeaderVersions()
 {
     QMap<quint64, QString> mapResult;
 
-    // TODO
+    mapResult.insert(0x00353330,"035");
 
     return mapResult;
 }
