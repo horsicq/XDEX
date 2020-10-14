@@ -52,6 +52,33 @@ XANDROIDBINARY_DEF::HEADER XAndroidBinary::readHeader(qint64 nOffset)
     return result;
 }
 
+XANDROIDBINARY_DEF::HEADER_STRING_POOL XAndroidBinary::readHeaderStringPool(qint64 nOffset)
+{
+    XANDROIDBINARY_DEF::HEADER_STRING_POOL result={};
+
+    result.header=readHeader(nOffset);
+    result.stringCount=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_STRING_POOL,stringCount));
+    result.styleCount=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_STRING_POOL,styleCount));
+    result.flags=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_STRING_POOL,flags));
+    result.stringsStart=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_STRING_POOL,stringsStart));
+    result.stylesStart=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_STRING_POOL,stylesStart));
+
+    return result;
+}
+
+XANDROIDBINARY_DEF::HEADER_NAMESPACE XAndroidBinary::readHeaderNamespace(qint64 nOffset)
+{
+    XANDROIDBINARY_DEF::HEADER_NAMESPACE result={};
+
+    result.header=readHeader(nOffset);
+    result.lineNumber=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_NAMESPACE,lineNumber));
+    result.comment=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_NAMESPACE,comment));
+    result.prefix=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_NAMESPACE,prefix));
+    result.uri=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_NAMESPACE,uri));
+
+    return result;
+}
+
 QList<XANDROIDBINARY_DEF::HEADER> XAndroidBinary::getHeaders()
 {
     QList<XANDROIDBINARY_DEF::HEADER> listHeaders;
@@ -94,5 +121,64 @@ XAndroidBinary::RECORD XAndroidBinary::getRecord(qint64 nOffset)
     }
 
     return result;
+}
+
+QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
+{
+    QString sResult;
+
+    if(pRecord->header.type==XANDROIDBINARY_DEF::RES_XML_TYPE)
+    {
+        int nNumberOfChildren=pRecord->listChildren.count();
+        QList<QString> listStrings;
+        QList<quint32> listResources;
+
+        for(int i=0;i<nNumberOfChildren;i++)
+        {
+            if(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_STRING_POOL_TYPE)
+            {
+                XANDROIDBINARY_DEF::HEADER_STRING_POOL headerStringPool=readHeaderStringPool(pRecord->listChildren.at(i).nOffset);
+
+                qint64 nCurrentOffset=pRecord->listChildren.at(i).nOffset+headerStringPool.header.header_size;
+                qint64 nStringsDataOffset=pRecord->listChildren.at(i).nOffset+headerStringPool.stringsStart;
+
+                for(int j=0;j<headerStringPool.stringCount;j++)
+                {
+                    qint64 nStringOffset=nStringsDataOffset+read_int32(nCurrentOffset+j*sizeof(quint32));
+                    qint16 nStringSize=read_uint16(nStringOffset);
+                    QString sString=read_unicodeString(nStringOffset+sizeof(quint16),nStringSize);
+
+                    listStrings.append(sString);
+                }
+            }
+            else if(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_RESOURCE_MAP_TYPE)
+            {
+                int nNumberOfResources=(pRecord->listChildren.at(i).header.data_size-sizeof(XANDROIDBINARY_DEF::HEADER))/4;
+
+                qint64 nCurrentOffset=pRecord->listChildren.at(i).nOffset+sizeof(XANDROIDBINARY_DEF::HEADER);
+
+                for(int j=0;j<nNumberOfResources;j++)
+                {
+                    quint32 nID=read_uint32(nCurrentOffset+j*sizeof(quint32));
+
+                    listResources.append(nID);
+                }
+            }
+            else if((pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_START_NAMESPACE_TYPE)||(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_END_NAMESPACE_TYPE))
+            {
+                XANDROIDBINARY_DEF::HEADER_NAMESPACE headerNamespace=readHeaderNamespace(pRecord->listChildren.at(i).nOffset);
+
+                qDebug("lineNumber %d",headerNamespace.lineNumber);
+                qDebug("prefix %s",listStrings.at(headerNamespace.prefix).toLatin1().data());
+                qDebug("uri %s",listStrings.at(headerNamespace.uri).toLatin1().data());
+            }
+            else
+            {
+                qDebug("Record %x",pRecord->listChildren.at(i).header.type);
+            }
+        }
+    }
+
+    return sResult;
 }
 

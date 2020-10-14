@@ -32,6 +32,25 @@ struct HEADER
     quint32 data_size;
 };
 
+struct HEADER_STRING_POOL
+{
+    HEADER header;
+    quint32 stringCount;
+    quint32 styleCount;
+    quint32 flags;
+    quint32 stringsStart;
+    quint32 stylesStart;
+};
+
+struct HEADER_NAMESPACE
+{
+    HEADER header;
+    quint32 lineNumber;
+    quint32 comment;
+    quint32 prefix;
+    quint32 uri;
+};
+
 enum
 {
     RES_NULL_TYPE               = 0x0000,
