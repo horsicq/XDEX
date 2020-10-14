@@ -204,7 +204,7 @@ void XDEX::setHeader_header_size(quint32 value)
 
 void XDEX::setHeader_endian_tag(quint32 value)
 {
-    write_uint32(offsetof(XDEX_DEF::HEADER,endian_tag),value,isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER,endian_tag),value);
 }
 
 void XDEX::setHeader_link_size(quint32 value)
@@ -304,7 +304,7 @@ XDEX_DEF::HEADER XDEX::getHeader()
 //    result.signature=getHeader_signature();
     result.file_size=read_uint32(offsetof(XDEX_DEF::HEADER,file_size),bIsBigEndian);
     result.header_size=read_uint32(offsetof(XDEX_DEF::HEADER,header_size),bIsBigEndian);
-    result.endian_tag=read_uint32(offsetof(XDEX_DEF::HEADER,endian_tag),bIsBigEndian);
+    result.endian_tag=read_uint32(offsetof(XDEX_DEF::HEADER,endian_tag),false);
     result.link_size=read_uint32(offsetof(XDEX_DEF::HEADER,link_size),bIsBigEndian);
     result.link_off=read_uint32(offsetof(XDEX_DEF::HEADER,link_off),bIsBigEndian);
     result.map_off=read_uint32(offsetof(XDEX_DEF::HEADER,map_off),bIsBigEndian);
@@ -758,4 +758,23 @@ QString XDEX::getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId, XDEX_DEF
     sResult=QString("%1 %2()").arg(sReturn).arg(sPrototype);
 
     return sResult;
+}
+
+QMap<quint64, QString> XDEX::getHeaderVersions()
+{
+    QMap<quint64, QString> mapResult;
+
+    // TODO
+
+    return mapResult;
+}
+
+QMap<quint64, QString> XDEX::getHeaderEndianness()
+{
+    QMap<quint64, QString> mapResult;
+
+    mapResult.insert(0x12345678,"Little endian");
+    mapResult.insert(0x78563412,"Big endian");
+
+    return mapResult;
 }
