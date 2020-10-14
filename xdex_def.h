@@ -33,7 +33,7 @@ struct HEADER
     quint8 signature[20];
     quint32 file_size;
     quint32 header_size;
-    quint32 endian_tag;
+    quint32 endian_tag; // always LE
     quint32 link_size;
     quint32 link_off;
     quint32 map_off;

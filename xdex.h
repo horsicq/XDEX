@@ -105,12 +105,12 @@ public:
     QList<XDEX_DEF::METHOD_ITEM_ID> getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
     QList<XDEX_DEF::CLASS_ITEM_DEF> getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
 
-    QList<QString> getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
+    QList<QString> getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,bool *pbIsStop=0);
     QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem,quint32 nIndex,bool bIsBigEndian);
     QString _geTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem,XDEX_DEF::MAP_ITEM map_typeItemId,quint32 nIndex,bool bIsBigEndian);
     QList<quint32> _getTypeList(qint64 nOffset,bool bIsBigEndian);
 
-    QList<QString> getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,QList<QString> *pListStrings);
+    QList<QString> getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,QList<QString> *pListStrings,bool *pbIsStop=0);
     void getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
     QString getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId);

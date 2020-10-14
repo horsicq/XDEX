@@ -601,15 +601,22 @@ QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP
     return listResult;
 }
 
-QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems)
+QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,bool *pbIsStop)
 {
+    bool _bIsStop=false;
+
+    if(pbIsStop==0)
+    {
+        pbIsStop=&_bIsStop;
+    }
+
     QList<QString> listResult;
 
     bool bIsBigEndian=isBigEndian();
 
     XDEX_DEF::MAP_ITEM map_strings=getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM,pMapItems);
 
-    for(quint32 i=0;i<map_strings.nCount;i++)
+    for(quint32 i=0;(i<map_strings.nCount)&&(!(*pbIsStop));i++)
     {
         QString sString=_getString(map_strings,i,bIsBigEndian);
 
@@ -667,9 +674,16 @@ QList<quint32> XDEX::_getTypeList(qint64 nOffset, bool bIsBigEndian)
     return listResult;
 }
 
-QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QList<QString> *pListStrings)
+QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QList<QString> *pListStrings, bool *pbIsStop)
 {
     QList<QString> listResult;
+
+    bool _bIsStop=false;
+
+    if(pbIsStop==0)
+    {
+        pbIsStop=&_bIsStop;
+    }
 
     bool bIsBigEndian=isBigEndian();
 
@@ -677,7 +691,7 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QL
 
     XDEX_DEF::MAP_ITEM map_items=getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM,pMapItems);
 
-    for(quint32 i=0;i<map_items.nCount;i++)
+    for(quint32 i=0;(i<map_items.nCount)&&(!(*pbIsStop));i++)
     {
         quint32 nOffset=map_items.nOffset+sizeof(quint32)*i;
 
