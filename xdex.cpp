@@ -697,7 +697,7 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QL
 
         quint32 nItem=read_uint32(nOffset,bIsBigEndian);
 
-        if((qint32)nItem<nStringsCount)
+        if(((qint32)nItem>0)&&((qint32)nItem<nStringsCount))
         {
             QString sString=pListStrings->at(nItem);
 
