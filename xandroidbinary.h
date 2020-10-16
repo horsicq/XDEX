@@ -42,6 +42,9 @@ public:
     XANDROIDBINARY_DEF::HEADER readHeader(qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_STRING_POOL readHeaderStringPool(qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_NAMESPACE readHeaderNamespace(qint64 nOffset);
+    XANDROIDBINARY_DEF::HEADER_XML_START readHeaderXmlStart(qint64 nOffset);
+    XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE readHeaderXmlAttribute(qint64 nOffset);
+    XANDROIDBINARY_DEF::HEADER_XML_END readHeaderXmlEnd(qint64 nOffset);
     QList<XANDROIDBINARY_DEF::HEADER> getHeaders();
     RECORD getRecord(qint64 nOffset);
     QString recordToString(RECORD *pRecord);

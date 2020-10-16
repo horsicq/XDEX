@@ -51,6 +51,41 @@ struct HEADER_NAMESPACE
     quint32 uri;
 };
 
+struct HEADER_XML_ATTRIBUTE
+{
+    quint32 ns;
+    quint32 name;
+    quint32 rawValue;
+    quint16 size;
+    quint8 reserved; // 0
+    quint8 dataType;
+    quint32 data;
+};
+
+struct HEADER_XML_START
+{
+    HEADER header;
+    quint32 lineNumber;
+    quint32 comment;
+    quint32 ns;
+    quint32 name;
+    quint16 attributeStart;
+    quint16 attributeSize;
+    quint16 attributeCount;
+    quint16 idIndex;
+    quint16 classIndex;
+    quint16 styleIndex;
+};
+
+struct HEADER_XML_END
+{
+    HEADER header;
+    quint32 lineNumber;
+    quint32 comment;
+    quint32 ns;
+    quint32 name;
+};
+
 enum
 {
     RES_NULL_TYPE               = 0x0000,

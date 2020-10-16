@@ -79,6 +79,53 @@ XANDROIDBINARY_DEF::HEADER_NAMESPACE XAndroidBinary::readHeaderNamespace(qint64 
     return result;
 }
 
+XANDROIDBINARY_DEF::HEADER_XML_START XAndroidBinary::readHeaderXmlStart(qint64 nOffset)
+{
+    XANDROIDBINARY_DEF::HEADER_XML_START result={};
+
+    result.header=readHeader(nOffset);
+    result.lineNumber=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_START,lineNumber));
+    result.comment=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_START,comment));
+    result.ns=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_START,ns));
+    result.name=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_START,name));
+    result.attributeStart=read_uint16(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_START,attributeStart));
+    result.attributeSize=read_uint16(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_START,attributeSize));
+    result.attributeCount=read_uint16(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_START,attributeCount));
+    result.idIndex=read_uint16(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_START,idIndex));
+    result.classIndex=read_uint16(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_START,classIndex));
+    result.styleIndex=read_uint16(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_START,styleIndex));
+
+    return result;
+}
+
+XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE XAndroidBinary::readHeaderXmlAttribute(qint64 nOffset)
+{
+    XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE result={};
+
+    result.ns=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE,ns));
+    result.name=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE,name));
+    result.rawValue=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE,rawValue));
+    result.size=read_uint16(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE,size));
+    result.reserved=read_uint8(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE,reserved));
+    result.dataType=read_uint8(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE,dataType));
+    result.data=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE,data));
+
+    return result;
+}
+
+XANDROIDBINARY_DEF::HEADER_XML_END XAndroidBinary::readHeaderXmlEnd(qint64 nOffset)
+{
+    XANDROIDBINARY_DEF::HEADER_XML_END result={};
+
+    result.header=readHeader(nOffset);
+    result.lineNumber=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_END,lineNumber));
+    result.comment=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_END,comment));
+    result.ns=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_END,ns));
+    result.name=read_uint32(nOffset+offsetof(XANDROIDBINARY_DEF::HEADER_XML_END,name));
+
+    return result;
+}
+
 QList<XANDROIDBINARY_DEF::HEADER> XAndroidBinary::getHeaders()
 {
     QList<XANDROIDBINARY_DEF::HEADER> listHeaders;
@@ -142,7 +189,7 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
                 qint64 nCurrentOffset=pRecord->listChildren.at(i).nOffset+headerStringPool.header.header_size;
                 qint64 nStringsDataOffset=pRecord->listChildren.at(i).nOffset+headerStringPool.stringsStart;
 
-                for(int j=0;j<headerStringPool.stringCount;j++)
+                for(quint32 j=0;j<headerStringPool.stringCount;j++)
                 {
                     qint64 nStringOffset=nStringsDataOffset+read_int32(nCurrentOffset+j*sizeof(quint32));
                     qint16 nStringSize=read_uint16(nStringOffset);
@@ -171,6 +218,52 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
                 qDebug("lineNumber %d",headerNamespace.lineNumber);
                 qDebug("prefix %s",listStrings.at(headerNamespace.prefix).toLatin1().data());
                 qDebug("uri %s",listStrings.at(headerNamespace.uri).toLatin1().data());
+            }
+            else if(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_START_ELEMENT_TYPE)
+            {
+                XANDROIDBINARY_DEF::HEADER_XML_START headerXmlStart=readHeaderXmlStart(pRecord->listChildren.at(i).nOffset);
+
+//                qDebug("lineNumber %d",headerXmlStart.lineNumber);
+
+                if(headerXmlStart.ns!=0xFFFFFFFF)
+                {
+                    qDebug("ns %s",listStrings.at(headerXmlStart.ns).toLatin1().data());
+                }
+
+                qDebug("attributeStart %d",headerXmlStart.attributeStart);
+                qDebug("attributeSize %d",headerXmlStart.attributeSize);
+                qDebug("attributeCount %d",headerXmlStart.attributeCount);
+                qDebug("idIndex %d",headerXmlStart.idIndex);
+                qDebug("classIndex %d",headerXmlStart.classIndex);
+                qDebug("styleIndex %d",headerXmlStart.styleIndex);
+
+                QString sString=QString("<%1>").arg(listStrings.at(headerXmlStart.name));
+                qDebug("%s",sString.toLatin1().data());
+
+                qint64 nCurrentOffset=pRecord->listChildren.at(i).nOffset+headerXmlStart.attributeStart;
+
+                for(int j=0;j<headerXmlStart.attributeCount;j++)
+                {
+                    XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE headerXmlAttribute=readHeaderXmlAttribute(nCurrentOffset);
+
+                    qDebug("NAME %s",listStrings.at(headerXmlAttribute.name).toLatin1().data());
+
+                    nCurrentOffset+sizeof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE);
+                }
+            }
+            else if(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_END_ELEMENT_TYPE)
+            {
+                XANDROIDBINARY_DEF::HEADER_XML_END headerXmlEnd=readHeaderXmlEnd(pRecord->listChildren.at(i).nOffset);
+
+//                qDebug("lineNumber %d",headerXmlEnd.lineNumber);
+
+                if(headerXmlEnd.ns!=0xFFFFFFFF)
+                {
+                    qDebug("ns %s",listStrings.at(headerXmlEnd.ns).toLatin1().data());
+                }
+
+                QString sString=QString("</%1>").arg(listStrings.at(headerXmlEnd.name));
+                qDebug("%s",sString.toLatin1().data());
             }
             else
             {
