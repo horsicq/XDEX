@@ -55,6 +55,8 @@ bool XDEX::isBigEndian()
     quint32 nEndian=read_uint32(offsetof(XDEX_DEF::HEADER,endian_tag));
 
     return (nEndian!=0x12345678);
+
+//    return false; // TODO Check. There are dex files with nEndian!=0x12345678, but LE
 }
 
 quint32 XDEX::getHeader_magic()
@@ -343,17 +345,20 @@ QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems()
 
     nOffset+=4;
 
-    for(quint32 i=0;i<nCount;i++)
+    if(nCount<0x100)
     {
-        XDEX_DEF::MAP_ITEM map_item={};
+        for(quint32 i=0;i<nCount;i++)
+        {
+            XDEX_DEF::MAP_ITEM map_item={};
 
-        map_item.nType=read_uint16(nOffset,bIsBigEndian);
-        map_item.nCount=read_uint32(nOffset+4,bIsBigEndian);
-        map_item.nOffset=read_uint32(nOffset+8,bIsBigEndian);
+            map_item.nType=read_uint16(nOffset,bIsBigEndian);
+            map_item.nCount=read_uint32(nOffset+4,bIsBigEndian);
+            map_item.nOffset=read_uint32(nOffset+8,bIsBigEndian);
 
-        listResult.append(map_item);
+            listResult.append(map_item);
 
-        nOffset+=12;
+            nOffset+=12;
+        }
     }
 
     return listResult;
@@ -616,9 +621,11 @@ QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,bool *pbIsS
 
     XDEX_DEF::MAP_ITEM map_strings=getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM,pMapItems);
 
+    QByteArray baData=read_array(getHeader_data_off(),getHeader_data_size());
+
     for(quint32 i=0;(i<map_strings.nCount)&&(!(*pbIsStop));i++)
     {
-        QString sString=_getString(map_strings,i,bIsBigEndian);
+        QString sString=_getString(map_strings,i,bIsBigEndian,baData.data(),baData.size(),getHeader_data_off());
 
         listResult.append(sString);
     }
@@ -642,7 +649,23 @@ QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bo
     return sResult;
 }
 
-QString XDEX::_geTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem, XDEX_DEF::MAP_ITEM map_typeItemId, quint32 nIndex, bool bIsBigEndian)
+QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian, char *pData, qint32 nDataSize, qint32 nDataOffset)
+{
+    QString sResult;
+
+    if(nIndex<map_stringIdItem.nCount)
+    {
+        qint64 nOffset=map_stringIdItem.nOffset+sizeof(quint32)*nIndex;
+
+        qint32 nStringsOffset=(qint32)read_uint32(nOffset,bIsBigEndian);
+
+        sResult=XBinary::_read_utf8String(nStringsOffset,pData,nDataSize,nDataOffset);
+    }
+
+    return sResult;
+}
+
+QString XDEX::_getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem, XDEX_DEF::MAP_ITEM map_typeItemId, quint32 nIndex, bool bIsBigEndian)
 {
     QString sResult;
 
@@ -731,7 +754,7 @@ void XDEX::getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems)
         record.parameters_off=read_uint32(nOffset+offsetof(XDEX_DEF::PROTO_ITEM_ID,parameters_off),bIsBigEndian);
 
         QString sProto=_getString(map_stringIdItem,record.shorty_idx,bIsBigEndian);
-        QString sRet=_geTypeItemtString(map_stringIdItem,map_typeIdItem,record.return_type_idx,bIsBigEndian);
+        QString sRet=_getTypeItemtString(map_stringIdItem,map_typeIdItem,record.return_type_idx,bIsBigEndian);
 
         QList<quint32> listParams=_getTypeList(record.parameters_off,bIsBigEndian);
 
@@ -750,6 +773,15 @@ QString XDEX::getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId)
     return sResult;
 }
 
+QString XDEX::getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId, char *pData, qint32 nDataSize, qint32 nDataOffset)
+{
+    QString sResult;
+
+    sResult=XBinary::_read_utf8String(stringItemId.string_data_off,pData,nDataSize,nDataOffset);
+
+    return sResult;
+}
+
 QString XDEX::getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId, XDEX_DEF::MAP_ITEM *pMapItemStrings)
 {
     QString sResult;
@@ -757,6 +789,17 @@ QString XDEX::getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId, XDEX_DEF::M
     bool bIsBigEndian=isBigEndian();
 
     sResult=_read_utf8String(read_uint32(pMapItemStrings->nOffset+sizeof(quint32)*typeItemId.descriptor_idx,bIsBigEndian));
+
+    return sResult;
+}
+
+QString XDEX::getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId, XDEX_DEF::MAP_ITEM *pMapItemStrings, char *pData, qint32 nDataSize, qint32 nDataOffset)
+{
+    QString sResult;
+
+    bool bIsBigEndian=isBigEndian();
+
+    sResult=XBinary::_read_utf8String(read_uint32(pMapItemStrings->nOffset+sizeof(quint32)*typeItemId.descriptor_idx,bIsBigEndian),pData,nDataSize,nDataOffset);
 
     return sResult;
 }

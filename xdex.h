@@ -107,14 +107,17 @@ public:
 
     QList<QString> getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,bool *pbIsStop=0);
     QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem,quint32 nIndex,bool bIsBigEndian);
-    QString _geTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem,XDEX_DEF::MAP_ITEM map_typeItemId,quint32 nIndex,bool bIsBigEndian);
+    QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem,quint32 nIndex,bool bIsBigEndian,char *pData,qint32 nDataSize,qint32 nDataOffset);
+    QString _getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem,XDEX_DEF::MAP_ITEM map_typeItemId,quint32 nIndex,bool bIsBigEndian);
     QList<quint32> _getTypeList(qint64 nOffset,bool bIsBigEndian);
 
     QList<QString> getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,QList<QString> *pListStrings,bool *pbIsStop=0);
     void getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
     QString getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId);
+    QString getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId,char *pData,qint32 nDataSize,qint32 nDataOffset);
     QString getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings);
+    QString getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings,char *pData,qint32 nDataSize,qint32 nDataOffset);
     QString getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings);
 
     static QMap<quint64,QString> getHeaderMagics();
