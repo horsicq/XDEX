@@ -26,6 +26,9 @@
 
 class XDEX: public XBinary
 {
+    // TODO GetMemoryMap
+    // TODO GetArch
+    // TODO GetMode
     Q_OBJECT
 public:
 

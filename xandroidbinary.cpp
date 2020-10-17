@@ -176,9 +176,16 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
 
     if(pRecord->header.type==XANDROIDBINARY_DEF::RES_XML_TYPE)
     {
+        QXmlStreamWriter xml(&sResult);
+
+        xml.setAutoFormatting(true);
+        xml.writeStartDocument("1.0",false);
+
         int nNumberOfChildren=pRecord->listChildren.count();
         QList<QString> listStrings;
         QList<quint32> listResources;
+        QStack<QString> stackPrefix;
+        QStack<QString> stackURI;
 
         for(int i=0;i<nNumberOfChildren;i++)
         {
@@ -208,68 +215,93 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
                 {
                     quint32 nID=read_uint32(nCurrentOffset+j*sizeof(quint32));
 
+//                    qDebug("Resource ID %x",nID);
+
                     listResources.append(nID);
                 }
             }
-            else if((pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_START_NAMESPACE_TYPE)||(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_END_NAMESPACE_TYPE))
+            else if(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_START_NAMESPACE_TYPE)
             {
                 XANDROIDBINARY_DEF::HEADER_NAMESPACE headerNamespace=readHeaderNamespace(pRecord->listChildren.at(i).nOffset);
 
-                qDebug("lineNumber %d",headerNamespace.lineNumber);
-                qDebug("prefix %s",listStrings.at(headerNamespace.prefix).toLatin1().data());
-                qDebug("uri %s",listStrings.at(headerNamespace.uri).toLatin1().data());
+                stackPrefix.push(getStringByIndex(&listStrings,headerNamespace.prefix));
+                stackURI.push(getStringByIndex(&listStrings,headerNamespace.uri));
+
+                xml.writeNamespace(stackURI.top(),stackPrefix.top());
+            }
+            else if(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_END_NAMESPACE_TYPE)
+            {
+                stackPrefix.pop();
+                stackURI.pop();
             }
             else if(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_START_ELEMENT_TYPE)
             {
                 XANDROIDBINARY_DEF::HEADER_XML_START headerXmlStart=readHeaderXmlStart(pRecord->listChildren.at(i).nOffset);
 
-//                qDebug("lineNumber %d",headerXmlStart.lineNumber);
+//                qDebug("idIndex %d",headerXmlStart.idIndex);
+//                qDebug("classIndex %d",headerXmlStart.classIndex);
+//                qDebug("styleIndex %d",headerXmlStart.styleIndex);
 
-                if(headerXmlStart.ns!=0xFFFFFFFF)
+                if(headerXmlStart.ns==0xFFFFFFFF)
                 {
-                    qDebug("ns %s",listStrings.at(headerXmlStart.ns).toLatin1().data());
+                    xml.writeStartElement(getStringByIndex(&listStrings,headerXmlStart.name));
+                }
+                else
+                {
+                    xml.writeStartElement(getStringByIndex(&listStrings,headerXmlStart.ns),getStringByIndex(&listStrings,headerXmlStart.name));
                 }
 
-                qDebug("attributeStart %d",headerXmlStart.attributeStart);
-                qDebug("attributeSize %d",headerXmlStart.attributeSize);
-                qDebug("attributeCount %d",headerXmlStart.attributeCount);
-                qDebug("idIndex %d",headerXmlStart.idIndex);
-                qDebug("classIndex %d",headerXmlStart.classIndex);
-                qDebug("styleIndex %d",headerXmlStart.styleIndex);
-
-                QString sString=QString("<%1>").arg(listStrings.at(headerXmlStart.name));
-                qDebug("%s",sString.toLatin1().data());
-
-                qint64 nCurrentOffset=pRecord->listChildren.at(i).nOffset+headerXmlStart.attributeStart;
+                qint64 nCurrentOffset=pRecord->listChildren.at(i).nOffset+sizeof(XANDROIDBINARY_DEF::HEADER_XML_START);
 
                 for(int j=0;j<headerXmlStart.attributeCount;j++)
                 {
                     XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE headerXmlAttribute=readHeaderXmlAttribute(nCurrentOffset);
 
-                    qDebug("NAME %s",listStrings.at(headerXmlAttribute.name).toLatin1().data());
+                    QString sValue;
 
-                    nCurrentOffset+sizeof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE);
+                    if(headerXmlAttribute.dataType==3) // TODO Const
+                    {
+                        sValue=getStringByIndex(&listStrings,headerXmlAttribute.data);
+                    }
+                    // TODO More types
+
+                    xml.writeAttribute(getStringByIndex(&listStrings,headerXmlAttribute.ns),getStringByIndex(&listStrings,headerXmlAttribute.name),sValue);
+
+                    nCurrentOffset+=sizeof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE);
                 }
             }
             else if(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_END_ELEMENT_TYPE)
             {
                 XANDROIDBINARY_DEF::HEADER_XML_END headerXmlEnd=readHeaderXmlEnd(pRecord->listChildren.at(i).nOffset);
 
-//                qDebug("lineNumber %d",headerXmlEnd.lineNumber);
-
-                if(headerXmlEnd.ns!=0xFFFFFFFF)
-                {
-                    qDebug("ns %s",listStrings.at(headerXmlEnd.ns).toLatin1().data());
-                }
-
-                QString sString=QString("</%1>").arg(listStrings.at(headerXmlEnd.name));
-                qDebug("%s",sString.toLatin1().data());
+                xml.writeEndElement();
             }
             else
             {
                 qDebug("Record %x",pRecord->listChildren.at(i).header.type);
             }
         }
+
+        xml.writeEndDocument();
+    }
+
+    return sResult;
+}
+
+QString XAndroidBinary::getDecoded(QString sFileName)
+{
+    QString sResult;
+
+    QFile file;
+    file.setFileName(sFileName);
+
+    if(file.open(QIODevice::ReadOnly))
+    {
+        XAndroidBinary xab(&file);
+        RECORD record=xab.getRecord(0);
+        sResult=xab.recordToString(&record);
+
+        file.close();
     }
 
     return sResult;

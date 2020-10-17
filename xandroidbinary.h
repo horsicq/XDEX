@@ -21,6 +21,8 @@
 #ifndef XANDROIDBINARY_H
 #define XANDROIDBINARY_H
 
+#include <QXmlStreamWriter>
+#include "QStack"
 #include "xandroidbinary_def.h"
 #include "xbinary.h"
 
@@ -48,6 +50,7 @@ public:
     QList<XANDROIDBINARY_DEF::HEADER> getHeaders();
     RECORD getRecord(qint64 nOffset);
     QString recordToString(RECORD *pRecord);
+    static QString getDecoded(QString sFileName);
 
 signals:
 
