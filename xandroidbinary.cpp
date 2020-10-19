@@ -242,14 +242,10 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
 //                qDebug("classIndex %d",headerXmlStart.classIndex);
 //                qDebug("styleIndex %d",headerXmlStart.styleIndex);
 
-                if(headerXmlStart.ns==0xFFFFFFFF)
-                {
-                    xml.writeStartElement(getStringByIndex(&listStrings,headerXmlStart.name));
-                }
-                else
-                {
-                    xml.writeStartElement(getStringByIndex(&listStrings,headerXmlStart.ns),getStringByIndex(&listStrings,headerXmlStart.name));
-                }
+                QString sNS=getStringByIndex(&listStrings,headerXmlStart.ns);
+                QString sName=getStringByIndex(&listStrings,headerXmlStart.name);
+
+                xml.writeStartElement(sNS,sName);
 
                 qint64 nCurrentOffset=pRecord->listChildren.at(i).nOffset+sizeof(XANDROIDBINARY_DEF::HEADER_XML_START);
 
@@ -259,13 +255,42 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
 
                     QString sValue;
 
-                    if(headerXmlAttribute.dataType==3) // TODO Const
+                    if(headerXmlAttribute.dataType==1) // TODO Const
+                    {
+                        sValue="@"+QString::number(headerXmlAttribute.data,16);
+                    }
+                    else if(headerXmlAttribute.dataType==3) // TODO Const
                     {
                         sValue=getStringByIndex(&listStrings,headerXmlAttribute.data);
                     }
+                    else if(headerXmlAttribute.dataType==16) // TODO Const
+                    {
+                        sValue=QString::number(headerXmlAttribute.data);
+                    }
+                    else if(headerXmlAttribute.dataType==17) // TODO Const // Flgas
+                    {
+                        sValue="0x"+QString::number(headerXmlAttribute.data,16);
+                    }
+                    else if(headerXmlAttribute.dataType==18) // TODO Const
+                    {
+                        sValue=(headerXmlAttribute.data==0xFFFFFFFF)?"true":"false";
+                    }
+//                    else
+//                    {
+//                        sValue="0x"+QString::number(headerXmlAttribute.data,16);
+//                    }
+                    else
+                    {
+                        qDebug("headerXmlAttribute.dataType %d %s: %x",headerXmlAttribute.dataType,getStringByIndex(&listStrings,headerXmlAttribute.name).toLatin1().data(),headerXmlAttribute.data);
+                        int z=0;
+                        z++;
+                    }
                     // TODO More types
 
-                    xml.writeAttribute(getStringByIndex(&listStrings,headerXmlAttribute.ns),getStringByIndex(&listStrings,headerXmlAttribute.name),sValue);
+                    QString sNS_Attribute=getStringByIndex(&listStrings,headerXmlAttribute.ns);
+                    QString sName_Attribute=getStringByIndex(&listStrings,headerXmlAttribute.name);
+
+                    xml.writeAttribute(sNS_Attribute,sName_Attribute,sValue);
 
                     nCurrentOffset+=sizeof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE);
                 }
