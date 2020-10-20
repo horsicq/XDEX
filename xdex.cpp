@@ -56,7 +56,202 @@ bool XDEX::isBigEndian()
 
     return (nEndian!=0x12345678);
 
-//    return false; // TODO Check. There are dex files with nEndian!=0x12345678, but LE
+    //    return false; // TODO Check. There are dex files with nEndian!=0x12345678, but LE
+}
+
+XBinary::MODE XDEX::getMode()
+{
+    return MODE_32;
+}
+
+QString XDEX::getArch()
+{
+    return "Dalvik";
+}
+
+int XDEX::getType()
+{
+    return TYPE_UNKNOWN;
+}
+
+QString XDEX::typeIdToString(int nType)
+{
+    QString sResult="Unknown"; // mb TODO translate
+
+    switch(nType)
+    {
+        case TYPE_UNKNOWN:      sResult=QString("Unknown");     break; // mb TODO translate
+    }
+
+    return sResult;
+}
+
+XBinary::_MEMORY_MAP XDEX::getMemoryMap()
+{
+    _MEMORY_MAP result={};
+
+    qint64 nTotalSize=getSize();
+
+    result.nBaseAddress=_getBaseAddress();
+    result.nRawSize=nTotalSize;
+    result.nImageSize=nTotalSize;
+    result.fileType=FT_DEX;
+    result.mode=getMode();
+    result.sArch=getArch();
+    result.bIsBigEndian=isBigEndian();
+    result.sType=getTypeAsString();
+
+    qint32 nIndex=0;
+
+    XDEX_DEF::HEADER header=getHeader();
+
+    _MEMORY_RECORD recordHeader={};
+    recordHeader.nAddress=-1;
+    recordHeader.segment=ADDRESS_SEGMENT_FLAT;
+    recordHeader.nOffset=0;
+    recordHeader.nSize=header.header_size;
+    recordHeader.nIndex=nIndex++;
+    recordHeader.type=MMT_HEADER;
+    recordHeader.sName=tr("Header");
+
+    result.listRecords.append(recordHeader);
+
+    if(header.link_size)
+    {
+        _MEMORY_RECORD record={};
+        record.nAddress=-1;
+        record.segment=ADDRESS_SEGMENT_FLAT;
+        record.nOffset=header.link_off;
+        record.nSize=header.link_size;
+        record.nIndex=nIndex++;
+        record.type=MMT_FILESEGMENT;
+        record.sName="link";
+
+        result.listRecords.append(record);
+    }
+
+//    string_id_item	TYPE_STRING_ID_ITEM	0x0001	0x04
+//    type_id_item	TYPE_TYPE_ID_ITEM	0x0002	0x04
+//    proto_id_item	TYPE_PROTO_ID_ITEM	0x0003	0x0c
+//    field_id_item	TYPE_FIELD_ID_ITEM	0x0004	0x08
+//    method_id_item	TYPE_METHOD_ID_ITEM	0x0005	0x08
+//    class_def_item	TYPE_CLASS_DEF_ITEM	0x0006	0x20
+//    call_site_id_item	TYPE_CALL_SITE_ID_ITEM	0x0007	0x04
+//    method_handle_item	TYPE_METHOD_HANDLE_ITEM	0x0008	0x08
+
+    if(header.string_ids_size)
+    {
+        _MEMORY_RECORD record={};
+        record.nAddress=-1;
+        record.segment=ADDRESS_SEGMENT_FLAT;
+        record.nOffset=header.string_ids_off;
+        record.nSize=(header.string_ids_size)*sizeof(XDEX_DEF::STRING_ITEM_ID);
+        record.nIndex=nIndex++;
+        record.type=MMT_FILESEGMENT;
+        record.sName="string_ids";
+
+        result.listRecords.append(record);
+    }
+
+    if(header.type_ids_size)
+    {
+        _MEMORY_RECORD record={};
+        record.nAddress=-1;
+        record.segment=ADDRESS_SEGMENT_FLAT;
+        record.nOffset=header.type_ids_off;
+        record.nSize=(header.type_ids_size)*sizeof(XDEX_DEF::TYPE_ITEM_ID);
+        record.nIndex=nIndex++;
+        record.type=MMT_FILESEGMENT;
+        record.sName="type_ids";
+
+        result.listRecords.append(record);
+    }
+
+    if(header.proto_ids_size)
+    {
+        _MEMORY_RECORD record={};
+        record.nAddress=-1;
+        record.segment=ADDRESS_SEGMENT_FLAT;
+        record.nOffset=header.proto_ids_off;
+        record.nSize=(header.proto_ids_size)*sizeof(XDEX_DEF::PROTO_ITEM_ID);
+        record.nIndex=nIndex++;
+        record.type=MMT_FILESEGMENT;
+        record.sName="proto_ids";
+
+        result.listRecords.append(record);
+    }
+
+    if(header.field_ids_size)
+    {
+        _MEMORY_RECORD record={};
+        record.nAddress=-1;
+        record.segment=ADDRESS_SEGMENT_FLAT;
+        record.nOffset=header.field_ids_off;
+        record.nSize=(header.field_ids_size)*sizeof(XDEX_DEF::FIELD_ITEM_ID);
+        record.nIndex=nIndex++;
+        record.type=MMT_FILESEGMENT;
+        record.sName="field_ids";
+
+        result.listRecords.append(record);
+    }
+
+    if(header.method_ids_size)
+    {
+        _MEMORY_RECORD record={};
+        record.nAddress=-1;
+        record.segment=ADDRESS_SEGMENT_FLAT;
+        record.nOffset=header.method_ids_off;
+        record.nSize=(header.method_ids_size)*sizeof(XDEX_DEF::METHOD_ITEM_ID);
+        record.nIndex=nIndex++;
+        record.type=MMT_FILESEGMENT;
+        record.sName="method_ids";
+
+        result.listRecords.append(record);
+    }
+
+    if(header.class_defs_size)
+    {
+        _MEMORY_RECORD record={};
+        record.nAddress=-1;
+        record.segment=ADDRESS_SEGMENT_FLAT;
+        record.nOffset=header.class_defs_off;
+        record.nSize=(header.class_defs_size)*sizeof(XDEX_DEF::CLASS_ITEM_DEF);
+        record.nIndex=nIndex++;
+        record.type=MMT_FILESEGMENT;
+        record.sName="class_defs";
+
+        result.listRecords.append(record);
+    }
+
+    if(header.data_size)
+    {
+        _MEMORY_RECORD record={};
+        record.nAddress=-1;
+        record.segment=ADDRESS_SEGMENT_FLAT;
+        record.nOffset=header.data_off;
+        record.nSize=header.data_size;
+        record.nIndex=nIndex++;
+        record.type=MMT_FILESEGMENT;
+        record.sName="data";
+
+        result.listRecords.append(record);
+    }
+
+    if(nTotalSize>header.file_size)
+    {
+        _MEMORY_RECORD recordOverlay={};
+        recordOverlay.nAddress=-1;
+        recordOverlay.segment=ADDRESS_SEGMENT_FLAT;
+        recordOverlay.nOffset=0;
+        recordOverlay.nSize=nTotalSize-header.file_size;
+        recordOverlay.nIndex=nIndex++;
+        recordOverlay.type=MMT_OVERLAY;
+        recordOverlay.sName=tr("Overlay");
+
+        result.listRecords.append(recordOverlay);
+    }
+
+    return result;
 }
 
 quint32 XDEX::getHeader_magic()

@@ -27,10 +27,13 @@
 class XDEX: public XBinary
 {
     // TODO GetMemoryMap
-    // TODO GetArch
-    // TODO GetMode
     Q_OBJECT
 public:
+
+    enum TYPE
+    {
+        TYPE_UNKNOWN=0,
+    };
 
     XDEX(QIODevice *__pDevice);
     virtual bool isValid();
@@ -38,6 +41,11 @@ public:
     virtual QString getVersion();
 
     virtual bool isBigEndian();
+    virtual MODE getMode();
+    virtual QString getArch();
+    virtual int getType();
+    virtual QString typeIdToString(int nType);
+    virtual _MEMORY_MAP getMemoryMap();
 
     quint32 getHeader_magic();
     quint32 getHeader_version();
