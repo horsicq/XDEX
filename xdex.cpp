@@ -559,6 +559,48 @@ QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems()
     return listResult;
 }
 
+bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> *pListIDs)
+{
+    bool bResult=false;
+
+    int nNumberOfMapItems=pListMaps->count();
+    int nNumberOfIDs=pListIDs->count();
+
+    for(int i=0,j=0;((i<nNumberOfMapItems)&&(j<nNumberOfIDs));)
+    {
+        bResult=false;
+
+        if(pListMaps->at(i).nType==pListIDs->at(j))
+        {
+            bResult=true;
+            i++;
+            j++;
+        }
+        else
+        {
+            j++;
+        }
+    }
+
+    return bResult;
+}
+
+quint64 XDEX::getMapItemsHash()
+{
+    quint64 nResult=0;
+
+    QList<XDEX_DEF::MAP_ITEM> listMapItems=getMapItems();
+
+    int nNumberOfMapItems=listMapItems.count();
+
+    for(int i=0;i<nNumberOfMapItems;i++)
+    {
+        nResult+=(quint64)i*getStringCustomCRC32(QString::number(listMapItems.at(i).nType));
+    }
+
+    return nResult;
+}
+
 bool XDEX::isMapItemPresent(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems)
 {
     bool bResult=false;
@@ -602,6 +644,7 @@ QMap<quint64, QString> XDEX::getTypes()
     mapResult.insert(0x2004,"TYPE_ANNOTATION_ITEM");
     mapResult.insert(0x2005,"TYPE_ENCODED_ARRAY_ITEM");
     mapResult.insert(0x2006,"TYPE_ANNOTATIONS_DIRECTORY_ITEM");
+    mapResult.insert(0xF000,"TYPE_HIDDENAPI_CLASS_DATA_ITEM");
 
     return mapResult;
 }
@@ -630,6 +673,7 @@ QMap<quint64, QString> XDEX::getTypesS()
     mapResult.insert(0x2004,"ANNOTATION_ITEM");
     mapResult.insert(0x2005,"ENCODED_ARRAY_ITEM");
     mapResult.insert(0x2006,"ANNOTATIONS_DIRECTORY_ITEM");
+    mapResult.insert(0xF000,"HIDDENAPI_CLASS_DATA_ITEM");
 
     return mapResult;
 }
