@@ -566,21 +566,26 @@ bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> 
     int nNumberOfMapItems=pListMaps->count();
     int nNumberOfIDs=pListIDs->count();
 
-    for(int i=0,j=0;((i<nNumberOfMapItems)&&(j<nNumberOfIDs));)
+    int nCurrentMapItem=0;
+    int nCurrentID=0;
+
+    while((nCurrentMapItem<nNumberOfMapItems)&&(nCurrentID<nNumberOfIDs))
     {
         bResult=false;
 
-        if(pListMaps->at(i).nType==pListIDs->at(j))
+        if(pListMaps->at(nCurrentMapItem).nType==pListIDs->at(nCurrentID))
         {
             bResult=true;
-            i++;
-            j++;
+            nCurrentMapItem++;
+            nCurrentID++;
         }
         else
         {
-            j++;
+            nCurrentID++;
         }
     }
+
+    bResult=(bResult)&&(nCurrentMapItem==nNumberOfMapItems);
 
     return bResult;
 }

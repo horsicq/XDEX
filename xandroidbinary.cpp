@@ -279,12 +279,12 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
 //                    {
 //                        sValue="0x"+QString::number(headerXmlAttribute.data,16);
 //                    }
-                    else
-                    {
-                        qDebug("headerXmlAttribute.dataType %d %s: %x",headerXmlAttribute.dataType,getStringByIndex(&listStrings,headerXmlAttribute.name).toLatin1().data(),headerXmlAttribute.data);
-                        int z=0;
-                        z++;
-                    }
+//                    else
+//                    {
+//                        qDebug("headerXmlAttribute.dataType %d %s: %x",headerXmlAttribute.dataType,getStringByIndex(&listStrings,headerXmlAttribute.name).toLatin1().data(),headerXmlAttribute.data);
+//                        int z=0;
+//                        z++;
+//                    }
                     // TODO More types
 
                     QString sNS_Attribute=getStringByIndex(&listStrings,headerXmlAttribute.ns);
@@ -301,14 +301,25 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
 
                 xml.writeEndElement();
             }
-            else
-            {
-                qDebug("Record %x",pRecord->listChildren.at(i).header.type);
-            }
+//            else
+//            {
+//                qDebug("Record %x",pRecord->listChildren.at(i).header.type);
+//            }
         }
 
         xml.writeEndDocument();
     }
+
+    return sResult;
+}
+
+QString XAndroidBinary::getDecoded(QIODevice *pDevice)
+{
+    QString sResult;
+
+    XAndroidBinary xab(pDevice);
+    RECORD record=xab.getRecord(0);
+    sResult=xab.recordToString(&record);
 
     return sResult;
 }
@@ -322,11 +333,27 @@ QString XAndroidBinary::getDecoded(QString sFileName)
 
     if(file.open(QIODevice::ReadOnly))
     {
-        XAndroidBinary xab(&file);
-        RECORD record=xab.getRecord(0);
-        sResult=xab.recordToString(&record);
+        sResult=getDecoded(&file);
 
         file.close();
+    }
+
+    return sResult;
+}
+
+QString XAndroidBinary::getDecoded(QByteArray *pbaData)
+{
+    QString sResult;
+
+    QBuffer buffer;
+
+    buffer.setBuffer(pbaData);
+
+    if(buffer.open(QIODevice::ReadOnly))
+    {
+        sResult=getDecoded(&buffer);
+
+        buffer.close();
     }
 
     return sResult;

@@ -50,7 +50,9 @@ public:
     QList<XANDROIDBINARY_DEF::HEADER> getHeaders();
     RECORD getRecord(qint64 nOffset);
     QString recordToString(RECORD *pRecord);
+    static QString getDecoded(QIODevice *pDevice);
     static QString getDecoded(QString sFileName);
+    static QString getDecoded(QByteArray *pbaData);
 
 signals:
 
