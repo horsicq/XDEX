@@ -199,8 +199,18 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
                 for(quint32 j=0;j<headerStringPool.stringCount;j++)
                 {
                     qint64 nStringOffset=nStringsDataOffset+read_int32(nCurrentOffset+j*sizeof(quint32));
-                    qint16 nStringSize=read_uint16(nStringOffset);
-                    QString sString=read_unicodeString(nStringOffset+sizeof(quint16),nStringSize);
+
+                    QString sString;
+                    quint16 nStringSize=read_uint16(nStringOffset);
+
+                    if(headerStringPool.flags)
+                    {
+                        sString=read_ansiString(nStringOffset+sizeof(quint16),nStringSize);
+                    }
+                    else
+                    {
+                        sString=read_unicodeString(nStringOffset+sizeof(quint16),nStringSize);
+                    }
 
                     listStrings.append(sString);
                 }
