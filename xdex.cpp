@@ -237,13 +237,13 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap()
         result.listRecords.append(record);
     }
 
-    if(nTotalSize>header.file_size)
+    if((header.data_off+header.data_size)<header.file_size)
     {
         _MEMORY_RECORD recordOverlay={};
         recordOverlay.nAddress=-1;
         recordOverlay.segment=ADDRESS_SEGMENT_FLAT;
-        recordOverlay.nOffset=0;
-        recordOverlay.nSize=nTotalSize-header.file_size;
+        recordOverlay.nOffset=(header.data_off+header.data_size);
+        recordOverlay.nSize=nTotalSize-(header.data_off+header.data_size);
         recordOverlay.nIndex=nIndex++;
         recordOverlay.type=MMT_OVERLAY;
         recordOverlay.sName=tr("Overlay");
