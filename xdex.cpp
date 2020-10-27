@@ -1088,3 +1088,39 @@ QMap<quint64, QString> XDEX::getHeaderEndianTags()
 
     return mapResult;
 }
+
+bool XDEX::isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems)
+{
+    bool bResult=true;
+
+    bool bIsBigEndian=isBigEndian();
+
+    XDEX_DEF::MAP_ITEM map_strings=getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM,pMapItems);
+
+    qint32 nPrevStringOffset=0;
+
+    for(quint32 i=0;i<map_strings.nCount;i++)
+    {
+        qint64 nOffset=map_strings.nOffset+sizeof(quint32)*i;
+
+        qint32 nStringOffset=(qint32)read_uint32(nOffset,bIsBigEndian);
+
+        if(nStringOffset<nPrevStringOffset)
+        {
+            bResult=false;
+
+            break;
+        }
+
+        nPrevStringOffset=nStringOffset;
+    }
+
+    return bResult;
+}
+
+bool XDEX::isStringPoolSorted()
+{
+    QList<XDEX_DEF::MAP_ITEM> mapItems=getMapItems();
+
+    return isStringPoolSorted(&mapItems);
+}

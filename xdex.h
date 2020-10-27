@@ -138,6 +138,9 @@ public:
     static QMap<quint64,QString> getHeaderMagics();
     static QMap<quint64,QString> getHeaderVersions();
     static QMap<quint64,QString> getHeaderEndianTags();
+
+    bool isStringPoolSorted();
+    bool isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 };
 
 #endif // XDEX_H
