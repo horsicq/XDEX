@@ -113,6 +113,7 @@ public:
     static XDEX_DEF::MAP_ITEM getMapItem(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
     QList<XDEX_DEF::STRING_ITEM_ID> getList_STRING_ITEM_ID();
+    QList<XDEX_DEF::STRING_ITEM_ID> getList_STRING_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
     QList<XDEX_DEF::TYPE_ITEM_ID> getList_TYPE_ITEM_ID();
     QList<XDEX_DEF::TYPE_ITEM_ID> getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
     QList<XDEX_DEF::PROTO_ITEM_ID> getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
@@ -141,6 +142,8 @@ public:
 
     bool isStringPoolSorted();
     bool isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
+    bool isFieldNamesUnicode(QList<XDEX_DEF::FIELD_ITEM_ID> *pListIDs, QList<QString> *pListStrings);
+    bool isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs,QList<QString> *pListStrings);
 };
 
 #endif // XDEX_H
