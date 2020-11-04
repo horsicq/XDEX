@@ -1048,7 +1048,7 @@ void XDEX::getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems)
 
         QString sDebugString=QString("%1 %2").arg(sRet).arg(sProto);
 
-        qDebug(sDebugString.toLatin1().data());
+        qDebug("%s", sDebugString.toLatin1().data());
     }
 }
 

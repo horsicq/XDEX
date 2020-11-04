@@ -26,8 +26,8 @@
 
 class XDEX: public XBinary
 {
-    // TODO GetMemoryMap
     Q_OBJECT
+
 public:
 
     enum TYPE
