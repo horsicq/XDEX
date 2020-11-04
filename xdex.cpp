@@ -798,7 +798,7 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_I
 {
     bool _bIsStop=false;
 
-    if(pbIsStop==0)
+    if(pbIsStop==nullptr)
     {
         pbIsStop=&_bIsStop;
     }
@@ -832,7 +832,7 @@ QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP
 {
     bool _bIsStop=false;
 
-    if(pbIsStop==0)
+    if(pbIsStop==nullptr)
     {
         pbIsStop=&_bIsStop;
     }
@@ -898,7 +898,7 @@ QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,bool *pbIsS
 {
     bool _bIsStop=false;
 
-    if(pbIsStop==0)
+    if(pbIsStop==nullptr)
     {
         pbIsStop=&_bIsStop;
     }
@@ -991,7 +991,7 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QL
 
     bool _bIsStop=false;
 
-    if(pbIsStop==0)
+    if(pbIsStop==nullptr)
     {
         pbIsStop=&_bIsStop;
     }
