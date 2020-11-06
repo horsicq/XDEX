@@ -585,7 +585,7 @@ bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> 
         }
     }
 
-    bResult=(bResult)&&(nCurrentMapItem==nNumberOfMapItems);
+    bResult=(bResult)&&(nCurrentMapItem==qMin(nNumberOfMapItems,nNumberOfIDs));
 
     return bResult;
 }
