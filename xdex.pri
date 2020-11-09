@@ -12,9 +12,7 @@ SOURCES += \
     $$PWD/xandroidbinary.cpp \
     $$PWD/xdex.cpp
 
-
 !contains(XCONFIG, xbinary) {
     XCONFIG += xbinary
     include(../Formats/xbinary.pri)
 }
-
