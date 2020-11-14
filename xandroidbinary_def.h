@@ -99,7 +99,7 @@ enum
     RES_XML_START_ELEMENT_TYPE  = 0x0102,
     RES_XML_END_ELEMENT_TYPE    = 0x0103,
     RES_XML_CDATA_TYPE          = 0x0104,
-    RES_XML_LAST_CHUNK_TYPE     = 0x017f,
+    RES_XML_LAST_CHUNK_TYPE     = 0x017F,
     // This contains a uint32_t array mapping strings in the string
     // pool back to resource identifiers.  It is optional.
     RES_XML_RESOURCE_MAP_TYPE   = 0x0180,
