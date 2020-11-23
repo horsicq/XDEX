@@ -33,6 +33,7 @@ public:
     enum TYPE
     {
         TYPE_UNKNOWN=0,
+        // TODO more
     };
 
     XDEX(QIODevice *__pDevice);
