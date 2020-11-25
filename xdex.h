@@ -36,7 +36,7 @@ public:
         // TODO more
     };
 
-    XDEX(QIODevice *__pDevice);
+    XDEX(QIODevice *pDevice);
     virtual bool isValid();
     quint32 _getVersion();
     virtual QString getVersion();

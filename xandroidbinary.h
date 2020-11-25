@@ -38,7 +38,7 @@ public:
         QList<RECORD> listChildren;
     };
 
-    XAndroidBinary(QIODevice *__pDevice);
+    XAndroidBinary(QIODevice *pDevice);
     virtual bool isValid();
     virtual bool isBigEndian();
     XANDROIDBINARY_DEF::HEADER readHeader(qint64 nOffset);

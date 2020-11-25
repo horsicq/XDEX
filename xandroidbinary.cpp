@@ -20,7 +20,7 @@
 //
 #include "xandroidbinary.h"
 
-XAndroidBinary::XAndroidBinary(QIODevice *__pDevice): XBinary(__pDevice)
+XAndroidBinary::XAndroidBinary(QIODevice *pDevice): XBinary(pDevice)
 {
 
 }
