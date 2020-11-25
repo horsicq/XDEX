@@ -20,7 +20,7 @@
 //
 #include "xdex.h"
 
-XDEX::XDEX(QIODevice *pDevice): XBinary(__pDevice)
+XDEX::XDEX(QIODevice *pDevice): XBinary(pDevice)
 {
 
 }
