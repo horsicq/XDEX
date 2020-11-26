@@ -130,15 +130,6 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap()
         result.listRecords.append(record);
     }
 
-//    string_id_item	TYPE_STRING_ID_ITEM	0x0001	0x04
-//    type_id_item	TYPE_TYPE_ID_ITEM	0x0002	0x04
-//    proto_id_item	TYPE_PROTO_ID_ITEM	0x0003	0x0c
-//    field_id_item	TYPE_FIELD_ID_ITEM	0x0004	0x08
-//    method_id_item	TYPE_METHOD_ID_ITEM	0x0005	0x08
-//    class_def_item	TYPE_CLASS_DEF_ITEM	0x0006	0x20
-//    call_site_id_item	TYPE_CALL_SITE_ID_ITEM	0x0007	0x04
-//    method_handle_item	TYPE_METHOD_HANDLE_ITEM	0x0008	0x08
-
     if(header.string_ids_size)
     {
         _MEMORY_RECORD record={};
