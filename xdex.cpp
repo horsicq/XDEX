@@ -1037,9 +1037,9 @@ void XDEX::getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems)
 
         QList<quint32> listParams=_getTypeList(record.parameters_off,bIsBigEndian);
 
-        QString sDebugString=QString("%1 %2").arg(sRet).arg(sProto);
+//        QString sDebugString=QString("%1 %2").arg(sRet).arg(sProto);
 
-        qDebug("%s", sDebugString.toLatin1().data());
+//        qDebug("%s", sDebugString.toLatin1().data());
     }
 }
 
