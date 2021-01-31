@@ -69,6 +69,11 @@ QString XDEX::getArch()
     return "Dalvik";
 }
 
+XBinary::FT XDEX::getFileType()
+{
+    return FT_DEX;
+}
+
 int XDEX::getType()
 {
     return TYPE_UNKNOWN;

@@ -44,6 +44,7 @@ public:
     virtual bool isBigEndian();
     virtual MODE getMode();
     virtual QString getArch();
+    virtual FT getFileType();
     virtual int getType();
     virtual QString typeIdToString(int nType);
     virtual _MEMORY_MAP getMemoryMap();
