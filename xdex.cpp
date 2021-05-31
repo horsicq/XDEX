@@ -25,6 +25,13 @@ XDEX::XDEX(QIODevice *pDevice): XBinary(pDevice)
 
 }
 
+XBinary::MODE XDEX::getMode(QIODevice *pDevice)
+{
+    XDEX xdex(pDevice);
+
+    return xdex.getMode();
+}
+
 bool XDEX::isValid()
 {
     bool bIsValid=false;
