@@ -307,7 +307,7 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
             }
             else if(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_END_ELEMENT_TYPE)
             {
-                XANDROIDBINARY_DEF::HEADER_XML_END headerXmlEnd=readHeaderXmlEnd(pRecord->listChildren.at(i).nOffset);
+//                XANDROIDBINARY_DEF::HEADER_XML_END headerXmlEnd=readHeaderXmlEnd(pRecord->listChildren.at(i).nOffset);
 
                 xml.writeEndElement();
             }
