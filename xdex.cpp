@@ -104,7 +104,7 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap()
 
     qint64 nTotalSize=getSize();
 
-    result.nBaseAddress=_getBaseAddress();
+    result.nModuleAddress=getModuleAddress();
     result.nRawSize=nTotalSize;
     result.nImageSize=nTotalSize;
     result.fileType=FT_DEX;
