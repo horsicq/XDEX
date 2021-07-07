@@ -300,6 +300,11 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
                     QString sNS_Attribute=getStringByIndex(&listStrings,headerXmlAttribute.ns);
                     QString sName_Attribute=getStringByIndex(&listStrings,headerXmlAttribute.name);
 
+                    if(sName_Attribute==":")
+                    {
+                        sName_Attribute="";
+                    }
+
                     xml.writeAttribute(sNS_Attribute,sName_Attribute,sValue);
 
                     nCurrentOffset+=sizeof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE);
