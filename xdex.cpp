@@ -1049,7 +1049,7 @@ void XDEX::getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems)
 
         QList<quint32> listParams=_getTypeList(record.parameters_off,bIsBigEndian);
 
-//        QString sDebugString=QString("%1 %2").arg(sRet).arg(sProto);
+//        QString sDebugString=QString("%1 %2").arg(sRet,sProto);
 
 //        qDebug("%s", sDebugString.toLatin1().data());
     }
@@ -1103,7 +1103,7 @@ QString XDEX::getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId, XDEX_DEF
 
     QString sPrototype=_read_utf8String(read_uint32(pMapItemStrings->nOffset+sizeof(quint32)*protoItemId.shorty_idx,bIsBigEndian));
     QString sReturn=_read_utf8String(read_uint32(pMapItemStrings->nOffset+sizeof(quint32)*protoItemId.return_type_idx,bIsBigEndian));
-    sResult=QString("%1 %2()").arg(sReturn).arg(sPrototype);
+    sResult=QString("%1 %2()").arg(sReturn,sPrototype);
 
     return sResult;
 }
