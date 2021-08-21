@@ -29,7 +29,6 @@ class XDEX: public XBinary
     Q_OBJECT
 
 public:
-
     enum TYPE
     {
         TYPE_UNKNOWN=0,

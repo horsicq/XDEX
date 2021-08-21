@@ -29,8 +29,8 @@
 class XAndroidBinary : public XBinary
 {
     Q_OBJECT
-public:
 
+public:
     struct RECORD
     {
         qint64 nOffset;
