@@ -88,11 +88,11 @@ int XDEX::getType()
 
 QString XDEX::typeIdToString(int nType)
 {
-    QString sResult="Unknown"; // mb TODO translate
+    QString sResult=tr("Unknown");
 
     switch(nType)
     {
-        case TYPE_UNKNOWN:      sResult=QString("Unknown");     break; // mb TODO translate
+        case TYPE_UNKNOWN:      sResult=tr("Unknown");      break;
     }
 
     return sResult;
