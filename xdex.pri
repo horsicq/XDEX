@@ -14,5 +14,5 @@ SOURCES += \
 
 !contains(XCONFIG, xbinary) {
     XCONFIG += xbinary
-    include(../Formats/xbinary.pri)
+    include($$PWD/../Formats/xbinary.pri)
 }
