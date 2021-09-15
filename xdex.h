@@ -33,6 +33,7 @@ public:
     {
         TYPE_UNKNOWN=0,
         // TODO more
+        // Check
     };
 
     XDEX(QIODevice *pDevice);
