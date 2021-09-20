@@ -83,7 +83,8 @@ XBinary::FT XDEX::getFileType()
 
 int XDEX::getType()
 {
-    return TYPE_UNKNOWN;
+    // TODO more
+    return TYPE_MODULE;
 }
 
 QString XDEX::typeIdToString(int nType)
@@ -93,6 +94,7 @@ QString XDEX::typeIdToString(int nType)
     switch(nType)
     {
         case TYPE_UNKNOWN:      sResult=tr("Unknown");      break;
+        case TYPE_MODULE:       sResult=QString("Module");  break;
     }
 
     return sResult;

@@ -32,8 +32,10 @@ public:
     enum TYPE
     {
         TYPE_UNKNOWN=0,
+        TYPE_MODULE
         // TODO more
         // Check
+        // TODO main module
     };
 
     XDEX(QIODevice *pDevice);
