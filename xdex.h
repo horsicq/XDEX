@@ -49,6 +49,7 @@ public:
     virtual QString getArch();
     virtual FT getFileType();
     virtual int getType();
+    virtual OSNAME getOsName();
     virtual QString typeIdToString(int nType);
     virtual _MEMORY_MAP getMemoryMap();
 
