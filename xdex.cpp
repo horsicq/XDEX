@@ -36,6 +36,8 @@ bool XDEX::isValid()
 {
     bool bIsValid=false;
 
+    // TODO More checks
+
     bIsValid=compareSignature("'dex\n'......00");
 
     return bIsValid;
