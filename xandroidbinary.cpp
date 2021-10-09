@@ -292,8 +292,6 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
 //                    else
 //                    {
 //                        qDebug("headerXmlAttribute.dataType %d %s: %x",headerXmlAttribute.dataType,getStringByIndex(&listStrings,headerXmlAttribute.name).toLatin1().data(),headerXmlAttribute.data);
-//                        int z=0;
-//                        z++;
 //                    }
                     // TODO More types
 
