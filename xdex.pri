@@ -1,7 +1,6 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-
 HEADERS += \
     $$PWD/xandroidbinary.h \
     $$PWD/xandroidbinary_def.h \
@@ -16,3 +15,7 @@ SOURCES += \
     XCONFIG += xbinary
     include($$PWD/../Formats/xbinary.pri)
 }
+
+DISTFILES += \
+    $$PWD/LICENSE \
+    $$PWD/README.md
