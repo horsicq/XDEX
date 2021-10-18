@@ -21,8 +21,8 @@
 #ifndef XANDROIDBINARY_H
 #define XANDROIDBINARY_H
 
+#include <QStack>
 #include <QXmlStreamWriter>
-#include "QStack"
 #include "xandroidbinary_def.h"
 #include "xbinary.h"
 
