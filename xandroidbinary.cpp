@@ -187,7 +187,7 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
         QStack<QString> stackPrefix;
         QStack<QString> stackURI;
 
-        for(int i=0;i<nNumberOfChildren;i++)
+        for(qint32 i=0;i<nNumberOfChildren;i++)
         {
             if(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_STRING_POOL_TYPE)
             {
