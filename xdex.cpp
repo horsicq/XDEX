@@ -624,7 +624,7 @@ bool XDEX::isMapItemPresent(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems)
 
     int nNumberOfItems=pMapItems->count();
 
-    for(int i=0;i<nNumberOfItems;i++)
+    for(qint32 i=0;i<nNumberOfItems;i++)
     {
         if(pMapItems->at(i).nType==nType)
         {
