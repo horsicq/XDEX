@@ -610,7 +610,7 @@ quint64 XDEX::getMapItemsHash()
 
     int nNumberOfMapItems=listMapItems.count();
 
-    for(int i=0;i<nNumberOfMapItems;i++)
+    for(qint32 i=0;i<nNumberOfMapItems;i++)
     {
         nResult+=(quint64)i*getStringCustomCRC32(QString::number(listMapItems.at(i).nType));
     }
