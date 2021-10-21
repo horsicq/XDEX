@@ -765,7 +765,7 @@ QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITE
     char *pData=baData.data();
     int nSize=baData.size()/sizeof(XDEX_DEF::TYPE_ITEM_ID);
 
-    for(int i=0;i<nSize;i++)
+    for(qint32 i=0;i<nSize;i++)
     {
         qint64 nOffset=sizeof(XDEX_DEF::TYPE_ITEM_ID)*i;
 
