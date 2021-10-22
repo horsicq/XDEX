@@ -822,9 +822,9 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_I
 
     QByteArray baData=read_array(mapItem.nOffset,mapItem.nCount*sizeof(XDEX_DEF::FIELD_ITEM_ID));
     char *pData=baData.data();
-    int nSize=baData.size()/sizeof(XDEX_DEF::FIELD_ITEM_ID);
+    qint32 nSize=baData.size()/sizeof(XDEX_DEF::FIELD_ITEM_ID);
 
-    for(int i=0;(i<nSize)&&(!(*pbIsStop));i++)
+    for(qint32 i=0;(i<nSize)&&(!(*pbIsStop));i++)
     {
         qint64 nOffset=sizeof(XDEX_DEF::FIELD_ITEM_ID)*i;
 
