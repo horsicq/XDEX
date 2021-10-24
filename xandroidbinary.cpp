@@ -181,7 +181,7 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
         xml.setAutoFormatting(true);
         xml.writeStartDocument("1.0",false);
 
-        int nNumberOfChildren=pRecord->listChildren.count();
+        qint32 nNumberOfChildren=pRecord->listChildren.count();
         QList<QString> listStrings;
         QList<quint32> listResources;
         QStack<QString> stackPrefix;
