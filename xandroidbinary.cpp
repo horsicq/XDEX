@@ -217,11 +217,11 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
             }
             else if(pRecord->listChildren.at(i).header.type==XANDROIDBINARY_DEF::RES_XML_RESOURCE_MAP_TYPE)
             {
-                int nNumberOfResources=(pRecord->listChildren.at(i).header.data_size-sizeof(XANDROIDBINARY_DEF::HEADER))/4;
+                qint32 nNumberOfResources=(pRecord->listChildren.at(i).header.data_size-sizeof(XANDROIDBINARY_DEF::HEADER))/4;
 
                 qint64 nCurrentOffset=pRecord->listChildren.at(i).nOffset+sizeof(XANDROIDBINARY_DEF::HEADER);
 
-                for(int j=0;j<nNumberOfResources;j++)
+                for(qint32 j=0;j<nNumberOfResources;j++)
                 {
                     quint32 nID=read_uint32(nCurrentOffset+j*sizeof(quint32));
 
