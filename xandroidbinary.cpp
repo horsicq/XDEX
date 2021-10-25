@@ -259,7 +259,7 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
 
                 qint64 nCurrentOffset=pRecord->listChildren.at(i).nOffset+sizeof(XANDROIDBINARY_DEF::HEADER_XML_START);
 
-                for(int j=0;j<headerXmlStart.attributeCount;j++)
+                for(qint32 j=0;j<headerXmlStart.attributeCount;j++)
                 {
                     XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE headerXmlAttribute=readHeaderXmlAttribute(nCurrentOffset);
 
