@@ -608,7 +608,7 @@ quint64 XDEX::getMapItemsHash()
 
     QList<XDEX_DEF::MAP_ITEM> listMapItems=getMapItems();
 
-    int nNumberOfMapItems=listMapItems.count();
+    qint32 nNumberOfMapItems=listMapItems.count();
 
     for(qint32 i=0;i<nNumberOfMapItems;i++)
     {
