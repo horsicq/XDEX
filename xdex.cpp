@@ -731,7 +731,7 @@ QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID(QList<XDEX_DEF::MAP
 
     QByteArray baData=read_array(mapItem.nOffset,mapItem.nCount*sizeof(XDEX_DEF::STRING_ITEM_ID));
     char *pData=baData.data();
-    int nSize=baData.size()/sizeof(XDEX_DEF::STRING_ITEM_ID);
+    qint32 nSize=baData.size()/sizeof(XDEX_DEF::STRING_ITEM_ID);
 
     for(qint32 i=0;i<nSize;i++)
     {
@@ -763,7 +763,7 @@ QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITE
 
     QByteArray baData=read_array(mapItem.nOffset,mapItem.nCount*sizeof(XDEX_DEF::TYPE_ITEM_ID));
     char *pData=baData.data();
-    int nSize=baData.size()/sizeof(XDEX_DEF::TYPE_ITEM_ID);
+    qint32 nSize=baData.size()/sizeof(XDEX_DEF::TYPE_ITEM_ID);
 
     for(qint32 i=0;i<nSize;i++)
     {
