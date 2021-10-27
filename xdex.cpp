@@ -83,7 +83,7 @@ XBinary::FT XDEX::getFileType()
     return FT_DEX;
 }
 
-int XDEX::getType()
+qint32 XDEX::getType()
 {
     // TODO more
     return TYPE_MODULE;
