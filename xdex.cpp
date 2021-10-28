@@ -699,7 +699,7 @@ XDEX_DEF::MAP_ITEM XDEX::getMapItem(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pM
 {
     XDEX_DEF::MAP_ITEM result={};
 
-    int nCount=pMapItems->count();
+    qint32 nCount=pMapItems->count();
 
     for(qint32 i=0;i<nCount;i++)
     {
