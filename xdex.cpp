@@ -1203,10 +1203,10 @@ bool XDEX::isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs, QList
 {
     bool bResult=false;
 
-    int nNumberOfIds=pListIDs->count();
-    int nNumberOfStrings=pListStrings->count();
+    qint32 nNumberOfIds=pListIDs->count();
+    qint32 nNumberOfStrings=pListStrings->count();
 
-    for(int i=0;i<nNumberOfIds;i++)
+    for(qint32 i=0;i<nNumberOfIds;i++)
     {
         QString sString=getStringByIndex(pListStrings,pListIDs->at(i).name_idx,nNumberOfStrings);
 
