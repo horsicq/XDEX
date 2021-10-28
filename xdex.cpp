@@ -1010,7 +1010,7 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QL
 
     bool bIsBigEndian=isBigEndian();
 
-    int nStringsCount=pListStrings->count();
+    qint32 nStringsCount=pListStrings->count();
 
     XDEX_DEF::MAP_ITEM map_items=getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM,pMapItems);
 
