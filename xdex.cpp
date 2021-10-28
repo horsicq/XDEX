@@ -622,7 +622,7 @@ bool XDEX::isMapItemPresent(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems)
 {
     bool bResult=false;
 
-    int nNumberOfItems=pMapItems->count();
+    qint32 nNumberOfItems=pMapItems->count();
 
     for(qint32 i=0;i<nNumberOfItems;i++)
     {
