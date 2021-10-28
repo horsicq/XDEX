@@ -51,7 +51,7 @@ public:
     virtual FT getFileType();
     virtual qint32 getType();
     virtual OSNAME getOsName();
-    virtual QString typeIdToString(int nType);
+    virtual QString typeIdToString(qint32 nType);
     virtual _MEMORY_MAP getMemoryMap();
 
     quint32 getHeader_magic();
