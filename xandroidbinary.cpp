@@ -31,7 +31,8 @@ bool XAndroidBinary::isValid()
 
     _MEMORY_MAP memoryMap=getMemoryMap();
 
-    bIsValid=compareSignature(&memoryMap,"03000800")||compareSignature(&memoryMap,"02000C00");
+    bIsValid=   compareSignature(&memoryMap,"03000800")||
+                compareSignature(&memoryMap,"02000C00");
 
     return bIsValid;
 }
