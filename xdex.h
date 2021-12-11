@@ -34,7 +34,6 @@ public:
         TYPE_UNKNOWN=0,
         TYPE_MODULE
         // TODO more
-        // Check
         // TODO main module
         // TODO the second module ...
     };
