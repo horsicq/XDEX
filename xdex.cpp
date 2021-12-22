@@ -548,13 +548,13 @@ QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems()
 
     bool bIsBigEndian=isBigEndian();
 
-    quint32 nCount=read_uint32(nOffset,bIsBigEndian);
+    quint32 nNumberOfItems=read_uint32(nOffset,bIsBigEndian);
 
     nOffset+=4;
 
-    if(nCount<0x100)
+    if(nNumberOfItems<0x100)
     {
-        for(quint32 i=0;i<nCount;i++)
+        for(quint32 i=0;i<nNumberOfItems;i++)
         {
             XDEX_DEF::MAP_ITEM map_item={};
 
