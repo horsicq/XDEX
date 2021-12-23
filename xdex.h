@@ -133,7 +133,6 @@ public:
     QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem,quint32 nIndex,bool bIsBigEndian,char *pData,qint32 nDataSize,qint32 nDataOffset);
     QString _getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem,XDEX_DEF::MAP_ITEM map_typeItemId,quint32 nIndex,bool bIsBigEndian);
     QList<quint32> _getTypeList(qint64 nOffset,bool bIsBigEndian);
-
     QList<QString> getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,QList<QString> *pListStrings,bool *pbIsStop=nullptr);
     void getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
