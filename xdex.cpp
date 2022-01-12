@@ -89,11 +89,6 @@ qint32 XDEX::getType()
     return TYPE_MODULE;
 }
 
-XBinary::OSNAME XDEX::getOsName()
-{
-    return OSNAME_ANDROID;
-}
-
 QString XDEX::typeIdToString(qint32 nType)
 {
     QString sResult=tr("Unknown");
