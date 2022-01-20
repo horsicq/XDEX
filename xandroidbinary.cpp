@@ -278,7 +278,7 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
                     {
                         sValue=QString::number(headerXmlAttribute.data);
                     }
-                    else if(headerXmlAttribute.dataType==17) // TODO Const // Flgas
+                    else if(headerXmlAttribute.dataType==17) // TODO Const // Flags
                     {
                         sValue="0x"+QString::number(headerXmlAttribute.data,16);
                     }
