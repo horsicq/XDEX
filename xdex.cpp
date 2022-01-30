@@ -65,7 +65,7 @@ bool XDEX::isBigEndian()
 
     return (nEndian!=0x12345678);
 
-    //    return false; // TODO Check. There are dex files with nEndian!=0x12345678, but LE
+    //    return false; // TODO Check !!! There are dex files with nEndian!=0x12345678, but LE
 }
 
 XBinary::MODE XDEX::getMode()
