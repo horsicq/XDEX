@@ -85,7 +85,7 @@ XBinary::FT XDEX::getFileType()
 
 qint32 XDEX::getType()
 {
-    // TODO more
+    // TODO more (main module)
     return TYPE_MODULE;
 }
 
