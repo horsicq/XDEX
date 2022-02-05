@@ -566,7 +566,7 @@ QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems()
     return listResult;
 }
 
-bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> *pListIDs)
+bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps,QList<quint16> *pListIDs)
 {
     bool bResult=false;
 
