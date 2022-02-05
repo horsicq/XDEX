@@ -632,7 +632,7 @@ bool XDEX::isMapItemPresent(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems)
     return bResult;
 }
 
-QMap<quint64, QString> XDEX::getTypes()
+QMap<quint64,QString> XDEX::getTypes()
 {
     QMap<quint64, QString> mapResult;
 
