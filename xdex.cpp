@@ -690,7 +690,7 @@ QMap<quint64, QString> XDEX::getTypesS()
     return mapResult;
 }
 
-XDEX_DEF::MAP_ITEM XDEX::getMapItem(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems)
+XDEX_DEF::MAP_ITEM XDEX::getMapItem(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems)
 {
     XDEX_DEF::MAP_ITEM result={};
 
