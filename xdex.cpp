@@ -928,7 +928,7 @@ QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,bool *pbIsS
     return listResult;
 }
 
-QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian)
+QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem,quint32 nIndex,bool bIsBigEndian)
 {
     QString sResult;
 
