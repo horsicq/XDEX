@@ -944,7 +944,7 @@ QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem,quint32 nIndex,bool
     return sResult;
 }
 
-QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian, char *pData, qint32 nDataSize, qint32 nDataOffset)
+QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem,quint32 nIndex,bool bIsBigEndian,char *pData,qint32 nDataSize,qint32 nDataOffset)
 {
     QString sResult;
 
