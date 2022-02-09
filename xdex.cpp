@@ -661,7 +661,7 @@ QMap<quint64,QString> XDEX::getTypes()
     return mapResult;
 }
 
-QMap<quint64, QString> XDEX::getTypesS()
+QMap<quint64,QString> XDEX::getTypesS()
 {
     QMap<quint64,QString> mapResult;
 
