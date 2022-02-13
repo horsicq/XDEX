@@ -974,7 +974,7 @@ QString XDEX::_getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem, XDEX_DEF:
     return sResult;
 }
 
-QList<quint32> XDEX::_getTypeList(qint64 nOffset, bool bIsBigEndian)
+QList<quint32> XDEX::_getTypeList(qint64 nOffset,bool bIsBigEndian)
 {
     QList<quint32> listResult;
 
