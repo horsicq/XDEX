@@ -960,7 +960,7 @@ QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem,quint32 nIndex,bool
     return sResult;
 }
 
-QString XDEX::_getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem, XDEX_DEF::MAP_ITEM map_typeItemId, quint32 nIndex, bool bIsBigEndian)
+QString XDEX::_getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem,XDEX_DEF::MAP_ITEM map_typeItemId,quint32 nIndex,bool bIsBigEndian)
 {
     QString sResult;
 
