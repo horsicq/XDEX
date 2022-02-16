@@ -1068,7 +1068,7 @@ QString XDEX::getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId)
     return sResult;
 }
 
-QString XDEX::getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId, char *pData, qint32 nDataSize, qint32 nDataOffset)
+QString XDEX::getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId,char *pData,qint32 nDataSize,qint32 nDataOffset)
 {
     QString sResult;
 
