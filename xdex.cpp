@@ -1121,7 +1121,7 @@ QMap<quint64,QString> XDEX::getHeaderMagics()
     return mapResult;
 }
 
-QMap<quint64, QString> XDEX::getHeaderVersions()
+QMap<quint64,QString> XDEX::getHeaderVersions()
 {
     QMap<quint64, QString> mapResult;
 
