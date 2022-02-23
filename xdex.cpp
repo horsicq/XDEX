@@ -1099,7 +1099,7 @@ QString XDEX::getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,XDEX_DEF::MA
     return sResult;
 }
 
-QString XDEX::getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId, XDEX_DEF::MAP_ITEM *pMapItemStrings)
+QString XDEX::getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings)
 {
     QString sResult;
 
