@@ -1123,7 +1123,7 @@ QMap<quint64,QString> XDEX::getHeaderMagics()
 
 QMap<quint64,QString> XDEX::getHeaderVersions()
 {
-    QMap<quint64, QString> mapResult;
+    QMap<quint64,QString> mapResult;
 
     mapResult.insert(0x00353330,"035");
     // 036 invalid
