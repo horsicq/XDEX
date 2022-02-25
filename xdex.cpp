@@ -1134,7 +1134,7 @@ QMap<quint64,QString> XDEX::getHeaderVersions()
     return mapResult;
 }
 
-QMap<quint64, QString> XDEX::getHeaderEndianTags()
+QMap<quint64,QString> XDEX::getHeaderEndianTags()
 {
     QMap<quint64, QString> mapResult;
 
