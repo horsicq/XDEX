@@ -1136,7 +1136,7 @@ QMap<quint64,QString> XDEX::getHeaderVersions()
 
 QMap<quint64,QString> XDEX::getHeaderEndianTags()
 {
-    QMap<quint64, QString> mapResult;
+    QMap<quint64,QString> mapResult;
 
     mapResult.insert(0x12345678,"Little endian");
     mapResult.insert(0x78563412,"Big endian");
