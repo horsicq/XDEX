@@ -135,9 +135,12 @@ public:
     void getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
     QString getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId);
     QString getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId,char *pData,qint32 nDataSize,qint32 nDataOffset);
+    QString getStringItemIdString(QList<XDEX_DEF::STRING_ITEM_ID> *pList,qint32 nIndex,char *pData,qint32 nDataSize,qint32 nDataOffset);
     QString getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings);
     QString getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings,char *pData,qint32 nDataSize,qint32 nDataOffset);
-    QString getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings);
+    QString getTypeItemIdString(QList<XDEX_DEF::TYPE_ITEM_ID> *pList,qint32 nIndex,XDEX_DEF::MAP_ITEM *pMapItemStrings,char *pData,qint32 nDataSize,qint32 nDataOffset);
+
+    QString getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings); // TODO
 
     static QMap<quint64,QString> getHeaderMagics();
     static QMap<quint64,QString> getHeaderVersions();
