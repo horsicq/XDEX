@@ -39,7 +39,7 @@ bool XAndroidBinary::isValid()
 
 bool XAndroidBinary::isBigEndian()
 {
-    return false;
+    return false; // TODO Check
 }
 
 XANDROIDBINARY_DEF::HEADER XAndroidBinary::readHeader(qint64 nOffset)
