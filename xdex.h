@@ -21,8 +21,8 @@
 #ifndef XDEX_H
 #define XDEX_H
 
-#include "xdex_def.h"
 #include "xbinary.h"
+#include "xdex_def.h"
 
 class XDEX: public XBinary
 {
