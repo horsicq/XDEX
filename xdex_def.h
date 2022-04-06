@@ -27,13 +27,13 @@ namespace XDEX_DEF
 {
 struct HEADER
 {
-    quint32 magic; // always LE
-    quint32 version; // always LE
+    quint32 magic;          // always LE
+    quint32 version;        // always LE
     quint32 checksum;
     quint8 signature[20];
     quint32 file_size;
     quint32 header_size;
-    quint32 endian_tag; // always LE
+    quint32 endian_tag;     // always LE
     quint32 link_size;
     quint32 link_off;
     quint32 map_off;
