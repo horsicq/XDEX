@@ -56,7 +56,7 @@ quint32 XDEX::_getVersion()
 
 QString XDEX::getVersion()
 {
-    return read_ansiString(4);
+    return read_ansiString(4); // mb Check
 }
 
 bool XDEX::isBigEndian()
