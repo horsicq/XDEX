@@ -801,13 +801,13 @@ QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_I
     return listResult;
 }
 
-QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems,bool *pbIsStop)
+QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pProcessData)
 {
-    bool _bIsStop=false;
+    PDSTRUCT processDataEmpty={};
 
-    if(pbIsStop==nullptr)
+    if(!pProcessData)
     {
-        pbIsStop=&_bIsStop;
+        pProcessData=&processDataEmpty;
     }
 
     QList<XDEX_DEF::FIELD_ITEM_ID> listResult;
@@ -819,7 +819,7 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_I
     char *pData=baData.data();
     qint32 nSize=baData.size()/sizeof(XDEX_DEF::FIELD_ITEM_ID);
 
-    for(qint32 i=0;(i<nSize)&&(!(*pbIsStop));i++)
+    for(qint32 i=0;(i<nSize)&&(!(pProcessData->bIsStop));i++)
     {
         qint64 nOffset=sizeof(XDEX_DEF::FIELD_ITEM_ID)*i;
 
@@ -835,13 +835,13 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_I
     return listResult;
 }
 
-QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems,bool *pbIsStop)
+QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pProcessData)
 {
-    bool _bIsStop=false;
+    PDSTRUCT processDataEmpty={};
 
-    if(pbIsStop==nullptr)
+    if(!pProcessData)
     {
-        pbIsStop=&_bIsStop;
+        pProcessData=&processDataEmpty;
     }
 
     QList<XDEX_DEF::METHOD_ITEM_ID> listResult;
@@ -853,7 +853,7 @@ QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP
     char *pData=baData.data();
     qint32 nSize=baData.size()/sizeof(XDEX_DEF::METHOD_ITEM_ID);
 
-    for(qint32 i=0;(i<nSize)&&(!(*pbIsStop));i++)
+    for(qint32 i=0;(i<nSize)&&(!(pProcessData->bIsStop));i++)
     {
         qint64 nOffset=sizeof(XDEX_DEF::METHOD_ITEM_ID)*i;
 
@@ -901,13 +901,13 @@ QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP
     return listResult;
 }
 
-QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,bool *pbIsStop)
+QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pProcessData)
 {
-    bool _bIsStop=false;
+    PDSTRUCT processDataEmpty={};
 
-    if(pbIsStop==nullptr)
+    if(!pProcessData)
     {
-        pbIsStop=&_bIsStop;
+        pProcessData=&processDataEmpty;
     }
 
     QList<QString> listResult;
@@ -918,7 +918,7 @@ QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,bool *pbIsS
 
     QByteArray baData=read_array(getHeader_data_off(),getHeader_data_size());
 
-    for(quint32 i=0;(i<map_strings.nCount)&&(!(*pbIsStop));i++)
+    for(quint32 i=0;(i<map_strings.nCount)&&(!(pProcessData->bIsStop));i++)
     {
         QString sString=_getString(map_strings,i,bIsBigEndian,baData.data(),baData.size(),getHeader_data_off());
 
@@ -992,15 +992,15 @@ QList<quint32> XDEX::_getTypeList(qint64 nOffset,bool bIsBigEndian)
     return listResult;
 }
 
-QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,QList<QString> *pListStrings,bool *pbIsStop)
+QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QList<QString> *pListStrings, PDSTRUCT *pProcessData)
 {
     QList<QString> listResult;
 
-    bool _bIsStop=false;
+    PDSTRUCT processDataEmpty={};
 
-    if(pbIsStop==nullptr)
+    if(!pProcessData)
     {
-        pbIsStop=&_bIsStop;
+        pProcessData=&processDataEmpty;
     }
 
     bool bIsBigEndian=isBigEndian();
@@ -1009,7 +1009,7 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,QLi
 
     XDEX_DEF::MAP_ITEM map_items=getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM,pMapItems);
 
-    for(quint32 i=0;(i<map_items.nCount)&&(!(*pbIsStop));i++)
+    for(quint32 i=0;(i<map_items.nCount)&&(!(pProcessData->bIsStop));i++)
     {
         quint32 nOffset=map_items.nOffset+sizeof(quint32)*i;
 
