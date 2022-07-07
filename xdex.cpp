@@ -901,7 +901,7 @@ QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP
     return listResult;
 }
 
-QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pProcessData)
+QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,PDSTRUCT *pProcessData)
 {
     PDSTRUCT processDataEmpty={};
 
