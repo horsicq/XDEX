@@ -801,13 +801,13 @@ QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_I
     return listResult;
 }
 
-QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems,PDSTRUCT *pProcessData)
+QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct)
 {
     PDSTRUCT processDataEmpty={};
 
-    if(!pProcessData)
+    if(!pPdStruct)
     {
-        pProcessData=&processDataEmpty;
+        pPdStruct=&processDataEmpty;
     }
 
     QList<XDEX_DEF::FIELD_ITEM_ID> listResult;
@@ -819,7 +819,7 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_I
     char *pData=baData.data();
     qint32 nSize=baData.size()/sizeof(XDEX_DEF::FIELD_ITEM_ID);
 
-    for(qint32 i=0;(i<nSize)&&(!(pProcessData->bIsStop));i++)
+    for(qint32 i=0;(i<nSize)&&(!(pPdStruct->bIsStop));i++)
     {
         qint64 nOffset=sizeof(XDEX_DEF::FIELD_ITEM_ID)*i;
 
@@ -835,13 +835,13 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_I
     return listResult;
 }
 
-QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems,PDSTRUCT *pProcessData)
+QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct)
 {
     PDSTRUCT processDataEmpty={};
 
-    if(!pProcessData)
+    if(!pPdStruct)
     {
-        pProcessData=&processDataEmpty;
+        pPdStruct=&processDataEmpty;
     }
 
     QList<XDEX_DEF::METHOD_ITEM_ID> listResult;
@@ -853,7 +853,7 @@ QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP
     char *pData=baData.data();
     qint32 nSize=baData.size()/sizeof(XDEX_DEF::METHOD_ITEM_ID);
 
-    for(qint32 i=0;(i<nSize)&&(!(pProcessData->bIsStop));i++)
+    for(qint32 i=0;(i<nSize)&&(!(pPdStruct->bIsStop));i++)
     {
         qint64 nOffset=sizeof(XDEX_DEF::METHOD_ITEM_ID)*i;
 
