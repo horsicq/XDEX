@@ -75,7 +75,7 @@ XBinary::MODE XDEX::getMode()
 
 QString XDEX::getArch()
 {
-    return QString("Dalvik");
+    return QString("Dalvik"); // TODO Check
 }
 
 XBinary::FT XDEX::getFileType()
