@@ -52,6 +52,7 @@ public:
     virtual qint32 getType();
     virtual QString typeIdToString(qint32 nType);
     virtual _MEMORY_MAP getMemoryMap();
+    virtual qint64 getFileFormatSize();
 
     quint32 getHeader_magic();
     quint32 getHeader_version();

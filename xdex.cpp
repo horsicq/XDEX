@@ -261,6 +261,15 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap()
     return result;
 }
 
+qint64 XDEX::getFileFormatSize()
+{
+    qint64 nResult=0;
+
+    nResult=getHeader_file_size();
+
+    return nResult;
+}
+
 quint32 XDEX::getHeader_magic()
 {
     return read_uint32(offsetof(XDEX_DEF::HEADER,magic),false);
