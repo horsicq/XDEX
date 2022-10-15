@@ -910,13 +910,13 @@ QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP
     return listResult;
 }
 
-QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,PDSTRUCT *pProcessData)
+QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct)
 {
-    PDSTRUCT processDataEmpty={};
+    PDSTRUCT pdStructEmpty={};
 
-    if(!pProcessData)
+    if(!pPdStruct)
     {
-        pProcessData=&processDataEmpty;
+        pPdStruct=&pdStructEmpty;
     }
 
     QList<QString> listResult;
@@ -927,7 +927,7 @@ QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,PDSTRUCT *p
 
     QByteArray baData=read_array(getHeader_data_off(),getHeader_data_size());
 
-    for(quint32 i=0;(i<map_strings.nCount)&&(!(pProcessData->bIsStop));i++)
+    for(quint32 i=0;(i<map_strings.nCount)&&(!(pPdStruct->bIsStop));i++)
     {
         QString sString=_getString(map_strings,i,bIsBigEndian,baData.data(),baData.size(),getHeader_data_off());
 
