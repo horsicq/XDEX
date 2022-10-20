@@ -1001,15 +1001,15 @@ QList<quint32> XDEX::_getTypeList(qint64 nOffset,bool bIsBigEndian)
     return listResult;
 }
 
-QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,QList<QString> *pListStrings,PDSTRUCT *pProcessData)
+QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QList<QString> *pListStrings, PDSTRUCT *pPdStruct)
 {
     QList<QString> listResult;
 
     PDSTRUCT processDataEmpty={};
 
-    if(!pProcessData)
+    if(!pPdStruct)
     {
-        pProcessData=&processDataEmpty;
+        pPdStruct=&processDataEmpty;
     }
 
     bool bIsBigEndian=isBigEndian();
@@ -1018,7 +1018,7 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,QLi
 
     XDEX_DEF::MAP_ITEM map_items=getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM,pMapItems);
 
-    for(quint32 i=0;(i<map_items.nCount)&&(!(pProcessData->bIsStop));i++)
+    for(quint32 i=0;(i<map_items.nCount)&&(!(pPdStruct->bIsStop));i++)
     {
         quint32 nOffset=map_items.nOffset+sizeof(quint32)*i;
 
