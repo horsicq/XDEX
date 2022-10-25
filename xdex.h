@@ -105,7 +105,6 @@ public:
 
     XDEX_DEF::HEADER getHeader();
     quint32 getHeaderSize();
-
     QList<XDEX_DEF::MAP_ITEM> getMapItems();
 
     static bool compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps,QList<quint16> *pListIDs);
