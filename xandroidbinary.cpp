@@ -44,7 +44,7 @@ bool XAndroidBinary::isBigEndian()
 
 QString XAndroidBinary::getVersion()
 {
-    return ""; // TODO Check
+    return ""; // TODO Check !!!
 }
 
 XANDROIDBINARY_DEF::HEADER XAndroidBinary::readHeader(qint64 nOffset)
