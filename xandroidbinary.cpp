@@ -39,7 +39,7 @@ bool XAndroidBinary::isValid()
 
 bool XAndroidBinary::isBigEndian()
 {
-    return false; // TODO Check
+    return false; // TODO Check, need samples
 }
 
 QString XAndroidBinary::getVersion()
