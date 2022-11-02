@@ -108,7 +108,6 @@ public:
     QList<XDEX_DEF::MAP_ITEM> getMapItems();
 
     static bool compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps,QList<quint16> *pListIDs);
-
     quint64 getMapItemsHash();
     static bool isMapItemPresent(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
