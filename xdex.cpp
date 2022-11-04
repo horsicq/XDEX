@@ -1248,6 +1248,11 @@ bool XDEX::isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs,QList<
     return bResult;
 }
 
+QString XDEX::getFileFormatExt()
+{
+    return "dex";
+}
+
 bool XDEX::isStringPoolSorted()
 {
     QList<XDEX_DEF::MAP_ITEM> mapItems=getMapItems();

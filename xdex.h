@@ -148,6 +148,8 @@ public:
     bool isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
     bool isFieldNamesUnicode(QList<XDEX_DEF::FIELD_ITEM_ID> *pListIDs,QList<QString> *pListStrings);
     bool isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs,QList<QString> *pListStrings);
+
+    virtual QString getFileFormatExt();
 };
 
 #endif // XDEX_H
