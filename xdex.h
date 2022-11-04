@@ -150,6 +150,7 @@ public:
     bool isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs,QList<QString> *pListStrings);
 
     virtual QString getFileFormatExt();
+    virtual QString getFileFormatString();
 };
 
 #endif // XDEX_H

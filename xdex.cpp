@@ -1253,6 +1253,16 @@ QString XDEX::getFileFormatExt()
     return "dex";
 }
 
+QString XDEX::getFileFormatString()
+{
+    QString sResult;
+
+    sResult=QString("DEX(%1)").arg(getVersion());
+    // TODO more info
+
+    return sResult;
+}
+
 bool XDEX::isStringPoolSorted()
 {
     QList<XDEX_DEF::MAP_ITEM> mapItems=getMapItems();
