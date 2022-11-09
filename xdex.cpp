@@ -265,7 +265,7 @@ qint64 XDEX::getFileFormatSize()
 {
     qint64 nResult=0;
 
-    nResult=getHeader_file_size(); // TODO check
+    nResult=getHeader_file_size(); // TODO check mn _getRawSize
 
     return nResult;
 }
