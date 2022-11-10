@@ -7,8 +7,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -23,17 +23,15 @@
 
 #include <QtGlobal>
 
-namespace XDEX_DEF
-{
-struct HEADER
-{
-    quint32 magic;              // always LE
-    quint32 version;            // always LE
+namespace XDEX_DEF {
+struct HEADER {
+    quint32 magic;    // always LE
+    quint32 version;  // always LE
     quint32 checksum;
     quint8 signature[20];
     quint32 file_size;
     quint32 header_size;
-    quint32 endian_tag;         // always LE
+    quint32 endian_tag;  // always LE
     quint32 link_size;
     quint32 link_off;
     quint32 map_off;
@@ -53,46 +51,39 @@ struct HEADER
     quint32 data_off;
 };
 
-struct MAP_ITEM
-{
+struct MAP_ITEM {
     quint16 nType;
     quint32 nCount;
     quint32 nOffset;
 };
 
-struct STRING_ITEM_ID
-{
+struct STRING_ITEM_ID {
     quint32 string_data_off;
 };
 
-struct TYPE_ITEM_ID
-{
+struct TYPE_ITEM_ID {
     quint32 descriptor_idx;
 };
 
-struct PROTO_ITEM_ID
-{
+struct PROTO_ITEM_ID {
     quint32 shorty_idx;
     quint32 return_type_idx;
     quint32 parameters_off;
 };
 
-struct FIELD_ITEM_ID
-{
+struct FIELD_ITEM_ID {
     quint16 class_idx;
     quint16 type_idx;
     quint32 name_idx;
 };
 
-struct METHOD_ITEM_ID
-{
+struct METHOD_ITEM_ID {
     quint16 class_idx;
     quint16 proto_idx;
     quint32 name_idx;
 };
 
-struct CLASS_ITEM_DEF
-{
+struct CLASS_ITEM_DEF {
     quint32 class_idx;
     quint32 access_flags;
     quint32 superclass_idx;
@@ -103,26 +94,26 @@ struct CLASS_ITEM_DEF
     quint32 static_values_off;
 };
 
-const quint16 TYPE_HEADER_ITEM                  =0x0000;
-const quint16 TYPE_STRING_ID_ITEM               =0x0001;
-const quint16 TYPE_TYPE_ID_ITEM                 =0x0002;
-const quint16 TYPE_PROTO_ID_ITEM                =0x0003;
-const quint16 TYPE_FIELD_ID_ITEM                =0x0004;
-const quint16 TYPE_METHOD_ID_ITEM               =0x0005;
-const quint16 TYPE_CLASS_DEF_ITEM               =0x0006;
-const quint16 TYPE_CALL_SITE_ID_ITEM            =0x0007;
-const quint16 TYPE_METHOD_HANDLE_ITEM           =0x0008;
-const quint16 TYPE_MAP_LIST                     =0x1000;
-const quint16 TYPE_TYPE_LIST                    =0x1001;
-const quint16 TYPE_ANNOTATION_SET_REF_LIST      =0x1002;
-const quint16 TYPE_ANNOTATION_SET_ITEM          =0x1003;
-const quint16 TYPE_CLASS_DATA_ITEM              =0x2000;
-const quint16 TYPE_CODE_ITEM                    =0x2001;
-const quint16 TYPE_STRING_DATA_ITEM             =0x2002;
-const quint16 TYPE_DEBUG_INFO_ITEM              =0x2003;
-const quint16 TYPE_ANNOTATION_ITEM              =0x2004;
-const quint16 TYPE_ENCODED_ARRAY_ITEM           =0x2005;
-const quint16 TYPE_ANNOTATIONS_DIRECTORY_ITEM   =0x2006;
-const quint16 TYPE_HIDDENAPI_CLASS_DATA_ITEM    =0xF000;
-}
-#endif // XDEX_DEF_H
+const quint16 TYPE_HEADER_ITEM = 0x0000;
+const quint16 TYPE_STRING_ID_ITEM = 0x0001;
+const quint16 TYPE_TYPE_ID_ITEM = 0x0002;
+const quint16 TYPE_PROTO_ID_ITEM = 0x0003;
+const quint16 TYPE_FIELD_ID_ITEM = 0x0004;
+const quint16 TYPE_METHOD_ID_ITEM = 0x0005;
+const quint16 TYPE_CLASS_DEF_ITEM = 0x0006;
+const quint16 TYPE_CALL_SITE_ID_ITEM = 0x0007;
+const quint16 TYPE_METHOD_HANDLE_ITEM = 0x0008;
+const quint16 TYPE_MAP_LIST = 0x1000;
+const quint16 TYPE_TYPE_LIST = 0x1001;
+const quint16 TYPE_ANNOTATION_SET_REF_LIST = 0x1002;
+const quint16 TYPE_ANNOTATION_SET_ITEM = 0x1003;
+const quint16 TYPE_CLASS_DATA_ITEM = 0x2000;
+const quint16 TYPE_CODE_ITEM = 0x2001;
+const quint16 TYPE_STRING_DATA_ITEM = 0x2002;
+const quint16 TYPE_DEBUG_INFO_ITEM = 0x2003;
+const quint16 TYPE_ANNOTATION_ITEM = 0x2004;
+const quint16 TYPE_ENCODED_ARRAY_ITEM = 0x2005;
+const quint16 TYPE_ANNOTATIONS_DIRECTORY_ITEM = 0x2006;
+const quint16 TYPE_HIDDENAPI_CLASS_DATA_ITEM = 0xF000;
+}  // namespace XDEX_DEF
+#endif  // XDEX_DEF_H

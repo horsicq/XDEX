@@ -7,8 +7,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -23,16 +23,15 @@
 
 #include <QStack>
 #include <QXmlStreamWriter>
+
 #include "xandroidbinary_def.h"
 #include "xbinary.h"
 
-class XAndroidBinary : public XBinary
-{
+class XAndroidBinary : public XBinary {
     Q_OBJECT
 
-public:
-    struct RECORD
-    {
+   public:
+    struct RECORD {
         qint64 nOffset;
         XANDROIDBINARY_DEF::HEADER header;
         QList<RECORD> listChildren;
@@ -47,7 +46,8 @@ public:
     XANDROIDBINARY_DEF::HEADER_STRING_POOL readHeaderStringPool(qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_NAMESPACE readHeaderNamespace(qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_XML_START readHeaderXmlStart(qint64 nOffset);
-    XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE readHeaderXmlAttribute(qint64 nOffset);
+    XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE readHeaderXmlAttribute(
+        qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_XML_END readHeaderXmlEnd(qint64 nOffset);
     QList<XANDROIDBINARY_DEF::HEADER> getHeaders();
     RECORD getRecord(qint64 nOffset);
@@ -57,4 +57,4 @@ public:
     static QString getDecoded(QByteArray *pbaData);
 };
 
-#endif // XANDROIDBINARY_H
+#endif  // XANDROIDBINARY_H

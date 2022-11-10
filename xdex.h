@@ -7,8 +7,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -24,14 +24,12 @@
 #include "xbinary.h"
 #include "xdex_def.h"
 
-class XDEX: public XBinary
-{
+class XDEX : public XBinary {
     Q_OBJECT
 
-public:
-    enum TYPE
-    {
-        TYPE_UNKNOWN=0,
+   public:
+    enum TYPE {
+        TYPE_UNKNOWN = 0,
         TYPE_MODULE
         // TODO more
         // TODO main module !!! TODO Check
@@ -107,50 +105,84 @@ public:
     quint32 getHeaderSize();
     QList<XDEX_DEF::MAP_ITEM> getMapItems();
 
-    static bool compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps,QList<quint16> *pListIDs);
+    static bool compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps,
+                                QList<quint16> *pListIDs);
     quint64 getMapItemsHash();
-    static bool isMapItemPresent(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems);
+    static bool isMapItemPresent(quint16 nType,
+                                 QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
-    static QMap<quint64,QString> getTypes();
-    static QMap<quint64,QString> getTypesS();
+    static QMap<quint64, QString> getTypes();
+    static QMap<quint64, QString> getTypesS();
 
-    static XDEX_DEF::MAP_ITEM getMapItem(quint16 nType,QList<XDEX_DEF::MAP_ITEM> *pMapItems);
+    static XDEX_DEF::MAP_ITEM getMapItem(quint16 nType,
+                                         QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
     QList<XDEX_DEF::STRING_ITEM_ID> getList_STRING_ITEM_ID();
-    QList<XDEX_DEF::STRING_ITEM_ID> getList_STRING_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
+    QList<XDEX_DEF::STRING_ITEM_ID> getList_STRING_ITEM_ID(
+        QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
     QList<XDEX_DEF::TYPE_ITEM_ID> getList_TYPE_ITEM_ID();
-    QList<XDEX_DEF::TYPE_ITEM_ID> getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
-    QList<XDEX_DEF::PROTO_ITEM_ID> getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
-    QList<XDEX_DEF::FIELD_ITEM_ID> getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems,PDSTRUCT *pPdStruct=nullptr);
-    QList<XDEX_DEF::METHOD_ITEM_ID> getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems,PDSTRUCT *pPdStruct=nullptr);
-    QList<XDEX_DEF::CLASS_ITEM_DEF> getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
+    QList<XDEX_DEF::TYPE_ITEM_ID> getList_TYPE_ITEM_ID(
+        QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
+    QList<XDEX_DEF::PROTO_ITEM_ID> getList_PROTO_ITEM_ID(
+        QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
+    QList<XDEX_DEF::FIELD_ITEM_ID> getList_FIELD_ITEM_ID(
+        QList<XDEX_DEF::MAP_ITEM> *pListMapItems,
+        PDSTRUCT *pPdStruct = nullptr);
+    QList<XDEX_DEF::METHOD_ITEM_ID> getList_METHOD_ITEM_ID(
+        QList<XDEX_DEF::MAP_ITEM> *pListMapItems,
+        PDSTRUCT *pPdStruct = nullptr);
+    QList<XDEX_DEF::CLASS_ITEM_DEF> getList_CLASS_ITEM_DEF(
+        QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
 
-    QList<QString> getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,PDSTRUCT *pPdStruct=nullptr);
-    QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem,quint32 nIndex,bool bIsBigEndian);
-    QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem,quint32 nIndex,bool bIsBigEndian,char *pData,qint32 nDataSize,qint32 nDataOffset);
-    QString _getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem,XDEX_DEF::MAP_ITEM map_typeItemId,quint32 nIndex,bool bIsBigEndian);
-    QList<quint32> _getTypeList(qint64 nOffset,bool bIsBigEndian);
-    QList<QString> getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,QList<QString> *pListStrings,PDSTRUCT *pPdStruct=nullptr);
+    QList<QString> getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,
+                              PDSTRUCT *pPdStruct = nullptr);
+    QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex,
+                       bool bIsBigEndian);
+    QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex,
+                       bool bIsBigEndian, char *pData, qint32 nDataSize,
+                       qint32 nDataOffset);
+    QString _getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem,
+                                XDEX_DEF::MAP_ITEM map_typeItemId,
+                                quint32 nIndex, bool bIsBigEndian);
+    QList<quint32> _getTypeList(qint64 nOffset, bool bIsBigEndian);
+    QList<QString> getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,
+                                      QList<QString> *pListStrings,
+                                      PDSTRUCT *pPdStruct = nullptr);
     void getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
     QString getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId);
-    QString getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId,char *pData,qint32 nDataSize,qint32 nDataOffset);
-    QString getStringItemIdString(QList<XDEX_DEF::STRING_ITEM_ID> *pList,qint32 nIndex,char *pData,qint32 nDataSize,qint32 nDataOffset);
-    QString getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings);
-    QString getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings,char *pData,qint32 nDataSize,qint32 nDataOffset);
-    QString getTypeItemIdString(QList<XDEX_DEF::TYPE_ITEM_ID> *pList,qint32 nIndex,XDEX_DEF::MAP_ITEM *pMapItemStrings,char *pData,qint32 nDataSize,qint32 nDataOffset);
-    QString getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId,XDEX_DEF::MAP_ITEM *pMapItemStrings); // TODO
+    QString getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId,
+                                  char *pData, qint32 nDataSize,
+                                  qint32 nDataOffset);
+    QString getStringItemIdString(QList<XDEX_DEF::STRING_ITEM_ID> *pList,
+                                  qint32 nIndex, char *pData, qint32 nDataSize,
+                                  qint32 nDataOffset);
+    QString getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,
+                                XDEX_DEF::MAP_ITEM *pMapItemStrings);
+    QString getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,
+                                XDEX_DEF::MAP_ITEM *pMapItemStrings,
+                                char *pData, qint32 nDataSize,
+                                qint32 nDataOffset);
+    QString getTypeItemIdString(QList<XDEX_DEF::TYPE_ITEM_ID> *pList,
+                                qint32 nIndex,
+                                XDEX_DEF::MAP_ITEM *pMapItemStrings,
+                                char *pData, qint32 nDataSize,
+                                qint32 nDataOffset);
+    QString getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId,
+                                 XDEX_DEF::MAP_ITEM *pMapItemStrings);  // TODO
 
-    static QMap<quint64,QString> getHeaderMagics();
-    static QMap<quint64,QString> getHeaderVersions();
-    static QMap<quint64,QString> getHeaderEndianTags();
+    static QMap<quint64, QString> getHeaderMagics();
+    static QMap<quint64, QString> getHeaderVersions();
+    static QMap<quint64, QString> getHeaderEndianTags();
 
     bool isStringPoolSorted();
     bool isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
-    bool isFieldNamesUnicode(QList<XDEX_DEF::FIELD_ITEM_ID> *pListIDs,QList<QString> *pListStrings);
-    bool isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs,QList<QString> *pListStrings);
+    bool isFieldNamesUnicode(QList<XDEX_DEF::FIELD_ITEM_ID> *pListIDs,
+                             QList<QString> *pListStrings);
+    bool isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs,
+                              QList<QString> *pListStrings);
 
     virtual QString getFileFormatExt();
     virtual QString getFileFormatString();
 };
 
-#endif // XDEX_H
+#endif  // XDEX_H
