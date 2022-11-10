@@ -30,7 +30,7 @@
 class XAndroidBinary : public XBinary {
     Q_OBJECT
 
-   public:
+public:
     struct RECORD {
         qint64 nOffset;
         XANDROIDBINARY_DEF::HEADER header;
@@ -46,8 +46,7 @@ class XAndroidBinary : public XBinary {
     XANDROIDBINARY_DEF::HEADER_STRING_POOL readHeaderStringPool(qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_NAMESPACE readHeaderNamespace(qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_XML_START readHeaderXmlStart(qint64 nOffset);
-    XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE readHeaderXmlAttribute(
-        qint64 nOffset);
+    XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE readHeaderXmlAttribute(qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_XML_END readHeaderXmlEnd(qint64 nOffset);
     QList<XANDROIDBINARY_DEF::HEADER> getHeaders();
     RECORD getRecord(qint64 nOffset);

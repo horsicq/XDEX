@@ -20,7 +20,8 @@
  */
 #include "xdex.h"
 
-XDEX::XDEX(QIODevice *pDevice) : XBinary(pDevice) {}
+XDEX::XDEX(QIODevice *pDevice) : XBinary(pDevice) {
+}
 
 XBinary::MODE XDEX::getMode(QIODevice *pDevice) {
     XDEX xdex(pDevice);
@@ -61,13 +62,17 @@ bool XDEX::isBigEndian() {
     //    nEndian!=0x12345678,but LE
 }
 
-XBinary::MODE XDEX::getMode() { return MODE_32; }
+XBinary::MODE XDEX::getMode() {
+    return MODE_32;
+}
 
 QString XDEX::getArch() {
     return QString("Dalvik");  // TODO Check
 }
 
-XBinary::FT XDEX::getFileType() { return FT_DEX; }
+XBinary::FT XDEX::getFileType() {
+    return FT_DEX;
+}
 
 qint32 XDEX::getType() {
     // TODO more (main module,second module etc)
@@ -136,8 +141,7 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap() {
         record.nAddress = -1;
         record.segment = ADDRESS_SEGMENT_FLAT;
         record.nOffset = header.string_ids_off;
-        record.nSize =
-            (header.string_ids_size) * sizeof(XDEX_DEF::STRING_ITEM_ID);
+        record.nSize = (header.string_ids_size) * sizeof(XDEX_DEF::STRING_ITEM_ID);
         record.nIndex = nIndex++;
         record.type = MMT_FILESEGMENT;
         record.sName = "string_ids";
@@ -163,8 +167,7 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap() {
         record.nAddress = -1;
         record.segment = ADDRESS_SEGMENT_FLAT;
         record.nOffset = header.proto_ids_off;
-        record.nSize =
-            (header.proto_ids_size) * sizeof(XDEX_DEF::PROTO_ITEM_ID);
+        record.nSize = (header.proto_ids_size) * sizeof(XDEX_DEF::PROTO_ITEM_ID);
         record.nIndex = nIndex++;
         record.type = MMT_FILESEGMENT;
         record.sName = "proto_ids";
@@ -177,8 +180,7 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap() {
         record.nAddress = -1;
         record.segment = ADDRESS_SEGMENT_FLAT;
         record.nOffset = header.field_ids_off;
-        record.nSize =
-            (header.field_ids_size) * sizeof(XDEX_DEF::FIELD_ITEM_ID);
+        record.nSize = (header.field_ids_size) * sizeof(XDEX_DEF::FIELD_ITEM_ID);
         record.nIndex = nIndex++;
         record.type = MMT_FILESEGMENT;
         record.sName = "field_ids";
@@ -191,8 +193,7 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap() {
         record.nAddress = -1;
         record.segment = ADDRESS_SEGMENT_FLAT;
         record.nOffset = header.method_ids_off;
-        record.nSize =
-            (header.method_ids_size) * sizeof(XDEX_DEF::METHOD_ITEM_ID);
+        record.nSize = (header.method_ids_size) * sizeof(XDEX_DEF::METHOD_ITEM_ID);
         record.nIndex = nIndex++;
         record.type = MMT_FILESEGMENT;
         record.sName = "method_ids";
@@ -205,8 +206,7 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap() {
         record.nAddress = -1;
         record.segment = ADDRESS_SEGMENT_FLAT;
         record.nOffset = header.class_defs_off;
-        record.nSize =
-            (header.class_defs_size) * sizeof(XDEX_DEF::CLASS_ITEM_DEF);
+        record.nSize = (header.class_defs_size) * sizeof(XDEX_DEF::CLASS_ITEM_DEF);
         record.nIndex = nIndex++;
         record.type = MMT_FILESEGMENT;
         record.sName = "class_defs";
@@ -292,18 +292,15 @@ quint32 XDEX::getHeader_map_off() {
 }
 
 quint32 XDEX::getHeader_string_ids_size() {
-    return read_uint32(offsetof(XDEX_DEF::HEADER, string_ids_size),
-                       isBigEndian());
+    return read_uint32(offsetof(XDEX_DEF::HEADER, string_ids_size), isBigEndian());
 }
 
 quint32 XDEX::getHeader_string_ids_off() {
-    return read_uint32(offsetof(XDEX_DEF::HEADER, string_ids_off),
-                       isBigEndian());
+    return read_uint32(offsetof(XDEX_DEF::HEADER, string_ids_off), isBigEndian());
 }
 
 quint32 XDEX::getHeader_type_ids_size() {
-    return read_uint32(offsetof(XDEX_DEF::HEADER, type_ids_size),
-                       isBigEndian());
+    return read_uint32(offsetof(XDEX_DEF::HEADER, type_ids_size), isBigEndian());
 }
 
 quint32 XDEX::getHeader_type_ids_off() {
@@ -311,43 +308,35 @@ quint32 XDEX::getHeader_type_ids_off() {
 }
 
 quint32 XDEX::getHeader_proto_ids_size() {
-    return read_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_size),
-                       isBigEndian());
+    return read_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_size), isBigEndian());
 }
 
 quint32 XDEX::getHeader_proto_ids_off() {
-    return read_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_off),
-                       isBigEndian());
+    return read_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_off), isBigEndian());
 }
 
 quint32 XDEX::getHeader_field_ids_size() {
-    return read_uint32(offsetof(XDEX_DEF::HEADER, field_ids_size),
-                       isBigEndian());
+    return read_uint32(offsetof(XDEX_DEF::HEADER, field_ids_size), isBigEndian());
 }
 
 quint32 XDEX::getHeader_field_ids_off() {
-    return read_uint32(offsetof(XDEX_DEF::HEADER, field_ids_off),
-                       isBigEndian());
+    return read_uint32(offsetof(XDEX_DEF::HEADER, field_ids_off), isBigEndian());
 }
 
 quint32 XDEX::getHeader_method_ids_size() {
-    return read_uint32(offsetof(XDEX_DEF::HEADER, method_ids_size),
-                       isBigEndian());
+    return read_uint32(offsetof(XDEX_DEF::HEADER, method_ids_size), isBigEndian());
 }
 
 quint32 XDEX::getHeader_method_ids_off() {
-    return read_uint32(offsetof(XDEX_DEF::HEADER, method_ids_off),
-                       isBigEndian());
+    return read_uint32(offsetof(XDEX_DEF::HEADER, method_ids_off), isBigEndian());
 }
 
 quint32 XDEX::getHeader_class_defs_size() {
-    return read_uint32(offsetof(XDEX_DEF::HEADER, class_defs_size),
-                       isBigEndian());
+    return read_uint32(offsetof(XDEX_DEF::HEADER, class_defs_size), isBigEndian());
 }
 
 quint32 XDEX::getHeader_class_defs_off() {
-    return read_uint32(offsetof(XDEX_DEF::HEADER, class_defs_off),
-                       isBigEndian());
+    return read_uint32(offsetof(XDEX_DEF::HEADER, class_defs_off), isBigEndian());
 }
 
 quint32 XDEX::getHeader_data_size() {
@@ -395,63 +384,51 @@ void XDEX::setHeader_map_off(quint32 value) {
 }
 
 void XDEX::setHeader_string_ids_size(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, string_ids_size), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, string_ids_size), value, isBigEndian());
 }
 
 void XDEX::setHeader_string_ids_off(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, string_ids_off), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, string_ids_off), value, isBigEndian());
 }
 
 void XDEX::setHeader_type_ids_size(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, type_ids_size), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, type_ids_size), value, isBigEndian());
 }
 
 void XDEX::setHeader_type_ids_off(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, type_ids_off), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, type_ids_off), value, isBigEndian());
 }
 
 void XDEX::setHeader_proto_ids_size(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_size), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_size), value, isBigEndian());
 }
 
 void XDEX::setHeader_proto_ids_off(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_off), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_off), value, isBigEndian());
 }
 
 void XDEX::setHeader_field_ids_size(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, field_ids_size), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, field_ids_size), value, isBigEndian());
 }
 
 void XDEX::setHeader_field_ids_off(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, field_ids_off), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, field_ids_off), value, isBigEndian());
 }
 
 void XDEX::setHeader_method_ids_size(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, method_ids_size), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, method_ids_size), value, isBigEndian());
 }
 
 void XDEX::setHeader_method_ids_off(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, method_ids_off), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, method_ids_off), value, isBigEndian());
 }
 
 void XDEX::setHeader_class_defs_size(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, class_defs_size), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, class_defs_size), value, isBigEndian());
 }
 
 void XDEX::setHeader_class_defs_off(quint32 value) {
-    write_uint32(offsetof(XDEX_DEF::HEADER, class_defs_off), value,
-                 isBigEndian());
+    write_uint32(offsetof(XDEX_DEF::HEADER, class_defs_off), value, isBigEndian());
 }
 
 void XDEX::setHeader_data_size(quint32 value) {
@@ -469,54 +446,35 @@ XDEX_DEF::HEADER XDEX::getHeader() {
 
     result.magic = read_uint32(offsetof(XDEX_DEF::HEADER, magic), false);
     result.version = read_uint32(offsetof(XDEX_DEF::HEADER, version), false);
-    result.checksum =
-        read_uint32(offsetof(XDEX_DEF::HEADER, checksum), bIsBigEndian);
+    result.checksum = read_uint32(offsetof(XDEX_DEF::HEADER, checksum), bIsBigEndian);
     //    result.signature=getHeader_signature();
-    result.file_size =
-        read_uint32(offsetof(XDEX_DEF::HEADER, file_size), bIsBigEndian);
-    result.header_size =
-        read_uint32(offsetof(XDEX_DEF::HEADER, header_size), bIsBigEndian);
-    result.endian_tag =
-        read_uint32(offsetof(XDEX_DEF::HEADER, endian_tag), false);
-    result.link_size =
-        read_uint32(offsetof(XDEX_DEF::HEADER, link_size), bIsBigEndian);
-    result.link_off =
-        read_uint32(offsetof(XDEX_DEF::HEADER, link_off), bIsBigEndian);
-    result.map_off =
-        read_uint32(offsetof(XDEX_DEF::HEADER, map_off), bIsBigEndian);
-    result.string_ids_size =
-        read_uint32(offsetof(XDEX_DEF::HEADER, string_ids_size), bIsBigEndian);
-    result.string_ids_off =
-        read_uint32(offsetof(XDEX_DEF::HEADER, string_ids_off), bIsBigEndian);
-    result.type_ids_size =
-        read_uint32(offsetof(XDEX_DEF::HEADER, type_ids_size), bIsBigEndian);
-    result.type_ids_off =
-        read_uint32(offsetof(XDEX_DEF::HEADER, type_ids_off), bIsBigEndian);
-    result.proto_ids_size =
-        read_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_size), bIsBigEndian);
-    result.proto_ids_off =
-        read_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_off), bIsBigEndian);
-    result.field_ids_size =
-        read_uint32(offsetof(XDEX_DEF::HEADER, field_ids_size), bIsBigEndian);
-    result.field_ids_off =
-        read_uint32(offsetof(XDEX_DEF::HEADER, field_ids_off), bIsBigEndian);
-    result.method_ids_size =
-        read_uint32(offsetof(XDEX_DEF::HEADER, method_ids_size), bIsBigEndian);
-    result.method_ids_off =
-        read_uint32(offsetof(XDEX_DEF::HEADER, method_ids_off), bIsBigEndian);
-    result.class_defs_size =
-        read_uint32(offsetof(XDEX_DEF::HEADER, class_defs_size), bIsBigEndian);
-    result.class_defs_off =
-        read_uint32(offsetof(XDEX_DEF::HEADER, class_defs_off), bIsBigEndian);
-    result.data_size =
-        read_uint32(offsetof(XDEX_DEF::HEADER, data_size), bIsBigEndian);
-    result.data_off =
-        read_uint32(offsetof(XDEX_DEF::HEADER, data_off), bIsBigEndian);
+    result.file_size = read_uint32(offsetof(XDEX_DEF::HEADER, file_size), bIsBigEndian);
+    result.header_size = read_uint32(offsetof(XDEX_DEF::HEADER, header_size), bIsBigEndian);
+    result.endian_tag = read_uint32(offsetof(XDEX_DEF::HEADER, endian_tag), false);
+    result.link_size = read_uint32(offsetof(XDEX_DEF::HEADER, link_size), bIsBigEndian);
+    result.link_off = read_uint32(offsetof(XDEX_DEF::HEADER, link_off), bIsBigEndian);
+    result.map_off = read_uint32(offsetof(XDEX_DEF::HEADER, map_off), bIsBigEndian);
+    result.string_ids_size = read_uint32(offsetof(XDEX_DEF::HEADER, string_ids_size), bIsBigEndian);
+    result.string_ids_off = read_uint32(offsetof(XDEX_DEF::HEADER, string_ids_off), bIsBigEndian);
+    result.type_ids_size = read_uint32(offsetof(XDEX_DEF::HEADER, type_ids_size), bIsBigEndian);
+    result.type_ids_off = read_uint32(offsetof(XDEX_DEF::HEADER, type_ids_off), bIsBigEndian);
+    result.proto_ids_size = read_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_size), bIsBigEndian);
+    result.proto_ids_off = read_uint32(offsetof(XDEX_DEF::HEADER, proto_ids_off), bIsBigEndian);
+    result.field_ids_size = read_uint32(offsetof(XDEX_DEF::HEADER, field_ids_size), bIsBigEndian);
+    result.field_ids_off = read_uint32(offsetof(XDEX_DEF::HEADER, field_ids_off), bIsBigEndian);
+    result.method_ids_size = read_uint32(offsetof(XDEX_DEF::HEADER, method_ids_size), bIsBigEndian);
+    result.method_ids_off = read_uint32(offsetof(XDEX_DEF::HEADER, method_ids_off), bIsBigEndian);
+    result.class_defs_size = read_uint32(offsetof(XDEX_DEF::HEADER, class_defs_size), bIsBigEndian);
+    result.class_defs_off = read_uint32(offsetof(XDEX_DEF::HEADER, class_defs_off), bIsBigEndian);
+    result.data_size = read_uint32(offsetof(XDEX_DEF::HEADER, data_size), bIsBigEndian);
+    result.data_off = read_uint32(offsetof(XDEX_DEF::HEADER, data_off), bIsBigEndian);
 
     return result;
 }
 
-quint32 XDEX::getHeaderSize() { return sizeof(XDEX_DEF::HEADER); }
+quint32 XDEX::getHeaderSize() {
+    return sizeof(XDEX_DEF::HEADER);
+}
 
 QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems() {
     QList<XDEX_DEF::MAP_ITEM> listResult;
@@ -546,8 +504,7 @@ QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems() {
     return listResult;
 }
 
-bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps,
-                           QList<quint16> *pListIDs) {
+bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> *pListIDs) {
     bool bResult = false;
 
     qint32 nNumberOfMapItems = pListMaps->count();
@@ -556,8 +513,7 @@ bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps,
     qint32 nCurrentMapItem = 0;
     qint32 nCurrentID = 0;
 
-    while ((nCurrentMapItem < nNumberOfMapItems) &&
-           (nCurrentID < nNumberOfIDs)) {
+    while ((nCurrentMapItem < nNumberOfMapItems) && (nCurrentID < nNumberOfIDs)) {
         bResult = false;
 
         if (pListMaps->at(nCurrentMapItem).nType == pListIDs->at(nCurrentID)) {
@@ -569,8 +525,7 @@ bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps,
         }
     }
 
-    bResult =
-        (bResult) && (nCurrentMapItem == qMin(nNumberOfMapItems, nNumberOfIDs));
+    bResult = (bResult) && (nCurrentMapItem == qMin(nNumberOfMapItems, nNumberOfIDs));
 
     return bResult;
 }
@@ -583,15 +538,13 @@ quint64 XDEX::getMapItemsHash() {
     qint32 nNumberOfMapItems = listMapItems.count();
 
     for (qint32 i = 0; i < nNumberOfMapItems; i++) {
-        nResult += (quint64)i * getStringCustomCRC32(
-                                    QString::number(listMapItems.at(i).nType));
+        nResult += (quint64)i * getStringCustomCRC32(QString::number(listMapItems.at(i).nType));
     }
 
     return nResult;
 }
 
-bool XDEX::isMapItemPresent(quint16 nType,
-                            QList<XDEX_DEF::MAP_ITEM> *pMapItems) {
+bool XDEX::isMapItemPresent(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems) {
     bool bResult = false;
 
     qint32 nNumberOfItems = pMapItems->count();
@@ -663,8 +616,7 @@ QMap<quint64, QString> XDEX::getTypesS() {
     return mapResult;
 }
 
-XDEX_DEF::MAP_ITEM XDEX::getMapItem(quint16 nType,
-                                    QList<XDEX_DEF::MAP_ITEM> *pMapItems) {
+XDEX_DEF::MAP_ITEM XDEX::getMapItem(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems) {
     XDEX_DEF::MAP_ITEM result = {};
 
     qint32 nCount = pMapItems->count();
@@ -686,17 +638,14 @@ QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID() {
     return getList_STRING_ITEM_ID(&listMapItems);
 }
 
-QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID(
-    QList<XDEX_DEF::MAP_ITEM> *pListMapItems) {
+QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems) {
     QList<XDEX_DEF::STRING_ITEM_ID> listResult;
 
     bool bIsBigEndian = isBigEndian();
 
-    XDEX_DEF::MAP_ITEM mapItem =
-        getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM, pListMapItems);
+    XDEX_DEF::MAP_ITEM mapItem = getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM, pListMapItems);
 
-    QByteArray baData = read_array(
-        mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::STRING_ITEM_ID));
+    QByteArray baData = read_array(mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::STRING_ITEM_ID));
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::STRING_ITEM_ID);
 
@@ -705,10 +654,7 @@ QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID(
 
         XDEX_DEF::STRING_ITEM_ID record = {};
 
-        record.string_data_off =
-            _read_int32(pData + nOffset +
-                            offsetof(XDEX_DEF::STRING_ITEM_ID, string_data_off),
-                        bIsBigEndian);
+        record.string_data_off = _read_int32(pData + nOffset + offsetof(XDEX_DEF::STRING_ITEM_ID, string_data_off), bIsBigEndian);
 
         listResult.append(record);
     }
@@ -722,16 +668,13 @@ QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID() {
     return getList_TYPE_ITEM_ID(&listMapItems);
 }
 
-QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(
-    QList<XDEX_DEF::MAP_ITEM> *pListMapItems) {
+QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems) {
     QList<XDEX_DEF::TYPE_ITEM_ID> listResult;
 
-    XDEX_DEF::MAP_ITEM mapItem =
-        getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM, pListMapItems);
+    XDEX_DEF::MAP_ITEM mapItem = getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM, pListMapItems);
     bool bIsBigEndian = isBigEndian();
 
-    QByteArray baData = read_array(
-        mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::TYPE_ITEM_ID));
+    QByteArray baData = read_array(mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::TYPE_ITEM_ID));
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::TYPE_ITEM_ID);
 
@@ -740,9 +683,7 @@ QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(
 
         XDEX_DEF::TYPE_ITEM_ID record = {};
 
-        record.descriptor_idx = _read_int32(
-            pData + nOffset + offsetof(XDEX_DEF::TYPE_ITEM_ID, descriptor_idx),
-            bIsBigEndian);
+        record.descriptor_idx = _read_int32(pData + nOffset + offsetof(XDEX_DEF::TYPE_ITEM_ID, descriptor_idx), bIsBigEndian);
 
         listResult.append(record);
     }
@@ -750,16 +691,13 @@ QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(
     return listResult;
 }
 
-QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(
-    QList<XDEX_DEF::MAP_ITEM> *pListMapItems) {
+QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems) {
     QList<XDEX_DEF::PROTO_ITEM_ID> listResult;
 
-    XDEX_DEF::MAP_ITEM mapItem =
-        getMapItem(XDEX_DEF::TYPE_PROTO_ID_ITEM, pListMapItems);
+    XDEX_DEF::MAP_ITEM mapItem = getMapItem(XDEX_DEF::TYPE_PROTO_ID_ITEM, pListMapItems);
     bool bIsBigEndian = isBigEndian();
 
-    QByteArray baData = read_array(
-        mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::PROTO_ITEM_ID));
+    QByteArray baData = read_array(mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::PROTO_ITEM_ID));
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::PROTO_ITEM_ID);
 
@@ -768,16 +706,9 @@ QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(
 
         XDEX_DEF::PROTO_ITEM_ID record = {};
 
-        record.shorty_idx = _read_int32(
-            pData + nOffset + offsetof(XDEX_DEF::PROTO_ITEM_ID, shorty_idx),
-            bIsBigEndian);
-        record.return_type_idx =
-            _read_int32(pData + nOffset +
-                            offsetof(XDEX_DEF::PROTO_ITEM_ID, return_type_idx),
-                        bIsBigEndian);
-        record.parameters_off = _read_int32(
-            pData + nOffset + offsetof(XDEX_DEF::PROTO_ITEM_ID, parameters_off),
-            bIsBigEndian);
+        record.shorty_idx = _read_int32(pData + nOffset + offsetof(XDEX_DEF::PROTO_ITEM_ID, shorty_idx), bIsBigEndian);
+        record.return_type_idx = _read_int32(pData + nOffset + offsetof(XDEX_DEF::PROTO_ITEM_ID, return_type_idx), bIsBigEndian);
+        record.parameters_off = _read_int32(pData + nOffset + offsetof(XDEX_DEF::PROTO_ITEM_ID, parameters_off), bIsBigEndian);
 
         listResult.append(record);
     }
@@ -785,8 +716,7 @@ QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(
     return listResult;
 }
 
-QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(
-    QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct) {
+QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct) {
     PDSTRUCT processDataEmpty = {};
 
     if (!pPdStruct) {
@@ -795,12 +725,10 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(
 
     QList<XDEX_DEF::FIELD_ITEM_ID> listResult;
 
-    XDEX_DEF::MAP_ITEM mapItem =
-        getMapItem(XDEX_DEF::TYPE_FIELD_ID_ITEM, pListMapItems);
+    XDEX_DEF::MAP_ITEM mapItem = getMapItem(XDEX_DEF::TYPE_FIELD_ID_ITEM, pListMapItems);
     bool bIsBigEndian = isBigEndian();
 
-    QByteArray baData = read_array(
-        mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::FIELD_ITEM_ID));
+    QByteArray baData = read_array(mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::FIELD_ITEM_ID));
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::FIELD_ITEM_ID);
 
@@ -809,15 +737,9 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(
 
         XDEX_DEF::FIELD_ITEM_ID record = {};
 
-        record.class_idx = _read_int16(
-            pData + nOffset + offsetof(XDEX_DEF::FIELD_ITEM_ID, class_idx),
-            bIsBigEndian);
-        record.type_idx = _read_int16(
-            pData + nOffset + offsetof(XDEX_DEF::FIELD_ITEM_ID, type_idx),
-            bIsBigEndian);
-        record.name_idx = _read_int32(
-            pData + nOffset + offsetof(XDEX_DEF::FIELD_ITEM_ID, name_idx),
-            bIsBigEndian);
+        record.class_idx = _read_int16(pData + nOffset + offsetof(XDEX_DEF::FIELD_ITEM_ID, class_idx), bIsBigEndian);
+        record.type_idx = _read_int16(pData + nOffset + offsetof(XDEX_DEF::FIELD_ITEM_ID, type_idx), bIsBigEndian);
+        record.name_idx = _read_int32(pData + nOffset + offsetof(XDEX_DEF::FIELD_ITEM_ID, name_idx), bIsBigEndian);
 
         listResult.append(record);
     }
@@ -825,8 +747,7 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(
     return listResult;
 }
 
-QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(
-    QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct) {
+QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct) {
     PDSTRUCT processDataEmpty = {};
 
     if (!pPdStruct) {
@@ -835,12 +756,10 @@ QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(
 
     QList<XDEX_DEF::METHOD_ITEM_ID> listResult;
 
-    XDEX_DEF::MAP_ITEM mapItem =
-        getMapItem(XDEX_DEF::TYPE_METHOD_ID_ITEM, pListMapItems);
+    XDEX_DEF::MAP_ITEM mapItem = getMapItem(XDEX_DEF::TYPE_METHOD_ID_ITEM, pListMapItems);
     bool bIsBigEndian = isBigEndian();
 
-    QByteArray baData = read_array(
-        mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::METHOD_ITEM_ID));
+    QByteArray baData = read_array(mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::METHOD_ITEM_ID));
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::METHOD_ITEM_ID);
 
@@ -849,15 +768,9 @@ QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(
 
         XDEX_DEF::METHOD_ITEM_ID record = {};
 
-        record.class_idx = _read_int16(
-            pData + nOffset + offsetof(XDEX_DEF::METHOD_ITEM_ID, class_idx),
-            bIsBigEndian);
-        record.proto_idx = _read_int16(
-            pData + nOffset + offsetof(XDEX_DEF::METHOD_ITEM_ID, proto_idx),
-            bIsBigEndian);
-        record.name_idx = _read_int32(
-            pData + nOffset + offsetof(XDEX_DEF::METHOD_ITEM_ID, name_idx),
-            bIsBigEndian);
+        record.class_idx = _read_int16(pData + nOffset + offsetof(XDEX_DEF::METHOD_ITEM_ID, class_idx), bIsBigEndian);
+        record.proto_idx = _read_int16(pData + nOffset + offsetof(XDEX_DEF::METHOD_ITEM_ID, proto_idx), bIsBigEndian);
+        record.name_idx = _read_int32(pData + nOffset + offsetof(XDEX_DEF::METHOD_ITEM_ID, name_idx), bIsBigEndian);
 
         listResult.append(record);
     }
@@ -865,16 +778,13 @@ QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(
     return listResult;
 }
 
-QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(
-    QList<XDEX_DEF::MAP_ITEM> *pListMapItems) {
+QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP_ITEM> *pListMapItems) {
     QList<XDEX_DEF::CLASS_ITEM_DEF> listResult;
 
-    XDEX_DEF::MAP_ITEM mapItem =
-        getMapItem(XDEX_DEF::TYPE_CLASS_DEF_ITEM, pListMapItems);
+    XDEX_DEF::MAP_ITEM mapItem = getMapItem(XDEX_DEF::TYPE_CLASS_DEF_ITEM, pListMapItems);
     bool bIsBigEndian = isBigEndian();
 
-    QByteArray baData = read_array(
-        mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::CLASS_ITEM_DEF));
+    QByteArray baData = read_array(mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::CLASS_ITEM_DEF));
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::CLASS_ITEM_DEF);
 
@@ -883,36 +793,14 @@ QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(
 
         XDEX_DEF::CLASS_ITEM_DEF record = {};
 
-        record.class_idx = _read_int32(
-            pData + nOffset + offsetof(XDEX_DEF::CLASS_ITEM_DEF, class_idx),
-            bIsBigEndian);
-        record.access_flags = _read_int32(
-            pData + nOffset + offsetof(XDEX_DEF::CLASS_ITEM_DEF, access_flags),
-            bIsBigEndian);
-        record.superclass_idx =
-            _read_int32(pData + nOffset +
-                            offsetof(XDEX_DEF::CLASS_ITEM_DEF, superclass_idx),
-                        bIsBigEndian);
-        record.interfaces_off =
-            _read_int32(pData + nOffset +
-                            offsetof(XDEX_DEF::CLASS_ITEM_DEF, interfaces_off),
-                        bIsBigEndian);
-        record.source_file_idx =
-            _read_int32(pData + nOffset +
-                            offsetof(XDEX_DEF::CLASS_ITEM_DEF, source_file_idx),
-                        bIsBigEndian);
-        record.annotations_off =
-            _read_int32(pData + nOffset +
-                            offsetof(XDEX_DEF::CLASS_ITEM_DEF, annotations_off),
-                        bIsBigEndian);
-        record.class_data_off =
-            _read_int32(pData + nOffset +
-                            offsetof(XDEX_DEF::CLASS_ITEM_DEF, class_data_off),
-                        bIsBigEndian);
-        record.static_values_off = _read_int32(
-            pData + nOffset +
-                offsetof(XDEX_DEF::CLASS_ITEM_DEF, static_values_off),
-            bIsBigEndian);
+        record.class_idx = _read_int32(pData + nOffset + offsetof(XDEX_DEF::CLASS_ITEM_DEF, class_idx), bIsBigEndian);
+        record.access_flags = _read_int32(pData + nOffset + offsetof(XDEX_DEF::CLASS_ITEM_DEF, access_flags), bIsBigEndian);
+        record.superclass_idx = _read_int32(pData + nOffset + offsetof(XDEX_DEF::CLASS_ITEM_DEF, superclass_idx), bIsBigEndian);
+        record.interfaces_off = _read_int32(pData + nOffset + offsetof(XDEX_DEF::CLASS_ITEM_DEF, interfaces_off), bIsBigEndian);
+        record.source_file_idx = _read_int32(pData + nOffset + offsetof(XDEX_DEF::CLASS_ITEM_DEF, source_file_idx), bIsBigEndian);
+        record.annotations_off = _read_int32(pData + nOffset + offsetof(XDEX_DEF::CLASS_ITEM_DEF, annotations_off), bIsBigEndian);
+        record.class_data_off = _read_int32(pData + nOffset + offsetof(XDEX_DEF::CLASS_ITEM_DEF, class_data_off), bIsBigEndian);
+        record.static_values_off = _read_int32(pData + nOffset + offsetof(XDEX_DEF::CLASS_ITEM_DEF, static_values_off), bIsBigEndian);
 
         listResult.append(record);
     }
@@ -920,8 +808,7 @@ QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(
     return listResult;
 }
 
-QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,
-                                PDSTRUCT *pPdStruct) {
+QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct) {
     PDSTRUCT pdStructEmpty = {};
 
     if (!pPdStruct) {
@@ -932,16 +819,12 @@ QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,
 
     bool bIsBigEndian = isBigEndian();
 
-    XDEX_DEF::MAP_ITEM map_strings =
-        getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM, pMapItems);
+    XDEX_DEF::MAP_ITEM map_strings = getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM, pMapItems);
 
     QByteArray baData = read_array(getHeader_data_off(), getHeader_data_size());
 
-    for (quint32 i = 0; (i < map_strings.nCount) && (!(pPdStruct->bIsStop));
-         i++) {
-        QString sString =
-            _getString(map_strings, i, bIsBigEndian, baData.data(),
-                       baData.size(), getHeader_data_off());
+    for (quint32 i = 0; (i < map_strings.nCount) && (!(pPdStruct->bIsStop)); i++) {
+        QString sString = _getString(map_strings, i, bIsBigEndian, baData.data(), baData.size(), getHeader_data_off());
 
         listResult.append(sString);
     }
@@ -949,8 +832,7 @@ QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,
     return listResult;
 }
 
-QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex,
-                         bool bIsBigEndian) {
+QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian) {
     QString sResult;
 
     if (nIndex < map_stringIdItem.nCount) {
@@ -964,9 +846,7 @@ QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex,
     return sResult;
 }
 
-QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex,
-                         bool bIsBigEndian, char *pData, qint32 nDataSize,
-                         qint32 nDataOffset) {
+QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian, char *pData, qint32 nDataSize, qint32 nDataOffset) {
     QString sResult;
 
     if (nIndex < map_stringIdItem.nCount) {
@@ -974,21 +854,17 @@ QString XDEX::_getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex,
 
         qint32 nStringsOffset = (qint32)read_uint32(nOffset, bIsBigEndian);
 
-        sResult = XBinary::_read_utf8String(nStringsOffset, pData, nDataSize,
-                                            nDataOffset);
+        sResult = XBinary::_read_utf8String(nStringsOffset, pData, nDataSize, nDataOffset);
     }
 
     return sResult;
 }
 
-QString XDEX::_getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem,
-                                  XDEX_DEF::MAP_ITEM map_typeItemId,
-                                  quint32 nIndex, bool bIsBigEndian) {
+QString XDEX::_getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem, XDEX_DEF::MAP_ITEM map_typeItemId, quint32 nIndex, bool bIsBigEndian) {
     QString sResult;
 
     if (nIndex < map_typeItemId.nCount) {
-        quint32 nID = read_uint32(
-            map_typeItemId.nOffset + sizeof(quint32) * nIndex, bIsBigEndian);
+        quint32 nID = read_uint32(map_typeItemId.nOffset + sizeof(quint32) * nIndex, bIsBigEndian);
 
         sResult = _getString(map_stringIdItem, nID, bIsBigEndian);
     }
@@ -1003,8 +879,7 @@ QList<quint32> XDEX::_getTypeList(qint64 nOffset, bool bIsBigEndian) {
         quint32 nCount = read_uint32(nOffset, bIsBigEndian);
 
         for (quint32 i = 0; i < nCount; i++) {
-            quint32 nType =
-                read_uint32(nOffset + sizeof(quint32) * (1 + i), bIsBigEndian);
+            quint32 nType = read_uint32(nOffset + sizeof(quint32) * (1 + i), bIsBigEndian);
             listResult.append(nType);
         }
     }
@@ -1012,9 +887,7 @@ QList<quint32> XDEX::_getTypeList(qint64 nOffset, bool bIsBigEndian) {
     return listResult;
 }
 
-QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,
-                                        QList<QString> *pListStrings,
-                                        PDSTRUCT *pPdStruct) {
+QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QList<QString> *pListStrings, PDSTRUCT *pPdStruct) {
     QList<QString> listResult;
 
     PDSTRUCT processDataEmpty = {};
@@ -1027,11 +900,9 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,
 
     qint32 nStringsCount = pListStrings->count();
 
-    XDEX_DEF::MAP_ITEM map_items =
-        getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM, pMapItems);
+    XDEX_DEF::MAP_ITEM map_items = getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM, pMapItems);
 
-    for (quint32 i = 0; (i < map_items.nCount) && (!(pPdStruct->bIsStop));
-         i++) {
+    for (quint32 i = 0; (i < map_items.nCount) && (!(pPdStruct->bIsStop)); i++) {
         quint32 nOffset = map_items.nOffset + sizeof(quint32) * i;
 
         quint32 nItem = read_uint32(nOffset, bIsBigEndian);
@@ -1053,37 +924,23 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems,
 void XDEX::getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems) {
     bool bIsBigEndian = isBigEndian();
 
-    XDEX_DEF::MAP_ITEM map_protoIdItem =
-        getMapItem(XDEX_DEF::TYPE_PROTO_ID_ITEM, pMapItems);
-    XDEX_DEF::MAP_ITEM map_typeIdItem =
-        getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM, pMapItems);
-    XDEX_DEF::MAP_ITEM map_stringIdItem =
-        getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM, pMapItems);
+    XDEX_DEF::MAP_ITEM map_protoIdItem = getMapItem(XDEX_DEF::TYPE_PROTO_ID_ITEM, pMapItems);
+    XDEX_DEF::MAP_ITEM map_typeIdItem = getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM, pMapItems);
+    XDEX_DEF::MAP_ITEM map_stringIdItem = getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM, pMapItems);
 
     for (quint32 i = 0; i < map_protoIdItem.nCount; i++) {
-        quint32 nOffset =
-            map_protoIdItem.nOffset + sizeof(XDEX_DEF::PROTO_ITEM_ID) * i;
+        quint32 nOffset = map_protoIdItem.nOffset + sizeof(XDEX_DEF::PROTO_ITEM_ID) * i;
 
         XDEX_DEF::PROTO_ITEM_ID record = {};
 
-        record.shorty_idx =
-            read_uint32(nOffset + offsetof(XDEX_DEF::PROTO_ITEM_ID, shorty_idx),
-                        bIsBigEndian);
-        record.return_type_idx = read_uint32(
-            nOffset + offsetof(XDEX_DEF::PROTO_ITEM_ID, return_type_idx),
-            bIsBigEndian);
-        record.parameters_off = read_uint32(
-            nOffset + offsetof(XDEX_DEF::PROTO_ITEM_ID, parameters_off),
-            bIsBigEndian);
+        record.shorty_idx = read_uint32(nOffset + offsetof(XDEX_DEF::PROTO_ITEM_ID, shorty_idx), bIsBigEndian);
+        record.return_type_idx = read_uint32(nOffset + offsetof(XDEX_DEF::PROTO_ITEM_ID, return_type_idx), bIsBigEndian);
+        record.parameters_off = read_uint32(nOffset + offsetof(XDEX_DEF::PROTO_ITEM_ID, parameters_off), bIsBigEndian);
 
-        QString sProto =
-            _getString(map_stringIdItem, record.shorty_idx, bIsBigEndian);
-        QString sRet =
-            _getTypeItemtString(map_stringIdItem, map_typeIdItem,
-                                record.return_type_idx, bIsBigEndian);
+        QString sProto = _getString(map_stringIdItem, record.shorty_idx, bIsBigEndian);
+        QString sRet = _getTypeItemtString(map_stringIdItem, map_typeIdItem, record.return_type_idx, bIsBigEndian);
 
-        QList<quint32> listParams =
-            _getTypeList(record.parameters_off, bIsBigEndian);
+        QList<quint32> listParams = _getTypeList(record.parameters_off, bIsBigEndian);
 
         //        QString sDebugString=QString("%1 %2").arg(sRet,sProto);
 
@@ -1099,88 +956,63 @@ QString XDEX::getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId) {
     return sResult;
 }
 
-QString XDEX::getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId,
-                                    char *pData, qint32 nDataSize,
-                                    qint32 nDataOffset) {
+QString XDEX::getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId, char *pData, qint32 nDataSize, qint32 nDataOffset) {
     QString sResult;
 
-    sResult = XBinary::_read_utf8String(stringItemId.string_data_off, pData,
-                                        nDataSize, nDataOffset);
+    sResult = XBinary::_read_utf8String(stringItemId.string_data_off, pData, nDataSize, nDataOffset);
 
     return sResult;
 }
 
-QString XDEX::getStringItemIdString(QList<XDEX_DEF::STRING_ITEM_ID> *pList,
-                                    qint32 nIndex, char *pData,
-                                    qint32 nDataSize, qint32 nDataOffset) {
+QString XDEX::getStringItemIdString(QList<XDEX_DEF::STRING_ITEM_ID> *pList, qint32 nIndex, char *pData, qint32 nDataSize, qint32 nDataOffset) {
     QString sResult;
 
     if ((nIndex > 0) && (nIndex < pList->count())) {
-        sResult = getStringItemIdString(pList->at(nIndex), pData, nDataSize,
+        sResult = getStringItemIdString(pList->at(nIndex), pData, nDataSize, nDataOffset);
+    }
+
+    return sResult;
+}
+
+QString XDEX::getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId, XDEX_DEF::MAP_ITEM *pMapItemStrings) {
+    QString sResult;
+
+    bool bIsBigEndian = isBigEndian();
+
+    sResult = _read_utf8String(read_uint32(pMapItemStrings->nOffset + sizeof(quint32) * typeItemId.descriptor_idx, bIsBigEndian));
+
+    return sResult;
+}
+
+QString XDEX::getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId, XDEX_DEF::MAP_ITEM *pMapItemStrings, char *pData, qint32 nDataSize, qint32 nDataOffset) {
+    QString sResult;
+
+    bool bIsBigEndian = isBigEndian();
+
+    sResult = XBinary::_read_utf8String(read_uint32(pMapItemStrings->nOffset + sizeof(quint32) * typeItemId.descriptor_idx, bIsBigEndian), pData, nDataSize,
                                         nDataOffset);
-    }
 
     return sResult;
 }
 
-QString XDEX::getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,
-                                  XDEX_DEF::MAP_ITEM *pMapItemStrings) {
-    QString sResult;
-
-    bool bIsBigEndian = isBigEndian();
-
-    sResult = _read_utf8String(read_uint32(
-        pMapItemStrings->nOffset + sizeof(quint32) * typeItemId.descriptor_idx,
-        bIsBigEndian));
-
-    return sResult;
-}
-
-QString XDEX::getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId,
-                                  XDEX_DEF::MAP_ITEM *pMapItemStrings,
-                                  char *pData, qint32 nDataSize,
-                                  qint32 nDataOffset) {
-    QString sResult;
-
-    bool bIsBigEndian = isBigEndian();
-
-    sResult = XBinary::_read_utf8String(
-        read_uint32(pMapItemStrings->nOffset +
-                        sizeof(quint32) * typeItemId.descriptor_idx,
-                    bIsBigEndian),
-        pData, nDataSize, nDataOffset);
-
-    return sResult;
-}
-
-QString XDEX::getTypeItemIdString(QList<XDEX_DEF::TYPE_ITEM_ID> *pList,
-                                  qint32 nIndex,
-                                  XDEX_DEF::MAP_ITEM *pMapItemStrings,
-                                  char *pData, qint32 nDataSize,
+QString XDEX::getTypeItemIdString(QList<XDEX_DEF::TYPE_ITEM_ID> *pList, qint32 nIndex, XDEX_DEF::MAP_ITEM *pMapItemStrings, char *pData, qint32 nDataSize,
                                   qint32 nDataOffset) {
     QString sResult;
 
     if ((nIndex > 0) && (nIndex < pList->count())) {
-        sResult = getTypeItemIdString(pList->at(nIndex), pMapItemStrings, pData,
-                                      nDataSize, nDataOffset);
+        sResult = getTypeItemIdString(pList->at(nIndex), pMapItemStrings, pData, nDataSize, nDataOffset);
     }
 
     return sResult;
 }
 
-QString XDEX::getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId,
-                                   XDEX_DEF::MAP_ITEM *pMapItemStrings) {
+QString XDEX::getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId, XDEX_DEF::MAP_ITEM *pMapItemStrings) {
     QString sResult;
 
     bool bIsBigEndian = isBigEndian();
 
-    QString sPrototype = _read_utf8String(read_uint32(
-        pMapItemStrings->nOffset + sizeof(quint32) * protoItemId.shorty_idx,
-        bIsBigEndian));
-    QString sReturn = _read_utf8String(
-        read_uint32(pMapItemStrings->nOffset +
-                        sizeof(quint32) * protoItemId.return_type_idx,
-                    bIsBigEndian));
+    QString sPrototype = _read_utf8String(read_uint32(pMapItemStrings->nOffset + sizeof(quint32) * protoItemId.shorty_idx, bIsBigEndian));
+    QString sReturn = _read_utf8String(read_uint32(pMapItemStrings->nOffset + sizeof(quint32) * protoItemId.return_type_idx, bIsBigEndian));
     sResult = QString("%1 %2()").arg(sReturn, sPrototype);
 
     return sResult;
@@ -1220,8 +1052,7 @@ bool XDEX::isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems) {
 
     bool bIsBigEndian = isBigEndian();
 
-    XDEX_DEF::MAP_ITEM map_strings =
-        getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM, pMapItems);
+    XDEX_DEF::MAP_ITEM map_strings = getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM, pMapItems);
 
     qint32 nPrevStringOffset = 0;
 
@@ -1242,16 +1073,14 @@ bool XDEX::isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems) {
     return bResult;
 }
 
-bool XDEX::isFieldNamesUnicode(QList<XDEX_DEF::FIELD_ITEM_ID> *pListIDs,
-                               QList<QString> *pListStrings) {
+bool XDEX::isFieldNamesUnicode(QList<XDEX_DEF::FIELD_ITEM_ID> *pListIDs, QList<QString> *pListStrings) {
     bool bResult = false;
 
     qint32 nNumberOfIds = pListIDs->count();
     qint32 nNumberOfStrings = pListStrings->count();
 
     for (qint32 i = 0; i < nNumberOfIds; i++) {
-        QString sString = getStringByIndex(
-            pListStrings, pListIDs->at(i).name_idx, nNumberOfStrings);
+        QString sString = getStringByIndex(pListStrings, pListIDs->at(i).name_idx, nNumberOfStrings);
 
         if (XBinary::isStringUnicode(sString)) {
             bResult = true;
@@ -1262,16 +1091,14 @@ bool XDEX::isFieldNamesUnicode(QList<XDEX_DEF::FIELD_ITEM_ID> *pListIDs,
     return bResult;
 }
 
-bool XDEX::isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs,
-                                QList<QString> *pListStrings) {
+bool XDEX::isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs, QList<QString> *pListStrings) {
     bool bResult = false;
 
     qint32 nNumberOfIds = pListIDs->count();
     qint32 nNumberOfStrings = pListStrings->count();
 
     for (qint32 i = 0; i < nNumberOfIds; i++) {
-        QString sString = getStringByIndex(
-            pListStrings, pListIDs->at(i).name_idx, nNumberOfStrings);
+        QString sString = getStringByIndex(pListStrings, pListIDs->at(i).name_idx, nNumberOfStrings);
 
         if (XBinary::isStringUnicode(sString)) {
             bResult = true;
@@ -1282,7 +1109,9 @@ bool XDEX::isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs,
     return bResult;
 }
 
-QString XDEX::getFileFormatExt() { return "dex"; }
+QString XDEX::getFileFormatExt() {
+    return "dex";
+}
 
 QString XDEX::getFileFormatString() {
     QString sResult;
