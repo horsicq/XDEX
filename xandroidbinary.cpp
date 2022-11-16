@@ -20,10 +20,12 @@
  */
 #include "xandroidbinary.h"
 
-XAndroidBinary::XAndroidBinary(QIODevice *pDevice) : XBinary(pDevice) {
+XAndroidBinary::XAndroidBinary(QIODevice *pDevice) : XBinary(pDevice)
+{
 }
 
-bool XAndroidBinary::isValid() {
+bool XAndroidBinary::isValid()
+{
     bool bIsValid = false;
 
     _MEMORY_MAP memoryMap = getMemoryMap();
@@ -33,15 +35,18 @@ bool XAndroidBinary::isValid() {
     return bIsValid;
 }
 
-bool XAndroidBinary::isBigEndian() {
+bool XAndroidBinary::isBigEndian()
+{
     return false;  // TODO Check, need samples
 }
 
-QString XAndroidBinary::getVersion() {
+QString XAndroidBinary::getVersion()
+{
     return "";  // TODO Check !!!
 }
 
-XANDROIDBINARY_DEF::HEADER XAndroidBinary::readHeader(qint64 nOffset) {
+XANDROIDBINARY_DEF::HEADER XAndroidBinary::readHeader(qint64 nOffset)
+{
     XANDROIDBINARY_DEF::HEADER result = {};
 
     result.type = read_uint32(nOffset + offsetof(XANDROIDBINARY_DEF::HEADER, type));
@@ -51,7 +56,8 @@ XANDROIDBINARY_DEF::HEADER XAndroidBinary::readHeader(qint64 nOffset) {
     return result;
 }
 
-XANDROIDBINARY_DEF::HEADER_STRING_POOL XAndroidBinary::readHeaderStringPool(qint64 nOffset) {
+XANDROIDBINARY_DEF::HEADER_STRING_POOL XAndroidBinary::readHeaderStringPool(qint64 nOffset)
+{
     XANDROIDBINARY_DEF::HEADER_STRING_POOL result = {};
 
     result.header = readHeader(nOffset);
@@ -64,7 +70,8 @@ XANDROIDBINARY_DEF::HEADER_STRING_POOL XAndroidBinary::readHeaderStringPool(qint
     return result;
 }
 
-XANDROIDBINARY_DEF::HEADER_NAMESPACE XAndroidBinary::readHeaderNamespace(qint64 nOffset) {
+XANDROIDBINARY_DEF::HEADER_NAMESPACE XAndroidBinary::readHeaderNamespace(qint64 nOffset)
+{
     XANDROIDBINARY_DEF::HEADER_NAMESPACE result = {};
 
     result.header = readHeader(nOffset);
@@ -76,7 +83,8 @@ XANDROIDBINARY_DEF::HEADER_NAMESPACE XAndroidBinary::readHeaderNamespace(qint64 
     return result;
 }
 
-XANDROIDBINARY_DEF::HEADER_XML_START XAndroidBinary::readHeaderXmlStart(qint64 nOffset) {
+XANDROIDBINARY_DEF::HEADER_XML_START XAndroidBinary::readHeaderXmlStart(qint64 nOffset)
+{
     XANDROIDBINARY_DEF::HEADER_XML_START result = {};
 
     result.header = readHeader(nOffset);
@@ -94,7 +102,8 @@ XANDROIDBINARY_DEF::HEADER_XML_START XAndroidBinary::readHeaderXmlStart(qint64 n
     return result;
 }
 
-XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE XAndroidBinary::readHeaderXmlAttribute(qint64 nOffset) {
+XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE XAndroidBinary::readHeaderXmlAttribute(qint64 nOffset)
+{
     XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE result = {};
 
     result.ns = read_uint32(nOffset + offsetof(XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE, ns));
@@ -108,7 +117,8 @@ XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE XAndroidBinary::readHeaderXmlAttribute(
     return result;
 }
 
-XANDROIDBINARY_DEF::HEADER_XML_END XAndroidBinary::readHeaderXmlEnd(qint64 nOffset) {
+XANDROIDBINARY_DEF::HEADER_XML_END XAndroidBinary::readHeaderXmlEnd(qint64 nOffset)
+{
     XANDROIDBINARY_DEF::HEADER_XML_END result = {};
 
     result.header = readHeader(nOffset);
@@ -120,7 +130,8 @@ XANDROIDBINARY_DEF::HEADER_XML_END XAndroidBinary::readHeaderXmlEnd(qint64 nOffs
     return result;
 }
 
-QList<XANDROIDBINARY_DEF::HEADER> XAndroidBinary::getHeaders() {
+QList<XANDROIDBINARY_DEF::HEADER> XAndroidBinary::getHeaders()
+{
     QList<XANDROIDBINARY_DEF::HEADER> listHeaders;
 
     qint64 nTotalSize = getSize();
@@ -136,7 +147,8 @@ QList<XANDROIDBINARY_DEF::HEADER> XAndroidBinary::getHeaders() {
     return listHeaders;
 }
 
-XAndroidBinary::RECORD XAndroidBinary::getRecord(qint64 nOffset) {
+XAndroidBinary::RECORD XAndroidBinary::getRecord(qint64 nOffset)
+{
     RECORD result = {};
 
     result.header = readHeader(nOffset);
@@ -158,7 +170,8 @@ XAndroidBinary::RECORD XAndroidBinary::getRecord(qint64 nOffset) {
     return result;
 }
 
-QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord) {
+QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
+{
     QString sResult;
 
     if (pRecord->header.type == XANDROIDBINARY_DEF::RES_XML_TYPE) {
@@ -295,7 +308,8 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord) {
     return sResult;
 }
 
-QString XAndroidBinary::getDecoded(QIODevice *pDevice) {
+QString XAndroidBinary::getDecoded(QIODevice *pDevice)
+{
     QString sResult;
 
     XAndroidBinary xab(pDevice);
@@ -305,7 +319,8 @@ QString XAndroidBinary::getDecoded(QIODevice *pDevice) {
     return sResult;
 }
 
-QString XAndroidBinary::getDecoded(QString sFileName) {
+QString XAndroidBinary::getDecoded(QString sFileName)
+{
     QString sResult;
 
     QFile file;
@@ -320,7 +335,8 @@ QString XAndroidBinary::getDecoded(QString sFileName) {
     return sResult;
 }
 
-QString XAndroidBinary::getDecoded(QByteArray *pbaData) {
+QString XAndroidBinary::getDecoded(QByteArray *pbaData)
+{
     QString sResult;
 
     QBuffer buffer;
