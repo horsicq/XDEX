@@ -807,6 +807,9 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_I
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::FIELD_ITEM_ID);
 
+    qint32 _nFreeIndex = XBinary::getFreeIndex(pPdStruct);
+    XBinary::setPdStructInit(pPdStruct, _nFreeIndex, nSize);
+
     for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::FIELD_ITEM_ID) * i;
 
@@ -817,7 +820,11 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_I
         record.name_idx = _read_int32(pData + nOffset + offsetof(XDEX_DEF::FIELD_ITEM_ID, name_idx), bIsBigEndian);
 
         listResult.append(record);
+
+        XBinary::setPdStructCurrentIncrement(pPdStruct, _nFreeIndex);
     }
+
+    XBinary::setPdStructFinished(pPdStruct, _nFreeIndex);
 
     return listResult;
 }
@@ -839,6 +846,9 @@ QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::METHOD_ITEM_ID);
 
+    qint32 _nFreeIndex = XBinary::getFreeIndex(pPdStruct);
+    XBinary::setPdStructInit(pPdStruct, _nFreeIndex, nSize);
+
     for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::METHOD_ITEM_ID) * i;
 
@@ -849,7 +859,11 @@ QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP
         record.name_idx = _read_int32(pData + nOffset + offsetof(XDEX_DEF::METHOD_ITEM_ID, name_idx), bIsBigEndian);
 
         listResult.append(record);
+
+        XBinary::setPdStructCurrentIncrement(pPdStruct, _nFreeIndex);
     }
+
+    XBinary::setPdStructFinished(pPdStruct, _nFreeIndex);
 
     return listResult;
 }
@@ -901,11 +915,17 @@ QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *
 
     QByteArray baData = read_array(getHeader_data_off(), getHeader_data_size());
 
+    qint32 _nFreeIndex = XBinary::getFreeIndex(pPdStruct);
+    XBinary::setPdStructInit(pPdStruct, _nFreeIndex, map_strings.nCount);
+
     for (quint32 i = 0; (i < map_strings.nCount) && (!(pPdStruct->bIsStop)); i++) {
         QString sString = _getString(map_strings, i, bIsBigEndian, baData.data(), baData.size(), getHeader_data_off());
 
         listResult.append(sString);
+        XBinary::setPdStructCurrentIncrement(pPdStruct, _nFreeIndex);
     }
+
+    XBinary::setPdStructFinished(pPdStruct, _nFreeIndex);
 
     return listResult;
 }
@@ -985,6 +1005,9 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QL
 
     XDEX_DEF::MAP_ITEM map_items = getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM, pMapItems);
 
+    qint32 _nFreeIndex = XBinary::getFreeIndex(pPdStruct);
+    XBinary::setPdStructInit(pPdStruct, _nFreeIndex, map_items.nCount);
+
     for (quint32 i = 0; (i < map_items.nCount) && (!(pPdStruct->bIsStop)); i++) {
         quint32 nOffset = map_items.nOffset + sizeof(quint32) * i;
 
@@ -999,7 +1022,11 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QL
         //        {
         //            qDebug("Error");
         //        }
+
+        XBinary::setPdStructCurrentIncrement(pPdStruct, _nFreeIndex);
     }
+
+    XBinary::setPdStructFinished(pPdStruct, _nFreeIndex);
 
     return listResult;
 }
