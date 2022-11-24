@@ -154,7 +154,8 @@ XAndroidBinary::RECORD XAndroidBinary::getRecord(qint64 nOffset)
     result.header = readHeader(nOffset);
     result.nOffset = nOffset;
 
-    if ((result.header.type == XANDROIDBINARY_DEF::RES_XML_TYPE) || (result.header.type == XANDROIDBINARY_DEF::RES_TABLE_TYPE) || (result.header.type == XANDROIDBINARY_DEF::RES_TABLE_PACKAGE_TYPE)) {
+    if ((result.header.type == XANDROIDBINARY_DEF::RES_XML_TYPE) || (result.header.type == XANDROIDBINARY_DEF::RES_TABLE_TYPE) ||
+        (result.header.type == XANDROIDBINARY_DEF::RES_TABLE_PACKAGE_TYPE)) {
         qint64 nCurrentOffset = nOffset + result.header.header_size;
 
         while (nCurrentOffset < result.header.data_size) {
