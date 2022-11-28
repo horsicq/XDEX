@@ -49,7 +49,7 @@ public:
     virtual FT getFileType();
     virtual qint32 getType();
     virtual QString typeIdToString(qint32 nType);
-    virtual _MEMORY_MAP getMemoryMap();
+    virtual _MEMORY_MAP getMemoryMap(PDSTRUCT *pPdStruct = nullptr);
     virtual qint64 getFileFormatSize();
 
     quint32 getHeader_magic();

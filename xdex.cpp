@@ -37,7 +37,8 @@ bool XDEX::isValid()
 
     // TODO More checks(sizes,mb hashes)
 
-    bIsValid = compareSignature("'dex\n'......00");
+    _MEMORY_MAP memoryMap = XBinary::getMemoryMap();
+    bIsValid = compareSignature(&memoryMap, "'dex\n'......00");
 
     return bIsValid;
 }
@@ -105,7 +106,7 @@ QString XDEX::typeIdToString(qint32 nType)
     return sResult;
 }
 
-XBinary::_MEMORY_MAP XDEX::getMemoryMap()
+XBinary::_MEMORY_MAP XDEX::getMemoryMap(PDSTRUCT *pPdStruct)
 {
     _MEMORY_MAP result = {};
 
