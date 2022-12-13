@@ -108,6 +108,12 @@ QString XDEX::typeIdToString(qint32 nType)
 
 XBinary::_MEMORY_MAP XDEX::getMemoryMap(PDSTRUCT *pPdStruct)
 {
+    PDSTRUCT ppStructEmpty = {};
+
+    if (!pPdStruct) {
+        pPdStruct = &ppStructEmpty;
+    }
+
     _MEMORY_MAP result = {};
 
     qint64 nTotalSize = getSize();
