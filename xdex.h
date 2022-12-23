@@ -42,7 +42,6 @@ public:
     virtual bool isValid();
     quint32 _getVersion();
     virtual QString getVersion();
-
     virtual bool isBigEndian();
     virtual MODE getMode();
     virtual QString getArch();
