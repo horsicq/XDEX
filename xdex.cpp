@@ -108,10 +108,11 @@ QString XDEX::typeIdToString(qint32 nType)
 
 XBinary::_MEMORY_MAP XDEX::getMemoryMap(PDSTRUCT *pPdStruct)
 {
-    PDSTRUCT ppStructEmpty = {};
+    PDSTRUCT pdStructEmpty = {};
 
     if (!pPdStruct) {
-        pPdStruct = &ppStructEmpty;
+        XBinary::_pdStructInit(&pdStructEmpty);
+        pPdStruct = &pdStructEmpty;
     }
 
     _MEMORY_MAP result = {};
@@ -799,10 +800,11 @@ QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_I
 
 QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct)
 {
-    PDSTRUCT processDataEmpty = {};
+    PDSTRUCT pdStructEmpty = {};
 
     if (!pPdStruct) {
-        pPdStruct = &processDataEmpty;
+        XBinary::_pdStructInit(&pdStructEmpty);
+        pPdStruct = &pdStructEmpty;
     }
 
     QList<XDEX_DEF::FIELD_ITEM_ID> listResult;
@@ -838,10 +840,11 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_I
 
 QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct)
 {
-    PDSTRUCT processDataEmpty = {};
+    PDSTRUCT pdStructEmpty = {};
 
     if (!pPdStruct) {
-        pPdStruct = &processDataEmpty;
+        XBinary::_pdStructInit(&pdStructEmpty);
+        pPdStruct = &pdStructEmpty;
     }
 
     QList<XDEX_DEF::METHOD_ITEM_ID> listResult;
@@ -911,6 +914,7 @@ QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *
     PDSTRUCT pdStructEmpty = {};
 
     if (!pPdStruct) {
+        XBinary::_pdStructInit(&pdStructEmpty);
         pPdStruct = &pdStructEmpty;
     }
 
@@ -1000,10 +1004,11 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QL
 {
     QList<QString> listResult;
 
-    PDSTRUCT processDataEmpty = {};
+    PDSTRUCT pdStructEmpty = {};
 
     if (!pPdStruct) {
-        pPdStruct = &processDataEmpty;
+        XBinary::_pdStructInit(&pdStructEmpty);
+        pPdStruct = &pdStructEmpty;
     }
 
     bool bIsBigEndian = isBigEndian();
