@@ -161,6 +161,10 @@ XAndroidBinary::RECORD XAndroidBinary::getRecord(qint64 nOffset)
         while (nCurrentOffset < result.header.data_size) {
             RECORD record = getRecord(nCurrentOffset);
 
+            if (record.header.data_size == 0) {
+                break;
+            }
+
             result.listChildren.append(record);
 
             nCurrentOffset += record.header.data_size;
