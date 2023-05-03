@@ -99,7 +99,7 @@ QString XDEX::typeIdToString(qint32 nType)
             sResult = tr("Unknown");
             break;
         case TYPE_MODULE:
-            sResult = QString("Module");
+            sResult = QString("Module"); // mb translate
             break;
     }
 
