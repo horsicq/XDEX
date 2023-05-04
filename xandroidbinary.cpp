@@ -323,7 +323,7 @@ QString XAndroidBinary::getDecoded(QIODevice *pDevice)
     return sResult;
 }
 
-QString XAndroidBinary::getDecoded(QString sFileName)
+QString XAndroidBinary::getDecoded(const QString &sFileName)
 {
     QString sResult;
 
