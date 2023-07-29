@@ -110,7 +110,6 @@ public:
 
     static QMap<quint64, QString> getTypes();
     static QMap<quint64, QString> getTypesS();
-
     static XDEX_DEF::MAP_ITEM getMapItem(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
     QList<XDEX_DEF::STRING_ITEM_ID> getList_STRING_ITEM_ID();
