@@ -332,7 +332,6 @@ QString XAndroidBinary::getDecoded(const QString &sFileName)
 
     if (file.open(QIODevice::ReadOnly)) {
         sResult = getDecoded(&file);
-
         file.close();
     }
 
