@@ -24,11 +24,11 @@ XAndroidBinary::XAndroidBinary(QIODevice *pDevice) : XBinary(pDevice)
 {
 }
 
-bool XAndroidBinary::isValid()
+bool XAndroidBinary::isValid(PDSTRUCT *pPdStruct)
 {
     bool bIsValid = false;
 
-    _MEMORY_MAP memoryMap = getMemoryMap();
+    _MEMORY_MAP memoryMap = XBinary::getMemoryMap();
 
     bIsValid = compareSignature(&memoryMap, "03000800") || compareSignature(&memoryMap, "02000C00");
 

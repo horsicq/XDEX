@@ -39,7 +39,7 @@ public:
     XDEX(QIODevice *pDevice);
 
     static MODE getMode(QIODevice *pDevice);
-    virtual bool isValid();
+    virtual bool isValid(PDSTRUCT *pPdStruct = nullptr);
     quint32 _getVersion();
     virtual QString getVersion();
     virtual bool isBigEndian();

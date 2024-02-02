@@ -31,7 +31,7 @@ XBinary::MODE XDEX::getMode(QIODevice *pDevice)
     return xdex.getMode();
 }
 
-bool XDEX::isValid()
+bool XDEX::isValid(PDSTRUCT *pPdStruct)
 {
     bool bIsValid = false;
 

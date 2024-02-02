@@ -39,7 +39,7 @@ public:
 
     XAndroidBinary(QIODevice *pDevice);
 
-    virtual bool isValid();
+    virtual bool isValid(PDSTRUCT *pPdStruct = nullptr);
     virtual bool isBigEndian();
     virtual QString getVersion();
     XANDROIDBINARY_DEF::HEADER readHeader(qint64 nOffset);
