@@ -59,14 +59,19 @@ QString XDEX::getVersion()
     return read_ansiString(4);  // mb Check
 }
 
-bool XDEX::isBigEndian()
+XBinary::ENDIAN XDEX::getEndian()
 {
-    quint32 nEndian = read_uint32(offsetof(XDEX_DEF::HEADER, endian_tag));
+    ENDIAN result = ENDIAN_UNKNOWN;
 
-    return (nEndian != 0x12345678);
+    quint32 nData = read_uint32(offsetof(XDEX_DEF::HEADER, endian_tag));
 
-    //    return false; // TODO Check !!! There are dex files with
-    //    nEndian!=0x12345678,but LE
+    if (nData == 0x12345678) {
+        result = ENDIAN_LITTLE;
+    } else if (nData == 0x78563412) {
+        result = ENDIAN_BIG;
+    }
+
+    return result;
 }
 
 XBinary::MODE XDEX::getMode()
@@ -135,7 +140,7 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
     result.fileType = FT_DEX;
     result.mode = getMode();
     result.sArch = getArch();
-    result.bIsBigEndian = isBigEndian();
+    result.endian = getEndian();
     result.sType = getTypeAsString();
 
     qint32 nIndex = 0;

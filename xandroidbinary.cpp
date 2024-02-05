@@ -35,9 +35,9 @@ bool XAndroidBinary::isValid(PDSTRUCT *pPdStruct)
     return bIsValid;
 }
 
-bool XAndroidBinary::isBigEndian()
+XBinary::ENDIAN XAndroidBinary::getEndian()
 {
-    return false;  // TODO Check, need samples
+    return ENDIAN_LITTLE;
 }
 
 QString XAndroidBinary::getVersion()

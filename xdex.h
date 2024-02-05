@@ -42,7 +42,7 @@ public:
     virtual bool isValid(PDSTRUCT *pPdStruct = nullptr);
     quint32 _getVersion();
     virtual QString getVersion();
-    virtual bool isBigEndian();
+    virtual ENDIAN getEndian();
     virtual MODE getMode();
     virtual QString getArch();
     virtual FT getFileType();
