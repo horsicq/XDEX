@@ -53,6 +53,8 @@ public:
     virtual _MEMORY_MAP getMemoryMap(MAPMODE mapMode = MAPMODE_UNKNOWN, PDSTRUCT *pPdStruct = nullptr);
     virtual qint64 getFileFormatSize();
 
+    virtual OSINFO getOsInfo();
+
     quint32 getHeader_magic();
     quint32 getHeader_version();
     quint32 getHeader_checksum();

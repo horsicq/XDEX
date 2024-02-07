@@ -28,9 +28,9 @@ bool XAndroidBinary::isValid(PDSTRUCT *pPdStruct)
 {
     bool bIsValid = false;
 
-    _MEMORY_MAP memoryMap = XBinary::getMemoryMap();
+    _MEMORY_MAP memoryMap = XBinary::getMemoryMap(MAPMODE_UNKNOWN, pPdStruct);
 
-    bIsValid = compareSignature(&memoryMap, "03000800") || compareSignature(&memoryMap, "02000C00");
+    bIsValid = compareSignature(&memoryMap, "03000800", 0, pPdStruct) || compareSignature(&memoryMap, "02000C00", 0, pPdStruct);
 
     return bIsValid;
 }
