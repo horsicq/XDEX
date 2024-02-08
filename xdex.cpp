@@ -37,8 +37,8 @@ bool XDEX::isValid(PDSTRUCT *pPdStruct)
 
     // TODO More checks(sizes,mb hashes)
 
-    _MEMORY_MAP memoryMap = XBinary::getMemoryMap();
-    bIsValid = compareSignature(&memoryMap, "'dex\n'......00");
+    _MEMORY_MAP memoryMap = XBinary::getMemoryMap(MAPMODE_UNKNOWN, pPdStruct);
+    bIsValid = compareSignature(&memoryMap, "'dex\n'......00", 0, pPdStruct);
 
     return bIsValid;
 }
