@@ -54,6 +54,7 @@ public:
     static QString getDecoded(QIODevice *pDevice);
     static QString getDecoded(const QString &sFileName);
     static QString getDecoded(QByteArray *pbaData);
+    virtual FT getFileType();
 };
 
 #endif  // XANDROIDBINARY_H

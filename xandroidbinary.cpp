@@ -354,3 +354,16 @@ QString XAndroidBinary::getDecoded(QByteArray *pbaData)
 
     return sResult;
 }
+
+XBinary::FT XAndroidBinary::getFileType()
+{
+    XBinary::FT result = FT_ANDROIDXML;
+
+    _MEMORY_MAP memoryMap = XBinary::getMemoryMap(MAPMODE_UNKNOWN);
+
+    if(compareSignature(&memoryMap, "02000C00", 0)) {
+        result = FT_ANDROIDASRC;
+    }
+
+    return result;
+}
