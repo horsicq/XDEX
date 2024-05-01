@@ -361,7 +361,7 @@ XBinary::FT XAndroidBinary::getFileType()
 
     _MEMORY_MAP memoryMap = XBinary::getMemoryMap(MAPMODE_UNKNOWN);
 
-    if(compareSignature(&memoryMap, "02000C00", 0)) {
+    if (compareSignature(&memoryMap, "02000C00", 0)) {
         result = FT_ANDROIDASRC;
     }
 
