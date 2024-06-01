@@ -595,8 +595,14 @@ quint32 XDEX::getHeaderSize()
     return sizeof(XDEX_DEF::HEADER);
 }
 
-QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems()
+QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems(PDSTRUCT *pPdStruct)
 {
+    PDSTRUCT pdStructEmpty = XBinary::createPdStruct();
+
+    if (!pPdStruct) {
+        pPdStruct = &pdStructEmpty;
+    }
+
     QList<XDEX_DEF::MAP_ITEM> listResult;
 
     qint64 nOffset = getHeader_map_off();
@@ -608,7 +614,7 @@ QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems()
     nOffset += 4;
 
     if (nNumberOfItems < 0x100) {
-        for (quint32 i = 0; i < nNumberOfItems; i++) {
+        for (quint32 i = 0; (i < nNumberOfItems) && (!(pPdStruct->bIsStop)); i++) {
             XDEX_DEF::MAP_ITEM map_item = {};
 
             map_item.nType = read_uint16(nOffset, bIsBigEndian);
@@ -651,15 +657,15 @@ bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> 
     return bResult;
 }
 
-quint64 XDEX::getMapItemsHash()
+quint64 XDEX::getMapItemsHash(PDSTRUCT *pPdStruct)
 {
     quint64 nResult = 0;
 
-    QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems();
+    QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems(pPdStruct);
 
     qint32 nNumberOfMapItems = listMapItems.count();
 
-    for (qint32 i = 0; i < nNumberOfMapItems; i++) {
+    for (qint32 i = 0; (i < nNumberOfMapItems) && (!(pPdStruct->bIsStop)); i++) {
         nResult += (quint64)i * getStringCustomCRC32(QString::number(listMapItems.at(i).nType));
     }
 
@@ -758,14 +764,14 @@ XDEX_DEF::MAP_ITEM XDEX::getMapItem(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pM
     return result;
 }
 
-QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID()
+QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID(PDSTRUCT *pPdStruct)
 {
-    QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems();
+    QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems(pPdStruct);
 
-    return getList_STRING_ITEM_ID(&listMapItems);
+    return getList_STRING_ITEM_ID(&listMapItems, pPdStruct);
 }
 
-QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems)
+QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct)
 {
     QList<XDEX_DEF::STRING_ITEM_ID> listResult;
 
@@ -777,7 +783,7 @@ QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID(QList<XDEX_DEF::MAP
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::STRING_ITEM_ID);
 
-    for (qint32 i = 0; i < nSize; i++) {
+    for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::STRING_ITEM_ID) * i;
 
         XDEX_DEF::STRING_ITEM_ID record = {};
@@ -790,14 +796,14 @@ QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID(QList<XDEX_DEF::MAP
     return listResult;
 }
 
-QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID()
+QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(PDSTRUCT *pPdStruct)
 {
-    QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems();
+    QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems(pPdStruct);
 
-    return getList_TYPE_ITEM_ID(&listMapItems);
+    return getList_TYPE_ITEM_ID(&listMapItems, pPdStruct);
 }
 
-QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems)
+QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct)
 {
     QList<XDEX_DEF::TYPE_ITEM_ID> listResult;
 
@@ -808,7 +814,7 @@ QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITE
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::TYPE_ITEM_ID);
 
-    for (qint32 i = 0; i < nSize; i++) {
+    for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::TYPE_ITEM_ID) * i;
 
         XDEX_DEF::TYPE_ITEM_ID record = {};
@@ -821,7 +827,7 @@ QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITE
     return listResult;
 }
 
-QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems)
+QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct)
 {
     QList<XDEX_DEF::PROTO_ITEM_ID> listResult;
 
@@ -832,7 +838,7 @@ QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_I
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::PROTO_ITEM_ID);
 
-    for (qint32 i = 0; i < nSize; i++) {
+    for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::PROTO_ITEM_ID) * i;
 
         XDEX_DEF::PROTO_ITEM_ID record = {};
@@ -925,7 +931,7 @@ QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP
     return listResult;
 }
 
-QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP_ITEM> *pListMapItems)
+QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct)
 {
     QList<XDEX_DEF::CLASS_ITEM_DEF> listResult;
 
@@ -936,7 +942,7 @@ QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP
     char *pData = baData.data();
     qint32 nSize = baData.size() / sizeof(XDEX_DEF::CLASS_ITEM_DEF);
 
-    for (qint32 i = 0; i < nSize; i++) {
+    for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::CLASS_ITEM_DEF) * i;
 
         XDEX_DEF::CLASS_ITEM_DEF record = {};
@@ -1224,7 +1230,7 @@ QMap<quint64, QString> XDEX::getHeaderEndianTags()
     return mapResult;
 }
 
-bool XDEX::isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems)
+bool XDEX::isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct)
 {
     bool bResult = true;
 
@@ -1304,9 +1310,9 @@ QString XDEX::getFileFormatString()
     return sResult;
 }
 
-bool XDEX::isStringPoolSorted()
+bool XDEX::isStringPoolSorted(PDSTRUCT *pPdStruct)
 {
-    QList<XDEX_DEF::MAP_ITEM> mapItems = getMapItems();
+    QList<XDEX_DEF::MAP_ITEM> mapItems = getMapItems(pPdStruct);
 
-    return isStringPoolSorted(&mapItems);
+    return isStringPoolSorted(&mapItems, pPdStruct);
 }

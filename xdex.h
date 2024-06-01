@@ -106,24 +106,24 @@ public:
 
     XDEX_DEF::HEADER getHeader();
     quint32 getHeaderSize();
-    QList<XDEX_DEF::MAP_ITEM> getMapItems();
+    QList<XDEX_DEF::MAP_ITEM> getMapItems(PDSTRUCT *pPdStruct = nullptr);
 
     static bool compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> *pListIDs);
-    quint64 getMapItemsHash();
+    quint64 getMapItemsHash(PDSTRUCT *pPdStruct);
     static bool isMapItemPresent(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
     static QMap<quint64, QString> getTypes();
     static QMap<quint64, QString> getTypesS();
     static XDEX_DEF::MAP_ITEM getMapItem(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems);
 
-    QList<XDEX_DEF::STRING_ITEM_ID> getList_STRING_ITEM_ID();
-    QList<XDEX_DEF::STRING_ITEM_ID> getList_STRING_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
-    QList<XDEX_DEF::TYPE_ITEM_ID> getList_TYPE_ITEM_ID();
-    QList<XDEX_DEF::TYPE_ITEM_ID> getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
-    QList<XDEX_DEF::PROTO_ITEM_ID> getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
+    QList<XDEX_DEF::STRING_ITEM_ID> getList_STRING_ITEM_ID(PDSTRUCT *pPdStruct);
+    QList<XDEX_DEF::STRING_ITEM_ID> getList_STRING_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct);
+    QList<XDEX_DEF::TYPE_ITEM_ID> getList_TYPE_ITEM_ID(PDSTRUCT *pPdStruct);
+    QList<XDEX_DEF::TYPE_ITEM_ID> getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct);
+    QList<XDEX_DEF::PROTO_ITEM_ID> getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct);
     QList<XDEX_DEF::FIELD_ITEM_ID> getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct = nullptr);
     QList<XDEX_DEF::METHOD_ITEM_ID> getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct = nullptr);
-    QList<XDEX_DEF::CLASS_ITEM_DEF> getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP_ITEM> *pListMapItems);
+    QList<XDEX_DEF::CLASS_ITEM_DEF> getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct);
 
     QList<QString> getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct = nullptr);
     QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian);
@@ -146,8 +146,8 @@ public:
     static QMap<quint64, QString> getHeaderVersions();
     static QMap<quint64, QString> getHeaderEndianTags();
 
-    bool isStringPoolSorted();
-    bool isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
+    bool isStringPoolSorted(PDSTRUCT *pPdStruct);
+    bool isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct);
     bool isFieldNamesUnicode(QList<XDEX_DEF::FIELD_ITEM_ID> *pListIDs, QList<QString> *pListStrings);
     bool isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs, QList<QString> *pListStrings);
 
