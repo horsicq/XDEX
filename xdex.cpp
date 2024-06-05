@@ -1042,14 +1042,20 @@ QString XDEX::_getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem, XDEX_DEF:
     return sResult;
 }
 
-QList<quint32> XDEX::_getTypeList(qint64 nOffset, bool bIsBigEndian)
+QList<quint32> XDEX::_getTypeList(qint64 nOffset, bool bIsBigEndian, PDSTRUCT *pPdStruct)
 {
+    PDSTRUCT pdStructEmpty = XBinary::createPdStruct();
+
+    if (!pPdStruct) {
+        pPdStruct = &pdStructEmpty;
+    }
+
     QList<quint32> listResult;
 
     if (nOffset) {
         quint32 nCount = read_uint32(nOffset, bIsBigEndian);
 
-        for (quint32 i = 0; i < nCount; i++) {
+        for (quint32 i = 0; (i < nCount) && (!(pPdStruct->bIsStop)); i++) {
             quint32 nType = read_uint32(nOffset + sizeof(quint32) * (1 + i), bIsBigEndian);
             listResult.append(nType);
         }
@@ -1100,7 +1106,7 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QL
     return listResult;
 }
 
-void XDEX::getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems)
+void XDEX::getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct)
 {
     bool bIsBigEndian = isBigEndian();
 
@@ -1120,7 +1126,7 @@ void XDEX::getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems)
         QString sProto = _getString(map_stringIdItem, record.shorty_idx, bIsBigEndian);
         QString sRet = _getTypeItemtString(map_stringIdItem, map_typeIdItem, record.return_type_idx, bIsBigEndian);
 
-        QList<quint32> listParams = _getTypeList(record.parameters_off, bIsBigEndian);
+        QList<quint32> listParams = _getTypeList(record.parameters_off, bIsBigEndian, pPdStruct);
 
         //        QString sDebugString=QString("%1 %2").arg(sRet,sProto);
 

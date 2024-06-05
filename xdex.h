@@ -129,9 +129,9 @@ public:
     QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian);
     QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian, char *pData, qint32 nDataSize, qint32 nDataOffset);
     QString _getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem, XDEX_DEF::MAP_ITEM map_typeItemId, quint32 nIndex, bool bIsBigEndian);
-    QList<quint32> _getTypeList(qint64 nOffset, bool bIsBigEndian);
+    QList<quint32> _getTypeList(qint64 nOffset, bool bIsBigEndian, PDSTRUCT *pPdStruct);
     QList<QString> getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QList<QString> *pListStrings, PDSTRUCT *pPdStruct = nullptr);
-    void getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems);
+    void getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct);
     QString getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId);
     QString getStringItemIdString(XDEX_DEF::STRING_ITEM_ID stringItemId, char *pData, qint32 nDataSize, qint32 nDataOffset);
     QString getStringItemIdString(QList<XDEX_DEF::STRING_ITEM_ID> *pList, qint32 nIndex, char *pData, qint32 nDataSize, qint32 nDataOffset);
