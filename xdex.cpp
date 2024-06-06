@@ -109,10 +109,8 @@ QString XDEX::typeIdToString(qint32 nType)
     return sResult;
 }
 
-QList<XBinary::MAPMODE> XDEX::getMapModesList(PDSTRUCT *pPdStruct)
+QList<XBinary::MAPMODE> XDEX::getMapModesList()
 {
-    Q_UNUSED(pPdStruct)
-
     QList<MAPMODE> listResult;
 
     listResult.append(MAPMODE_REGIONS);
