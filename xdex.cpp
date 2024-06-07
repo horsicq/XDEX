@@ -670,13 +670,19 @@ quint64 XDEX::getMapItemsHash(PDSTRUCT *pPdStruct)
     return nResult;
 }
 
-bool XDEX::isMapItemPresent(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems)
+bool XDEX::isMapItemPresent(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct)
 {
+    PDSTRUCT pdStructEmpty = XBinary::createPdStruct();
+
+    if (!pPdStruct) {
+        pPdStruct = &pdStructEmpty;
+    }
+
     bool bResult = false;
 
     qint32 nNumberOfItems = pMapItems->count();
 
-    for (qint32 i = 0; i < nNumberOfItems; i++) {
+    for (qint32 i = 0; (i < nNumberOfItems) && (!(pPdStruct->bIsStop)); i++) {
         if (pMapItems->at(i).nType == nType) {
             bResult = true;
 
