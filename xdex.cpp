@@ -276,8 +276,9 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
     return result;
 }
 
-qint64 XDEX::getFileFormatSize()
+qint64 XDEX::getFileFormatSize(PDSTRUCT *pPdStruct)
 {
+    Q_UNUSED(pPdStruct)
     qint64 nResult = 0;
 
     nResult = getHeader_file_size();  // TODO check mn _getRawSize
