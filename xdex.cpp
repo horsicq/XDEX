@@ -1257,7 +1257,7 @@ bool XDEX::isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pP
 
     qint32 nPrevStringOffset = 0;
 
-    for (quint32 i = 0; i < map_strings.nCount; i++) {
+    for (quint32 i = 0; (i < map_strings.nCount) && (!(pPdStruct->bIsStop)); i++) {
         qint64 nOffset = map_strings.nOffset + sizeof(quint32) * i;
 
         qint32 nStringOffset = (qint32)read_uint32(nOffset, bIsBigEndian);
