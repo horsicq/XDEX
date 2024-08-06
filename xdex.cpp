@@ -1274,14 +1274,14 @@ bool XDEX::isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pP
     return bResult;
 }
 
-bool XDEX::isFieldNamesUnicode(QList<XDEX_DEF::FIELD_ITEM_ID> *pListIDs, QList<QString> *pListStrings)
+bool XDEX::isFieldNamesUnicode(QList<XDEX_DEF::FIELD_ITEM_ID> *pListIDs, QList<QString> *pListStrings, PDSTRUCT *pPdStruct)
 {
     bool bResult = false;
 
     qint32 nNumberOfIds = pListIDs->count();
     qint32 nNumberOfStrings = pListStrings->count();
 
-    for (qint32 i = 0; i < nNumberOfIds; i++) {
+    for (qint32 i = 0; (i < nNumberOfIds) && (!(pPdStruct->bIsStop)); i++) {
         QString sString = getStringByIndex(pListStrings, pListIDs->at(i).name_idx, nNumberOfStrings);
 
         if (XBinary::isStringUnicode(sString)) {
