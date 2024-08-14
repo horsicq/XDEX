@@ -786,7 +786,7 @@ QList<XDEX_DEF::STRING_ITEM_ID> XDEX::getList_STRING_ITEM_ID(QList<XDEX_DEF::MAP
 
     QByteArray baData = read_array(mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::STRING_ITEM_ID));
     char *pData = baData.data();
-    qint32 nSize = baData.size() / sizeof(XDEX_DEF::STRING_ITEM_ID);
+    qint32 nSize = baData.size() / (qint32)sizeof(XDEX_DEF::STRING_ITEM_ID);
 
     for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::STRING_ITEM_ID) * i;
