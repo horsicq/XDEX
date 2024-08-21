@@ -879,7 +879,7 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_I
 
     QByteArray baData = read_array(mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::FIELD_ITEM_ID));
     char *pData = baData.data();
-    qint32 nSize = baData.size() / sizeof(XDEX_DEF::FIELD_ITEM_ID);
+    qint32 nSize = baData.size() / (qint32)sizeof(XDEX_DEF::FIELD_ITEM_ID);
 
     qint32 _nFreeIndex = XBinary::getFreeIndex(pPdStruct);
     XBinary::setPdStructInit(pPdStruct, _nFreeIndex, nSize);
@@ -918,7 +918,7 @@ QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP
 
     QByteArray baData = read_array(mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::METHOD_ITEM_ID));
     char *pData = baData.data();
-    qint32 nSize = baData.size() / sizeof(XDEX_DEF::METHOD_ITEM_ID);
+    qint32 nSize = baData.size() / (qint32)sizeof(XDEX_DEF::METHOD_ITEM_ID);
 
     qint32 _nFreeIndex = XBinary::getFreeIndex(pPdStruct);
     XBinary::setPdStructInit(pPdStruct, _nFreeIndex, nSize);
