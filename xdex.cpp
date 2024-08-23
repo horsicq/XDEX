@@ -957,7 +957,7 @@ QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP
 
     QByteArray baData = read_array(mapItem.nOffset, mapItem.nCount * sizeof(XDEX_DEF::CLASS_ITEM_DEF));
     char *pData = baData.data();
-    qint32 nSize = baData.size() / sizeof(XDEX_DEF::CLASS_ITEM_DEF);
+    qint32 nSize = baData.size() / (qint32)sizeof(XDEX_DEF::CLASS_ITEM_DEF);
 
     for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::CLASS_ITEM_DEF) * i;
