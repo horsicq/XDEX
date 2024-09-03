@@ -48,7 +48,7 @@ public:
     XANDROIDBINARY_DEF::HEADER_XML_START readHeaderXmlStart(qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE readHeaderXmlAttribute(qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_XML_END readHeaderXmlEnd(qint64 nOffset);
-    QList<XANDROIDBINARY_DEF::HEADER> getHeaders();  // TODO pdStruct
+    QList<XANDROIDBINARY_DEF::HEADER> getHeaders(PDSTRUCT *pPdStruct);
     RECORD getRecord(qint64 nOffset);
     QString recordToString(RECORD *pRecord);
     static QString getDecoded(QIODevice *pDevice);

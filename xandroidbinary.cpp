@@ -130,14 +130,20 @@ XANDROIDBINARY_DEF::HEADER_XML_END XAndroidBinary::readHeaderXmlEnd(qint64 nOffs
     return result;
 }
 
-QList<XANDROIDBINARY_DEF::HEADER> XAndroidBinary::getHeaders()
+QList<XANDROIDBINARY_DEF::HEADER> XAndroidBinary::getHeaders(PDSTRUCT *pPdStruct)
 {
+    PDSTRUCT pdStructEmpty = XBinary::createPdStruct();
+
+    if (!pPdStruct) {
+        pPdStruct = &pdStructEmpty;
+    }
+
     QList<XANDROIDBINARY_DEF::HEADER> listHeaders;
 
     qint64 nTotalSize = getSize();
     qint64 nCurrentOffset = 0;
 
-    while (nCurrentOffset < nTotalSize) {
+    while ((nCurrentOffset < nTotalSize) && (!(pPdStruct->bIsStop))) {
         XANDROIDBINARY_DEF::HEADER record = readHeader(nCurrentOffset);
         listHeaders.append(record);
 
