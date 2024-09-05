@@ -30,7 +30,7 @@ class XDEX : public XBinary {
 public:
     enum TYPE {
         TYPE_UNKNOWN = 0,
-        TYPE_MODULE
+        TYPE_MAINMODULE
         // TODO more
         // TODO main module !!! TODO Check
         // TODO the second module ...

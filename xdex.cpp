@@ -92,7 +92,7 @@ XBinary::FT XDEX::getFileType()
 qint32 XDEX::getType()
 {
     // TODO more (main module,second module etc)
-    return TYPE_MODULE;
+    return TYPE_MAINMODULE;
 }
 
 QString XDEX::typeIdToString(qint32 nType)
@@ -101,8 +101,8 @@ QString XDEX::typeIdToString(qint32 nType)
 
     switch (nType) {
         case TYPE_UNKNOWN: sResult = tr("Unknown"); break;
-        case TYPE_MODULE:
-            sResult = QString("Module");  // mb translate
+        case TYPE_MAINMODULE:
+            sResult = tr("Main module");
             break;
     }
 
