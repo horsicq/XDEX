@@ -101,9 +101,7 @@ QString XDEX::typeIdToString(qint32 nType)
 
     switch (nType) {
         case TYPE_UNKNOWN: sResult = tr("Unknown"); break;
-        case TYPE_MAINMODULE:
-            sResult = tr("Main module");
-            break;
+        case TYPE_MAINMODULE: sResult = tr("Main module"); break;
     }
 
     return sResult;
