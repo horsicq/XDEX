@@ -1326,7 +1326,6 @@ QString XDEX::getFileFormatString()
     QString sResult;
 
     sResult = QString("DEX(%1)").arg(getVersion());
-    // TODO more info
 
     return sResult;
 }
