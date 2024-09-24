@@ -132,9 +132,10 @@ XANDROIDBINARY_DEF::HEADER_XML_END XAndroidBinary::readHeaderXmlEnd(qint64 nOffs
 
 QList<XANDROIDBINARY_DEF::HEADER> XAndroidBinary::getHeaders(PDSTRUCT *pPdStruct)
 {
-    PDSTRUCT pdStructEmpty = XBinary::createPdStruct();
+    PDSTRUCT pdStructEmpty = {};
 
     if (!pPdStruct) {
+        pdStructEmpty = XBinary::createPdStruct();
         pPdStruct = &pdStructEmpty;
     }
 
