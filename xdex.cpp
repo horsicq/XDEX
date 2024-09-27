@@ -595,9 +595,10 @@ quint32 XDEX::getHeaderSize()
 
 QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems(PDSTRUCT *pPdStruct)
 {
-    PDSTRUCT pdStructEmpty = XBinary::createPdStruct();
+    XBinary::PDSTRUCT pdStructEmpty = {};
 
     if (!pPdStruct) {
+        pdStructEmpty = XBinary::createPdStruct();
         pPdStruct = &pdStructEmpty;
     }
 
