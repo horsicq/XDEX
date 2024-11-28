@@ -1,9 +1,12 @@
 include_directories(${CMAKE_CURRENT_LIST_DIR})
 
-include(${CMAKE_CURRENT_LIST_DIR}/../Formats/xbinary.cmake)
+if (NOT DEFINED XBINARY_SOURCES)
+    include(${CMAKE_CURRENT_LIST_DIR}/../Formats/xbinary.cmake)
+    set(XDEX_SOURCES ${XDEX_SOURCES} ${XBINARY_SOURCES})
+endif()
 
 set(XDEX_SOURCES
-    ${XBINARY_SOURCES}
+    ${XDEX_SOURCES}
     ${CMAKE_CURRENT_LIST_DIR}/xandroidbinary.cpp
     ${CMAKE_CURRENT_LIST_DIR}/xandroidbinary.h
     ${CMAKE_CURRENT_LIST_DIR}/xdex.cpp
