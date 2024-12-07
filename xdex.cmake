@@ -7,6 +7,7 @@ endif()
 
 set(XDEX_SOURCES
     ${XDEX_SOURCES}
+    ${XBINARY_SOURCES}
     ${CMAKE_CURRENT_LIST_DIR}/xandroidbinary.cpp
     ${CMAKE_CURRENT_LIST_DIR}/xandroidbinary.h
     ${CMAKE_CURRENT_LIST_DIR}/xdex.cpp
