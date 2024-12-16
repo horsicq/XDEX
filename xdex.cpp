@@ -112,14 +112,13 @@ QList<XBinary::MAPMODE> XDEX::getMapModesList()
     QList<MAPMODE> listResult;
 
     listResult.append(MAPMODE_REGIONS);
+    listResult.append(MAPMODE_MAPS);
 
     return listResult;
 }
 
 XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
 {
-    Q_UNUSED(mapMode)
-
     XBinary::PDSTRUCT pdStructEmpty = {};
 
     if (!pPdStruct) {
@@ -140,137 +139,183 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
     result.endian = getEndian();
     result.sType = getTypeAsString();
 
-    qint32 nIndex = 0;
-
     XDEX_DEF::HEADER header = getHeader();
 
-    _MEMORY_RECORD recordHeader = {};
-    recordHeader.nAddress = -1;
-    recordHeader.segment = ADDRESS_SEGMENT_FLAT;
-    recordHeader.nOffset = 0;
-    recordHeader.nSize = header.header_size;
-    recordHeader.nIndex = nIndex++;
-    recordHeader.type = MMT_HEADER;
-    recordHeader.sName = tr("Header");
+    if ((mapMode == MAPMODE_REGIONS) || (mapMode == MAPMODE_UNKNOWN)) {
+        qint32 nIndex = 0;
 
-    result.listRecords.append(recordHeader);
+        _MEMORY_RECORD recordHeader = {};
+        recordHeader.nAddress = -1;
+        recordHeader.segment = ADDRESS_SEGMENT_FLAT;
+        recordHeader.nOffset = 0;
+        recordHeader.nSize = header.header_size;
+        recordHeader.nIndex = nIndex++;
+        recordHeader.type = MMT_HEADER;
+        recordHeader.sName = tr("Header");
 
-    if (header.link_size) {
-        _MEMORY_RECORD record = {};
-        record.nAddress = -1;
-        record.segment = ADDRESS_SEGMENT_FLAT;
-        record.nOffset = header.link_off;
-        record.nSize = header.link_size;
-        record.nIndex = nIndex++;
-        record.type = MMT_FILESEGMENT;
-        record.sName = "link";
+        result.listRecords.append(recordHeader);
 
-        result.listRecords.append(record);
+        if (header.link_size) {
+            _MEMORY_RECORD record = {};
+            record.nAddress = -1;
+            record.segment = ADDRESS_SEGMENT_FLAT;
+            record.nOffset = header.link_off;
+            record.nSize = header.link_size;
+            record.nIndex = nIndex++;
+            record.type = MMT_FILESEGMENT;
+            record.sName = "link";
+
+            result.listRecords.append(record);
+        }
+
+        if (header.string_ids_size) {
+            _MEMORY_RECORD record = {};
+            record.nAddress = -1;
+            record.segment = ADDRESS_SEGMENT_FLAT;
+            record.nOffset = header.string_ids_off;
+            record.nSize = (header.string_ids_size) * sizeof(XDEX_DEF::STRING_ITEM_ID);
+            record.nIndex = nIndex++;
+            record.type = MMT_FILESEGMENT;
+            record.sName = "string_ids";
+
+            result.listRecords.append(record);
+        }
+
+        if (header.type_ids_size) {
+            _MEMORY_RECORD record = {};
+            record.nAddress = -1;
+            record.segment = ADDRESS_SEGMENT_FLAT;
+            record.nOffset = header.type_ids_off;
+            record.nSize = (header.type_ids_size) * sizeof(XDEX_DEF::TYPE_ITEM_ID);
+            record.nIndex = nIndex++;
+            record.type = MMT_FILESEGMENT;
+            record.sName = "type_ids";
+
+            result.listRecords.append(record);
+        }
+
+        if (header.proto_ids_size) {
+            _MEMORY_RECORD record = {};
+            record.nAddress = -1;
+            record.segment = ADDRESS_SEGMENT_FLAT;
+            record.nOffset = header.proto_ids_off;
+            record.nSize = (header.proto_ids_size) * sizeof(XDEX_DEF::PROTO_ITEM_ID);
+            record.nIndex = nIndex++;
+            record.type = MMT_FILESEGMENT;
+            record.sName = "proto_ids";
+
+            result.listRecords.append(record);
+        }
+
+        if (header.field_ids_size) {
+            _MEMORY_RECORD record = {};
+            record.nAddress = -1;
+            record.segment = ADDRESS_SEGMENT_FLAT;
+            record.nOffset = header.field_ids_off;
+            record.nSize = (header.field_ids_size) * sizeof(XDEX_DEF::FIELD_ITEM_ID);
+            record.nIndex = nIndex++;
+            record.type = MMT_FILESEGMENT;
+            record.sName = "field_ids";
+
+            result.listRecords.append(record);
+        }
+
+        if (header.method_ids_size) {
+            _MEMORY_RECORD record = {};
+            record.nAddress = -1;
+            record.segment = ADDRESS_SEGMENT_FLAT;
+            record.nOffset = header.method_ids_off;
+            record.nSize = (header.method_ids_size) * sizeof(XDEX_DEF::METHOD_ITEM_ID);
+            record.nIndex = nIndex++;
+            record.type = MMT_FILESEGMENT;
+            record.sName = "method_ids";
+
+            result.listRecords.append(record);
+        }
+
+        if (header.class_defs_size) {
+            _MEMORY_RECORD record = {};
+            record.nAddress = -1;
+            record.segment = ADDRESS_SEGMENT_FLAT;
+            record.nOffset = header.class_defs_off;
+            record.nSize = (header.class_defs_size) * sizeof(XDEX_DEF::CLASS_ITEM_DEF);
+            record.nIndex = nIndex++;
+            record.type = MMT_FILESEGMENT;
+            record.sName = "class_defs";
+
+            result.listRecords.append(record);
+        }
+
+        if (header.data_size) {
+            _MEMORY_RECORD record = {};
+            record.nAddress = -1;
+            record.segment = ADDRESS_SEGMENT_FLAT;
+            record.nOffset = header.data_off;
+            record.nSize = header.data_size;
+            record.nIndex = nIndex++;
+            record.type = MMT_FILESEGMENT;
+            record.sName = "data";
+
+            result.listRecords.append(record);
+        }
+
+        if ((header.data_off + header.data_size) < header.file_size) {
+            _MEMORY_RECORD recordOverlay = {};
+            recordOverlay.nAddress = -1;
+            recordOverlay.segment = ADDRESS_SEGMENT_FLAT;
+            recordOverlay.nOffset = (header.data_off + header.data_size);
+            recordOverlay.nSize = nTotalSize - (header.data_off + header.data_size);
+            recordOverlay.nIndex = nIndex++;
+            recordOverlay.type = MMT_OVERLAY;
+            recordOverlay.sName = tr("Overlay");
+
+            result.listRecords.append(recordOverlay);
+        }
+    } else if (mapMode == MAPMODE_MAPS) {
+        QMap<quint64, QString> mapTypes = getTypes();
+
+        QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems(pPdStruct);
+
+        qint32 nNumberOfRecords = listMapItems.count();
+
+        qint64 nMaxOffset = 0;
+        qint32 nIndex = 0;
+
+        for (int i = 0; (i < nNumberOfRecords) && (!(pPdStruct->bIsStop)); i++) {
+            XDEX_DEF::MAP_ITEM mapItem = listMapItems.at(i);
+
+            _MEMORY_RECORD record = {};
+            record.nAddress = -1;
+            record.segment = ADDRESS_SEGMENT_FLAT;
+            record.nOffset = mapItem.nOffset;
+            record.nSize = getDataSizeByType(mapItem.nType, mapItem.nOffset, mapItem.nCount, result.endian == XBinary::ENDIAN_BIG, pPdStruct);
+            record.nIndex = nIndex;
+            record.type = MMT_UNKNOWN;
+            record.sName = mapTypes.value(mapItem.nType);
+
+            result.listRecords.append(record);
+
+            if (record.nOffset + record.nSize > nMaxOffset) {
+                nMaxOffset = record.nOffset + record.nSize;
+            }
+
+            nIndex++;
+        }
+
+        if (nMaxOffset < header.file_size) {
+            _MEMORY_RECORD recordOverlay = {};
+            recordOverlay.nAddress = -1;
+            recordOverlay.segment = ADDRESS_SEGMENT_FLAT;
+            recordOverlay.nOffset = nMaxOffset;
+            recordOverlay.nSize = nTotalSize - nMaxOffset;
+            recordOverlay.nIndex = nIndex++;
+            recordOverlay.type = MMT_OVERLAY;
+            recordOverlay.sName = tr("Overlay");
+
+            result.listRecords.append(recordOverlay);
+        }
     }
 
-    if (header.string_ids_size) {
-        _MEMORY_RECORD record = {};
-        record.nAddress = -1;
-        record.segment = ADDRESS_SEGMENT_FLAT;
-        record.nOffset = header.string_ids_off;
-        record.nSize = (header.string_ids_size) * sizeof(XDEX_DEF::STRING_ITEM_ID);
-        record.nIndex = nIndex++;
-        record.type = MMT_FILESEGMENT;
-        record.sName = "string_ids";
-
-        result.listRecords.append(record);
-    }
-
-    if (header.type_ids_size) {
-        _MEMORY_RECORD record = {};
-        record.nAddress = -1;
-        record.segment = ADDRESS_SEGMENT_FLAT;
-        record.nOffset = header.type_ids_off;
-        record.nSize = (header.type_ids_size) * sizeof(XDEX_DEF::TYPE_ITEM_ID);
-        record.nIndex = nIndex++;
-        record.type = MMT_FILESEGMENT;
-        record.sName = "type_ids";
-
-        result.listRecords.append(record);
-    }
-
-    if (header.proto_ids_size) {
-        _MEMORY_RECORD record = {};
-        record.nAddress = -1;
-        record.segment = ADDRESS_SEGMENT_FLAT;
-        record.nOffset = header.proto_ids_off;
-        record.nSize = (header.proto_ids_size) * sizeof(XDEX_DEF::PROTO_ITEM_ID);
-        record.nIndex = nIndex++;
-        record.type = MMT_FILESEGMENT;
-        record.sName = "proto_ids";
-
-        result.listRecords.append(record);
-    }
-
-    if (header.field_ids_size) {
-        _MEMORY_RECORD record = {};
-        record.nAddress = -1;
-        record.segment = ADDRESS_SEGMENT_FLAT;
-        record.nOffset = header.field_ids_off;
-        record.nSize = (header.field_ids_size) * sizeof(XDEX_DEF::FIELD_ITEM_ID);
-        record.nIndex = nIndex++;
-        record.type = MMT_FILESEGMENT;
-        record.sName = "field_ids";
-
-        result.listRecords.append(record);
-    }
-
-    if (header.method_ids_size) {
-        _MEMORY_RECORD record = {};
-        record.nAddress = -1;
-        record.segment = ADDRESS_SEGMENT_FLAT;
-        record.nOffset = header.method_ids_off;
-        record.nSize = (header.method_ids_size) * sizeof(XDEX_DEF::METHOD_ITEM_ID);
-        record.nIndex = nIndex++;
-        record.type = MMT_FILESEGMENT;
-        record.sName = "method_ids";
-
-        result.listRecords.append(record);
-    }
-
-    if (header.class_defs_size) {
-        _MEMORY_RECORD record = {};
-        record.nAddress = -1;
-        record.segment = ADDRESS_SEGMENT_FLAT;
-        record.nOffset = header.class_defs_off;
-        record.nSize = (header.class_defs_size) * sizeof(XDEX_DEF::CLASS_ITEM_DEF);
-        record.nIndex = nIndex++;
-        record.type = MMT_FILESEGMENT;
-        record.sName = "class_defs";
-
-        result.listRecords.append(record);
-    }
-
-    if (header.data_size) {
-        _MEMORY_RECORD record = {};
-        record.nAddress = -1;
-        record.segment = ADDRESS_SEGMENT_FLAT;
-        record.nOffset = header.data_off;
-        record.nSize = header.data_size;
-        record.nIndex = nIndex++;
-        record.type = MMT_FILESEGMENT;
-        record.sName = "data";
-
-        result.listRecords.append(record);
-    }
-
-    if ((header.data_off + header.data_size) < header.file_size) {
-        _MEMORY_RECORD recordOverlay = {};
-        recordOverlay.nAddress = -1;
-        recordOverlay.segment = ADDRESS_SEGMENT_FLAT;
-        recordOverlay.nOffset = (header.data_off + header.data_size);
-        recordOverlay.nSize = nTotalSize - (header.data_off + header.data_size);
-        recordOverlay.nIndex = nIndex++;
-        recordOverlay.type = MMT_OVERLAY;
-        recordOverlay.sName = tr("Overlay");
-
-        result.listRecords.append(recordOverlay);
-    }
 
     return result;
 }
@@ -656,16 +701,14 @@ bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> 
     return bResult;
 }
 
-quint64 XDEX::getMapItemsHash(PDSTRUCT *pPdStruct)
+quint64 XDEX::getMapItemsHash(QList<XDEX_DEF::MAP_ITEM> *pListMaps, PDSTRUCT *pPdStruct)
 {
     quint64 nResult = 0;
 
-    QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems(pPdStruct);
-
-    qint32 nNumberOfMapItems = listMapItems.count();
+    qint32 nNumberOfMapItems = pListMaps->count();
 
     for (qint32 i = 0; (i < nNumberOfMapItems) && (!(pPdStruct->bIsStop)); i++) {
-        nResult += (quint64)i * getStringCustomCRC32(QString::number(listMapItems.at(i).nType));
+        nResult += (quint64)i * getStringCustomCRC32(QString::number(pListMaps->at(i).nType));
     }
 
     return nResult;
@@ -1324,6 +1367,48 @@ bool XDEX::isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs, QList
     }
 
     return bResult;
+}
+
+qint64 XDEX::getDataSizeByType(qint32 nType, qint64 nOffset, qint32 nCount, bool bIsBigEndian, PDSTRUCT *pPdStruct)
+{
+    Q_UNUSED(pPdStruct)
+
+    qint64 nResult = 0;
+
+    if (nType == XDEX_DEF::TYPE_HEADER_ITEM) {
+        nResult = 0x70;
+    } else if ( (nType == XDEX_DEF::TYPE_STRING_ID_ITEM) ||
+                (nType == XDEX_DEF::TYPE_TYPE_ID_ITEM) ||
+                (nType == XDEX_DEF::TYPE_CALL_SITE_ID_ITEM) ) {
+        nResult = nCount * 4;
+    } else if (nType == XDEX_DEF::TYPE_PROTO_ID_ITEM) {
+        nResult = nCount * 12;
+    } else if ( (nType == XDEX_DEF::TYPE_FIELD_ID_ITEM) ||
+                (nType == XDEX_DEF::TYPE_METHOD_ID_ITEM) ||
+                (nType == XDEX_DEF::TYPE_METHOD_HANDLE_ITEM)) {
+        nResult = nCount * 8;
+    } else if (nType == XDEX_DEF::TYPE_CLASS_DEF_ITEM) {
+        nResult = nCount * 32;
+    } else if (nType == XDEX_DEF::TYPE_MAP_LIST) {
+        nCount = read_uint32(nOffset, bIsBigEndian);
+        nResult = 4 + (nCount * 12);
+    } else if (nType == XDEX_DEF::TYPE_TYPE_LIST) {
+        nResult = 4 + (nCount * 2);
+    } else if ( (nType == XDEX_DEF::TYPE_ANNOTATION_SET_REF_LIST) ||
+                (nType == XDEX_DEF::TYPE_ANNOTATION_SET_ITEM)) {
+        nResult = 4 + (nCount * 4);
+    } else if ( (nType == XDEX_DEF::TYPE_CLASS_DATA_ITEM) ||
+                (nType == XDEX_DEF::TYPE_CODE_ITEM) ||
+                (nType == XDEX_DEF::TYPE_STRING_DATA_ITEM) ||
+                (nType == XDEX_DEF::TYPE_DEBUG_INFO_ITEM) ||
+                (nType == XDEX_DEF::TYPE_ANNOTATION_ITEM) ||
+                (nType == XDEX_DEF::TYPE_ENCODED_ARRAY_ITEM) ||
+                (nType == XDEX_DEF::TYPE_ANNOTATIONS_DIRECTORY_ITEM) ||
+                (nType == XDEX_DEF::TYPE_HIDDENAPI_CLASS_DATA_ITEM) ) {
+        nResult = 1; // TODO
+    }
+
+    return nResult;
 }
 
 QString XDEX::getFileFormatExt()
