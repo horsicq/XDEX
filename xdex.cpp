@@ -316,7 +316,6 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         }
     }
 
-
     return result;
 }
 
@@ -1377,15 +1376,11 @@ qint64 XDEX::getDataSizeByType(qint32 nType, qint64 nOffset, qint32 nCount, bool
 
     if (nType == XDEX_DEF::TYPE_HEADER_ITEM) {
         nResult = 0x70;
-    } else if ( (nType == XDEX_DEF::TYPE_STRING_ID_ITEM) ||
-                (nType == XDEX_DEF::TYPE_TYPE_ID_ITEM) ||
-                (nType == XDEX_DEF::TYPE_CALL_SITE_ID_ITEM) ) {
+    } else if ((nType == XDEX_DEF::TYPE_STRING_ID_ITEM) || (nType == XDEX_DEF::TYPE_TYPE_ID_ITEM) || (nType == XDEX_DEF::TYPE_CALL_SITE_ID_ITEM)) {
         nResult = nCount * 4;
     } else if (nType == XDEX_DEF::TYPE_PROTO_ID_ITEM) {
         nResult = nCount * 12;
-    } else if ( (nType == XDEX_DEF::TYPE_FIELD_ID_ITEM) ||
-                (nType == XDEX_DEF::TYPE_METHOD_ID_ITEM) ||
-                (nType == XDEX_DEF::TYPE_METHOD_HANDLE_ITEM)) {
+    } else if ((nType == XDEX_DEF::TYPE_FIELD_ID_ITEM) || (nType == XDEX_DEF::TYPE_METHOD_ID_ITEM) || (nType == XDEX_DEF::TYPE_METHOD_HANDLE_ITEM)) {
         nResult = nCount * 8;
     } else if (nType == XDEX_DEF::TYPE_CLASS_DEF_ITEM) {
         nResult = nCount * 32;
@@ -1394,18 +1389,12 @@ qint64 XDEX::getDataSizeByType(qint32 nType, qint64 nOffset, qint32 nCount, bool
         nResult = 4 + (nCount * 12);
     } else if (nType == XDEX_DEF::TYPE_TYPE_LIST) {
         nResult = 4 + (nCount * 2);
-    } else if ( (nType == XDEX_DEF::TYPE_ANNOTATION_SET_REF_LIST) ||
-                (nType == XDEX_DEF::TYPE_ANNOTATION_SET_ITEM)) {
+    } else if ((nType == XDEX_DEF::TYPE_ANNOTATION_SET_REF_LIST) || (nType == XDEX_DEF::TYPE_ANNOTATION_SET_ITEM)) {
         nResult = 4 + (nCount * 4);
-    } else if ( (nType == XDEX_DEF::TYPE_CLASS_DATA_ITEM) ||
-                (nType == XDEX_DEF::TYPE_CODE_ITEM) ||
-                (nType == XDEX_DEF::TYPE_STRING_DATA_ITEM) ||
-                (nType == XDEX_DEF::TYPE_DEBUG_INFO_ITEM) ||
-                (nType == XDEX_DEF::TYPE_ANNOTATION_ITEM) ||
-                (nType == XDEX_DEF::TYPE_ENCODED_ARRAY_ITEM) ||
-                (nType == XDEX_DEF::TYPE_ANNOTATIONS_DIRECTORY_ITEM) ||
-                (nType == XDEX_DEF::TYPE_HIDDENAPI_CLASS_DATA_ITEM) ) {
-        nResult = 1; // TODO
+    } else if ((nType == XDEX_DEF::TYPE_CLASS_DATA_ITEM) || (nType == XDEX_DEF::TYPE_CODE_ITEM) || (nType == XDEX_DEF::TYPE_STRING_DATA_ITEM) ||
+               (nType == XDEX_DEF::TYPE_DEBUG_INFO_ITEM) || (nType == XDEX_DEF::TYPE_ANNOTATION_ITEM) || (nType == XDEX_DEF::TYPE_ENCODED_ARRAY_ITEM) ||
+               (nType == XDEX_DEF::TYPE_ANNOTATIONS_DIRECTORY_ITEM) || (nType == XDEX_DEF::TYPE_HIDDENAPI_CLASS_DATA_ITEM)) {
+        nResult = 1;  // TODO
     }
 
     return nResult;
