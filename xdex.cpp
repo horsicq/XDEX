@@ -40,6 +40,10 @@ bool XDEX::isValid(PDSTRUCT *pPdStruct)
     _MEMORY_MAP memoryMap = XBinary::getMemoryMap(MAPMODE_UNKNOWN, pPdStruct);
     bIsValid = compareSignature(&memoryMap, "'dex\n'......00", 0, pPdStruct);
 
+    if (bIsValid) {
+        bIsValid = (_getVersion() >= 35);
+    }
+
     return bIsValid;
 }
 
@@ -302,18 +306,18 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
             nIndex++;
         }
 
-        if (nMaxOffset < header.file_size) {
-            _MEMORY_RECORD recordOverlay = {};
-            recordOverlay.nAddress = -1;
-            recordOverlay.segment = ADDRESS_SEGMENT_FLAT;
-            recordOverlay.nOffset = nMaxOffset;
-            recordOverlay.nSize = nTotalSize - nMaxOffset;
-            recordOverlay.nIndex = nIndex++;
-            recordOverlay.type = MMT_OVERLAY;
-            recordOverlay.sName = tr("Overlay");
+        // if (nMaxOffset < header.file_size) {
+        //     _MEMORY_RECORD recordOverlay = {};
+        //     recordOverlay.nAddress = -1;
+        //     recordOverlay.segment = ADDRESS_SEGMENT_FLAT;
+        //     recordOverlay.nOffset = nMaxOffset;
+        //     recordOverlay.nSize = nTotalSize - nMaxOffset;
+        //     recordOverlay.nIndex = nIndex++;
+        //     recordOverlay.type = MMT_OVERLAY;
+        //     recordOverlay.sName = tr("Overlay");
 
-            result.listRecords.append(recordOverlay);
-        }
+        //     result.listRecords.append(recordOverlay);
+        // }
     }
 
     return result;
