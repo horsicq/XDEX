@@ -88,6 +88,39 @@ QString XDEX::getArch()
     return QString("Dalvik");  // TODO Check
 }
 
+QString XDEX::getOsVersion()
+{
+    QString sVersion;
+
+    QString sDDEXVersion = getVersion();
+
+    // https://source.android.com/devices/tech/dalvik/dex-format
+    if (sDDEXVersion == "035") {
+        sVersion = XBinary::getAndroidVersionFromApi(14);
+    }
+    //        else if (sDDEXVersion=="036")
+    //        {
+    //            // Due to a Dalvik bug present in older versions of Android, Dex version 036 has been skipped.
+    //            // Dex version 036 is not valid for any version of Android and never will be.
+    //        }
+    else if (sDDEXVersion == "037") {
+        sVersion = XBinary::getAndroidVersionFromApi(24);
+    } else if (sDDEXVersion == "038") {
+        sVersion = XBinary::getAndroidVersionFromApi(26);
+    } else if (sDDEXVersion == "039") {
+        sVersion = XBinary::getAndroidVersionFromApi(28);
+    } else {
+        sVersion = sDDEXVersion;
+    }
+
+    return sVersion;
+}
+
+XBinary::OSNAME XDEX::getOsName()
+{
+    return OSNAME_ANDROID;
+}
+
 XBinary::FT XDEX::getFileType()
 {
     return FT_DEX;
@@ -331,40 +364,6 @@ qint64 XDEX::getFileFormatSize(PDSTRUCT *pPdStruct)
     nResult = getHeader_file_size();  // TODO check mn _getRawSize
 
     return nResult;
-}
-
-XBinary::OSINFO XDEX::getOsInfo()
-{
-    OSINFO result = {};
-
-    result.osName = OSNAME_ANDROID;
-    result.sArch = getArch();
-    result.mode = getMode();
-    result.sType = typeIdToString(getType());
-    result.endian = getEndian();
-
-    QString sDDEXVersion = getVersion();
-
-    // https://source.android.com/devices/tech/dalvik/dex-format
-    if (sDDEXVersion == "035") {
-        result.sOsVersion = XBinary::getAndroidVersionFromApi(14);
-    }
-    //        else if (sDDEXVersion=="036")
-    //        {
-    //            // Due to a Dalvik bug present in older versions of Android, Dex version 036 has been skipped.
-    //            // Dex version 036 is not valid for any version of Android and never will be.
-    //        }
-    else if (sDDEXVersion == "037") {
-        result.sOsVersion = XBinary::getAndroidVersionFromApi(24);
-    } else if (sDDEXVersion == "038") {
-        result.sOsVersion = XBinary::getAndroidVersionFromApi(26);
-    } else if (sDDEXVersion == "039") {
-        result.sOsVersion = XBinary::getAndroidVersionFromApi(28);
-    } else {
-        result.sOsVersion = sDDEXVersion;
-    }
-
-    return result;
 }
 
 quint32 XDEX::getHeader_magic()
@@ -1407,15 +1406,6 @@ qint64 XDEX::getDataSizeByType(qint32 nType, qint64 nOffset, qint32 nCount, bool
 QString XDEX::getFileFormatExt()
 {
     return "dex";
-}
-
-QString XDEX::getFileFormatString()
-{
-    QString sResult;
-
-    sResult = QString("DEX(%1)").arg(getVersion());
-
-    return sResult;
 }
 
 bool XDEX::isStringPoolSorted(PDSTRUCT *pPdStruct)

@@ -45,6 +45,8 @@ public:
     virtual ENDIAN getEndian();
     virtual MODE getMode();
     virtual QString getArch();
+    virtual OSNAME getOsName();
+    virtual QString getOsVersion();
     virtual FT getFileType();
     virtual qint32 getType();
     virtual QString typeIdToString(qint32 nType);
@@ -52,8 +54,6 @@ public:
     static QList<MAPMODE> getMapModesList();
     virtual _MEMORY_MAP getMemoryMap(MAPMODE mapMode = MAPMODE_UNKNOWN, PDSTRUCT *pPdStruct = nullptr);
     virtual qint64 getFileFormatSize(PDSTRUCT *pPdStruct);
-
-    virtual OSINFO getOsInfo();
 
     quint32 getHeader_magic();
     quint32 getHeader_version();
@@ -153,7 +153,6 @@ public:
     qint64 getDataSizeByType(qint32 nType, qint64 nOffset, qint32 nCount, bool bIsBigEndian, PDSTRUCT *pPdStruct);
 
     virtual QString getFileFormatExt();
-    virtual QString getFileFormatString();
 };
 
 #endif  // XDEX_H
