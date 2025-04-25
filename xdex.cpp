@@ -318,7 +318,7 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         qint64 nMaxOffset = 0;
         qint32 nIndex = 0;
 
-        for (qint32 i = 0; (i < nNumberOfRecords) && (!(pPdStruct->bIsStop)); i++) {
+        for (qint32 i = 0; (i < nNumberOfRecords) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
             XDEX_DEF::MAP_ITEM mapItem = listMapItems.at(i);
 
             _MEMORY_RECORD record = {};
