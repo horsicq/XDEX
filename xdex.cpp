@@ -660,7 +660,7 @@ QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems(PDSTRUCT *pPdStruct)
     nOffset += 4;
 
     if (nNumberOfItems < 0x100) {
-        for (quint32 i = 0; (i < nNumberOfItems) && (!(pPdStruct->bIsStop)); i++) {
+        for (quint32 i = 0; (i < nNumberOfItems) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
             XDEX_DEF::MAP_ITEM map_item = {};
 
             map_item.nType = read_uint16(nOffset, bIsBigEndian);
