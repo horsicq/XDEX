@@ -147,7 +147,7 @@ QList<XANDROIDBINARY_DEF::HEADER> XAndroidBinary::getHeaders(PDSTRUCT *pPdStruct
     return listHeaders;
 }
 
-XAndroidBinary::RECORD XAndroidBinary::getRecord(qint64 nOffset)
+XAndroidBinary::RECORD XAndroidBinary::getRecord(qint64 nOffset, PDSTRUCT *pPdStruct)
 {
     RECORD result = {};
 
@@ -158,8 +158,8 @@ XAndroidBinary::RECORD XAndroidBinary::getRecord(qint64 nOffset)
         (result.header.type == XANDROIDBINARY_DEF::RES_TABLE_PACKAGE_TYPE)) {
         qint64 nCurrentOffset = nOffset + result.header.header_size;
 
-        while (nCurrentOffset < result.header.data_size) {
-            RECORD record = getRecord(nCurrentOffset);
+        while ((nCurrentOffset < result.header.data_size) && XBinary::isPdStructNotCanceled(pPdStruct)) {
+            RECORD record = getRecord(nCurrentOffset, pPdStruct);
 
             if (record.header.data_size == 0) {
                 break;
@@ -312,18 +312,18 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
     return sResult;
 }
 
-QString XAndroidBinary::getDecoded(QIODevice *pDevice)
+QString XAndroidBinary::getDecoded(QIODevice *pDevice, PDSTRUCT *pPdStruct)
 {
     QString sResult;
 
     XAndroidBinary xab(pDevice);
-    RECORD record = xab.getRecord(0);
+    RECORD record = xab.getRecord(0, pPdStruct);
     sResult = xab.recordToString(&record);
 
     return sResult;
 }
 
-QString XAndroidBinary::getDecoded(const QString &sFileName)
+QString XAndroidBinary::getDecoded(const QString &sFileName, PDSTRUCT *pPdStruct)
 {
     QString sResult;
 
@@ -331,14 +331,14 @@ QString XAndroidBinary::getDecoded(const QString &sFileName)
     file.setFileName(sFileName);
 
     if (file.open(QIODevice::ReadOnly)) {
-        sResult = getDecoded(&file);
+        sResult = getDecoded(&file, pPdStruct);
         file.close();
     }
 
     return sResult;
 }
 
-QString XAndroidBinary::getDecoded(QByteArray *pbaData)
+QString XAndroidBinary::getDecoded(QByteArray *pbaData, PDSTRUCT *pPdStruct)
 {
     QString sResult;
 
@@ -347,7 +347,7 @@ QString XAndroidBinary::getDecoded(QByteArray *pbaData)
     buffer.setBuffer(pbaData);
 
     if (buffer.open(QIODevice::ReadOnly)) {
-        sResult = getDecoded(&buffer);
+        sResult = getDecoded(&buffer, pPdStruct);
 
         buffer.close();
     }
