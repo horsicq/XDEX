@@ -709,7 +709,7 @@ quint64 XDEX::getMapItemsHash(QList<XDEX_DEF::MAP_ITEM> *pListMaps, PDSTRUCT *pP
 
     qint32 nNumberOfMapItems = pListMaps->count();
 
-    for (qint32 i = 0; (i < nNumberOfMapItems) && (!(pPdStruct->bIsStop)); i++) {
+    for (qint32 i = 0; (i < nNumberOfMapItems) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         nResult += (quint64)i * getStringCustomCRC32(QString::number(pListMaps->at(i).nType));
     }
 
@@ -729,7 +729,7 @@ bool XDEX::isMapItemPresent(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems,
 
     qint32 nNumberOfItems = pMapItems->count();
 
-    for (qint32 i = 0; (i < nNumberOfItems) && (!(pPdStruct->bIsStop)); i++) {
+    for (qint32 i = 0; (i < nNumberOfItems) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         if (pMapItems->at(i).nType == nType) {
             bResult = true;
 
