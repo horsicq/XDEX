@@ -800,18 +800,11 @@ QMap<quint64, QString> XDEX::getTypesS()
 
 XDEX_DEF::MAP_ITEM XDEX::getMapItem(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct)
 {
-    XBinary::PDSTRUCT pdStructEmpty = {};
-
-    if (!pPdStruct) {
-        pdStructEmpty = XBinary::createPdStruct();
-        pPdStruct = &pdStructEmpty;
-    }
-
     XDEX_DEF::MAP_ITEM result = {};
 
     qint32 nCount = pMapItems->count();
 
-    for (qint32 i = 0; (i < nCount) && (!(pPdStruct->bIsStop)); i++) {
+    for (qint32 i = 0; (i < nCount) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         if (pMapItems->at(i).nType == nType) {
             result = pMapItems->at(i);
 
