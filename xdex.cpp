@@ -865,7 +865,7 @@ QList<XDEX_DEF::TYPE_ITEM_ID> XDEX::getList_TYPE_ITEM_ID(QList<XDEX_DEF::MAP_ITE
     char *pData = baData.data();
     qint32 nSize = baData.size() / (qint32)sizeof(XDEX_DEF::TYPE_ITEM_ID);
 
-    for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
+    for (qint32 i = 0; (i < nSize) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::TYPE_ITEM_ID) * i;
 
         XDEX_DEF::TYPE_ITEM_ID record = {};
@@ -889,7 +889,7 @@ QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_I
     char *pData = baData.data();
     qint32 nSize = baData.size() / (qint32)sizeof(XDEX_DEF::PROTO_ITEM_ID);
 
-    for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
+    for (qint32 i = 0; (i < nSize) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::PROTO_ITEM_ID) * i;
 
         XDEX_DEF::PROTO_ITEM_ID record = {};
