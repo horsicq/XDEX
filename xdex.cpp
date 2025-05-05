@@ -925,7 +925,7 @@ QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_I
     qint32 _nFreeIndex = XBinary::getFreeIndex(pPdStruct);
     XBinary::setPdStructInit(pPdStruct, _nFreeIndex, nSize);
 
-    for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
+    for (qint32 i = 0; (i < nSize) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::FIELD_ITEM_ID) * i;
 
         XDEX_DEF::FIELD_ITEM_ID record = {};
