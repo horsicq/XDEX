@@ -906,13 +906,6 @@ QList<XDEX_DEF::PROTO_ITEM_ID> XDEX::getList_PROTO_ITEM_ID(QList<XDEX_DEF::MAP_I
 
 QList<XDEX_DEF::FIELD_ITEM_ID> XDEX::getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct)
 {
-    XBinary::PDSTRUCT pdStructEmpty = {};
-
-    if (!pPdStruct) {
-        pdStructEmpty = XBinary::createPdStruct();
-        pPdStruct = &pdStructEmpty;
-    }
-
     QList<XDEX_DEF::FIELD_ITEM_ID> listResult;
 
     XDEX_DEF::MAP_ITEM mapItem = getMapItem(XDEX_DEF::TYPE_FIELD_ID_ITEM, pListMapItems, pPdStruct);
@@ -979,13 +972,6 @@ QList<XDEX_DEF::METHOD_ITEM_ID> XDEX::getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP
 
 QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct)
 {
-    XBinary::PDSTRUCT pdStructEmpty = {};
-
-    if (!pPdStruct) {
-        pdStructEmpty = XBinary::createPdStruct();
-        pPdStruct = &pdStructEmpty;
-    }
-
     QList<XDEX_DEF::CLASS_ITEM_DEF> listResult;
 
     XDEX_DEF::MAP_ITEM mapItem = getMapItem(XDEX_DEF::TYPE_CLASS_DEF_ITEM, pListMapItems, pPdStruct);
@@ -995,7 +981,7 @@ QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP
     char *pData = baData.data();
     qint32 nSize = baData.size() / (qint32)sizeof(XDEX_DEF::CLASS_ITEM_DEF);
 
-    for (qint32 i = 0; (i < nSize) && (!(pPdStruct->bIsStop)); i++) {
+    for (qint32 i = 0; (i < nSize) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         qint64 nOffset = sizeof(XDEX_DEF::CLASS_ITEM_DEF) * i;
 
         XDEX_DEF::CLASS_ITEM_DEF record = {};
@@ -1302,7 +1288,7 @@ bool XDEX::isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pP
 
     qint32 nPrevStringOffset = 0;
 
-    for (quint32 i = 0; (i < map_strings.nCount) && (!(pPdStruct->bIsStop)); i++) {
+    for (quint32 i = 0; (i < map_strings.nCount) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         qint64 nOffset = map_strings.nOffset + sizeof(quint32) * i;
 
         qint32 nStringOffset = (qint32)read_uint32(nOffset, bIsBigEndian);
