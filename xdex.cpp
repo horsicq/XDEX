@@ -1003,13 +1003,6 @@ QList<XDEX_DEF::CLASS_ITEM_DEF> XDEX::getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP
 
 QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct)
 {
-    XBinary::PDSTRUCT pdStructEmpty = {};
-
-    if (!pPdStruct) {
-        pdStructEmpty = XBinary::createPdStruct();
-        pPdStruct = &pdStructEmpty;
-    }
-
     QList<QString> listResult;
 
     bool bIsBigEndian = isBigEndian();
@@ -1021,7 +1014,7 @@ QList<QString> XDEX::getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *
     qint32 _nFreeIndex = XBinary::getFreeIndex(pPdStruct);
     XBinary::setPdStructInit(pPdStruct, _nFreeIndex, map_strings.nCount);
 
-    for (quint32 i = 0; (i < map_strings.nCount) && (!(pPdStruct->bIsStop)); i++) {
+    for (quint32 i = 0; (i < map_strings.nCount) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         QString sString = _getString(map_strings, i, bIsBigEndian, baData.data(), baData.size(), getHeader_data_off());
 
         listResult.append(sString);
@@ -1078,19 +1071,12 @@ QString XDEX::_getTypeItemtString(XDEX_DEF::MAP_ITEM map_stringIdItem, XDEX_DEF:
 
 QList<quint32> XDEX::_getTypeList(qint64 nOffset, bool bIsBigEndian, PDSTRUCT *pPdStruct)
 {
-    XBinary::PDSTRUCT pdStructEmpty = {};
-
-    if (!pPdStruct) {
-        pdStructEmpty = XBinary::createPdStruct();
-        pPdStruct = &pdStructEmpty;
-    }
-
     QList<quint32> listResult;
 
     if (nOffset) {
         quint32 nCount = read_uint32(nOffset, bIsBigEndian);
 
-        for (quint32 i = 0; (i < nCount) && (!(pPdStruct->bIsStop)); i++) {
+        for (quint32 i = 0; (i < nCount) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
             quint32 nType = read_uint32(nOffset + sizeof(quint32) * (1 + i), bIsBigEndian);
             listResult.append(nType);
         }
