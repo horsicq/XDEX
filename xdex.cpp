@@ -1089,13 +1089,6 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QL
 {
     QList<QString> listResult;
 
-    XBinary::PDSTRUCT pdStructEmpty = {};
-
-    if (!pPdStruct) {
-        pdStructEmpty = XBinary::createPdStruct();
-        pPdStruct = &pdStructEmpty;
-    }
-
     bool bIsBigEndian = isBigEndian();
 
     qint32 nStringsCount = pListStrings->count();
@@ -1105,7 +1098,7 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QL
     qint32 _nFreeIndex = XBinary::getFreeIndex(pPdStruct);
     XBinary::setPdStructInit(pPdStruct, _nFreeIndex, map_items.nCount);
 
-    for (quint32 i = 0; (i < map_items.nCount) && (!(pPdStruct->bIsStop)); i++) {
+    for (quint32 i = 0; (i < map_items.nCount) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         quint32 nOffset = map_items.nOffset + sizeof(quint32) * i;
 
         quint32 nItem = read_uint32(nOffset, bIsBigEndian);
@@ -1136,7 +1129,7 @@ void XDEX::getProtoIdItems(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdSt
     XDEX_DEF::MAP_ITEM map_typeIdItem = getMapItem(XDEX_DEF::TYPE_TYPE_ID_ITEM, pMapItems, pPdStruct);
     XDEX_DEF::MAP_ITEM map_stringIdItem = getMapItem(XDEX_DEF::TYPE_STRING_ID_ITEM, pMapItems, pPdStruct);
 
-    for (quint32 i = 0; (i < map_protoIdItem.nCount) && (!(pPdStruct->bIsStop)); i++) {
+    for (quint32 i = 0; (i < map_protoIdItem.nCount) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         quint32 nOffset = map_protoIdItem.nOffset + sizeof(XDEX_DEF::PROTO_ITEM_ID) * i;
 
         XDEX_DEF::PROTO_ITEM_ID record = {};
