@@ -30,7 +30,8 @@ bool XAndroidBinary::isValid(PDSTRUCT *pPdStruct)
 
     _MEMORY_MAP memoryMap = XBinary::getMemoryMap(MAPMODE_UNKNOWN, pPdStruct);
 
-    bIsValid = compareSignature(&memoryMap, "00000800", 0, pPdStruct) || compareSignature(&memoryMap, "03000800", 0, pPdStruct) || compareSignature(&memoryMap, "02000C00", 0, pPdStruct);
+    bIsValid = compareSignature(&memoryMap, "00000800", 0, pPdStruct) || compareSignature(&memoryMap, "03000800", 0, pPdStruct) ||
+               compareSignature(&memoryMap, "02000C00", 0, pPdStruct);
 
     return bIsValid;
 }
@@ -154,8 +155,8 @@ XAndroidBinary::RECORD XAndroidBinary::getRecord(qint64 nOffset, PDSTRUCT *pPdSt
     result.header = readHeader(nOffset);
     result.nOffset = nOffset;
 
-    if ((result.header.type == XANDROIDBINARY_DEF::RES_NULL_TYPE) || (result.header.type == XANDROIDBINARY_DEF::RES_XML_TYPE) || (result.header.type == XANDROIDBINARY_DEF::RES_TABLE_TYPE) ||
-        (result.header.type == XANDROIDBINARY_DEF::RES_TABLE_PACKAGE_TYPE)) {
+    if ((result.header.type == XANDROIDBINARY_DEF::RES_NULL_TYPE) || (result.header.type == XANDROIDBINARY_DEF::RES_XML_TYPE) ||
+        (result.header.type == XANDROIDBINARY_DEF::RES_TABLE_TYPE) || (result.header.type == XANDROIDBINARY_DEF::RES_TABLE_PACKAGE_TYPE)) {
         qint64 nCurrentOffset = nOffset + result.header.header_size;
 
         while ((nCurrentOffset < result.header.data_size) && XBinary::isPdStructNotCanceled(pPdStruct)) {
