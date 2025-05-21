@@ -1310,7 +1310,7 @@ bool XDEX::isMethodNamesUnicode(QList<XDEX_DEF::METHOD_ITEM_ID> *pListIDs, QList
     qint32 nNumberOfIds = pListIDs->count();
     qint32 nNumberOfStrings = pListStrings->count();
 
-    for (qint32 i = 0; (i < nNumberOfIds) && (!(pPdStruct->bIsStop)); i++) {
+    for (qint32 i = 0; (i < nNumberOfIds) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
         QString sString = getStringByIndex(pListStrings, pListIDs->at(i).name_idx, nNumberOfStrings);
 
         if (XBinary::isStringUnicode(sString)) {
