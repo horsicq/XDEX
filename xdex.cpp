@@ -20,6 +20,11 @@
  */
 #include "xdex.h"
 
+XBinary::XCONVERT _TABLE_DEX_STRUCTID[] = {
+    {XDEX::STRUCTID_UNKNOWN, "Unknown", QObject::tr("Unknown")},
+    {XDEX::STRUCTID_HEADER, "HEADER", QString("HEADER")},
+    };
+
 XDEX::XDEX(QIODevice *pDevice) : XBinary(pDevice)
 {
 }
@@ -1357,6 +1362,56 @@ qint64 XDEX::getDataSizeByType(qint32 nType, qint64 nOffset, qint32 nCount, bool
 QString XDEX::getFileFormatExt()
 {
     return "dex";
+}
+
+QString XDEX::structIDToString(quint32 nID)
+{
+    return XBinary::XCONVERT_idToTransString(nID, _TABLE_DEX_STRUCTID, sizeof(_TABLE_DEX_STRUCTID) / sizeof(XBinary::XCONVERT));
+}
+
+qint32 XDEX::getDataRecords(const DATA_RECORDS_OPTIONS &dataRecordsOptions, QList<DATA_RECORD> *pListRecords, PDSTRUCT *pPdStruct)
+{
+    return 0;
+}
+
+QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dataHeadersOptions, PDSTRUCT *pPdStruct)
+{
+    QList<XBinary::DATA_HEADER> listResult;
+
+    if (dataHeadersOptions.nID == STRUCTID_UNKNOWN) {
+        DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
+        _dataHeadersOptions.bChildren = true;
+        _dataHeadersOptions.dsID_parent = _addDefaultHeaders(&listResult, pPdStruct);
+        _dataHeadersOptions.dhMode = XBinary::DHMODE_HEADER;
+
+        _dataHeadersOptions.nID = STRUCTID_HEADER;
+
+        listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
+    } else {
+        qint64 nOffset = locationToOffset(dataHeadersOptions.pMemoryMap, dataHeadersOptions.locType, dataHeadersOptions.nLocation);
+
+        if (nOffset != -1) {
+            XBinary::DATA_HEADER dataHeader = {};
+            dataHeader.dsID_parent = dataHeadersOptions.dsID_parent;
+            dataHeader.dsID.sGUID = generateUUID();
+            dataHeader.dsID.fileType = dataHeadersOptions.pMemoryMap->fileType;
+            dataHeader.dsID.nID = dataHeadersOptions.nID;
+            dataHeader.locType = dataHeadersOptions.locType;
+            dataHeader.nLocation = dataHeadersOptions.nLocation;
+            dataHeader.sName = structIDToString(dataHeadersOptions.nID);
+            dataHeader.dhMode = dataHeadersOptions.dhMode;
+
+            if (dataHeadersOptions.nID == STRUCTID_HEADER) {
+                dataHeader.nSize = sizeof(XDEX_DEF::HEADER);
+            }
+
+            if (dataHeader.nSize) {
+                listResult.append(dataHeader);
+            }
+        }
+    }
+
+    return listResult;
 }
 
 bool XDEX::isStringPoolSorted(PDSTRUCT *pPdStruct)
