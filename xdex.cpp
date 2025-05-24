@@ -1371,6 +1371,10 @@ QString XDEX::structIDToString(quint32 nID)
 
 qint32 XDEX::getDataRecords(const DATA_RECORDS_OPTIONS &dataRecordsOptions, QList<DATA_RECORD> *pListRecords, PDSTRUCT *pPdStruct)
 {
+    Q_UNUSED(dataRecordsOptions)
+    Q_UNUSED(pListRecords)
+    Q_UNUSED(pPdStruct)
+
     return 0;
 }
 
