@@ -1371,11 +1371,97 @@ QString XDEX::structIDToString(quint32 nID)
 
 qint32 XDEX::getDataRecords(const DATA_RECORDS_OPTIONS &dataRecordsOptions, QList<DATA_RECORD> *pListRecords, PDSTRUCT *pPdStruct)
 {
-    Q_UNUSED(dataRecordsOptions)
-    Q_UNUSED(pListRecords)
-    Q_UNUSED(pPdStruct)
+    qint32 nResult = 0;
 
-    return 0;
+    if (dataRecordsOptions.dataHeader.dsID.nID == STRUCTID_HEADER) {
+        nResult = sizeof(XDEX_DEF::HEADER);
+    }
+
+    qint64 nStartOffset = locationToOffset(dataRecordsOptions.pMemoryMap, dataRecordsOptions.dataHeader.locType, dataRecordsOptions.dataHeader.nLocation);
+
+    if (nStartOffset != -1) {
+        if (pListRecords) {
+            if (dataRecordsOptions.dataHeader.dsID.nID == STRUCTID_HEADER) {
+                // struct HEADER {
+                //     quint32 magic;    // always LE
+                //     quint32 version;  // always LE
+                //     quint32 checksum;
+                //     quint8 signature[20];
+                //     quint32 file_size;
+                //     quint32 header_size;
+                //     quint32 endian_tag;  // always LE
+                //     quint32 link_size;
+                //     quint32 link_off;
+                //     quint32 map_off;
+                //     quint32 string_ids_size;
+                //     quint32 string_ids_off;
+                //     quint32 type_ids_size;
+                //     quint32 type_ids_off;
+                //     quint32 proto_ids_size;
+                //     quint32 proto_ids_off;
+                //     quint32 field_ids_size;
+                //     quint32 field_ids_off;
+                //     quint32 method_ids_size;
+                //     quint32 method_ids_off;
+                //     quint32 class_defs_size;
+                //     quint32 class_defs_off;
+                //     quint32 data_size;
+                //     quint32 data_off;
+                // };
+
+                pListRecords->append(getDataRecordDV(nStartOffset, offsetof(XDEX_DEF::HEADER, magic), 4, "magic", VT_UINT32, DRF_UNKNOWN,
+                                                     ENDIAN_LITTLE, XDEX::getHeaderMagics(), false));
+                pListRecords->append(getDataRecordDV(nStartOffset, offsetof(XDEX_DEF::HEADER, version), 4, "version", VT_UINT32, DRF_UNKNOWN,
+                                                     ENDIAN_LITTLE, XDEX::getHeaderVersions(), false));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, checksum), 4, "checksum", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, signature), 20, "signature", VT_BYTEARRAY, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, file_size), 4, "file_size", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, header_size), 4, "header_size", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecordDV(nStartOffset, offsetof(XDEX_DEF::HEADER, endian_tag), 4, "endian_tag", VT_UINT32, DRF_UNKNOWN,
+                                                     ENDIAN_LITTLE, XDEX::getHeaderEndianTags(), false));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, link_size), 4, "link_size", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, link_off), 4, "link_off", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, map_off), 4, "map_off", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, string_ids_size), 4, "string_ids_size", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, string_ids_off), 4, "string_ids_off", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, type_ids_size), 4, "type_ids_size", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, type_ids_off), 4, "type_ids_off", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, proto_ids_size), 4, "proto_ids_size", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, proto_ids_off), 4, "proto_ids_off", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, field_ids_size), 4, "field_ids_size", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, field_ids_off), 4, "field_ids_off", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, method_ids_size), 4, "method_ids_size", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, method_ids_off), 4, "method_ids_off", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, class_defs_size), 4, "class_defs_size", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, class_defs_off), 4, "class_defs_off", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, data_size), 4, "data_size", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+                pListRecords->append(getDataRecord(nStartOffset, offsetof(XDEX_DEF::HEADER, data_off), 4, "data_off", VT_UINT32, DRF_UNKNOWN,
+                                                     dataRecordsOptions.pMemoryMap->endian));
+            }
+        }
+    }
+
+    return nResult;
 }
 
 QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dataHeadersOptions, PDSTRUCT *pPdStruct)
