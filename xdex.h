@@ -38,7 +38,8 @@ public:
 
     enum STRUCTID {
         STRUCTID_UNKNOWN = 0,
-        STRUCTID_HEADER
+        STRUCTID_HEADER,
+        STRUCTID_STRING_IDS_LIST,
     };
 
     XDEX(QIODevice *pDevice);
@@ -110,6 +111,7 @@ public:
     void setHeader_data_off(quint32 value);
 
     XDEX_DEF::HEADER getHeader();
+    XDEX_DEF::HEADER _readHEADER(qint64 nOffset);
     quint32 getHeaderSize();
     QList<XDEX_DEF::MAP_ITEM> getMapItems(PDSTRUCT *pPdStruct = nullptr);
 
@@ -161,7 +163,6 @@ public:
 
     virtual QString structIDToString(quint32 nID);
     virtual QList<DATA_HEADER> getDataHeaders(const DATA_HEADERS_OPTIONS &dataHeadersOptions, PDSTRUCT *pPdStruct);
-    virtual qint32 getDataRecords(const DATA_RECORDS_OPTIONS &dataRecordsOptions, QList<DATA_RECORD> *pListRecords, PDSTRUCT *pPdStruct);
 };
 
 #endif  // XDEX_H
