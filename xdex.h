@@ -56,7 +56,7 @@ public:
     virtual qint32 getType();
     virtual QString typeIdToString(qint32 nType);
 
-    static QList<MAPMODE> getMapModesList();
+    virtual QList<MAPMODE> getMapModesList();
     virtual _MEMORY_MAP getMemoryMap(MAPMODE mapMode = MAPMODE_UNKNOWN, PDSTRUCT *pPdStruct = nullptr);
     virtual qint64 getFileFormatSize(PDSTRUCT *pPdStruct);
 
