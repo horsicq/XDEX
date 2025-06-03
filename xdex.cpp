@@ -1455,6 +1455,30 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                     getDataRecord(offsetof(XDEX_DEF::HEADER, data_off), 4, "data_off", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
             } else if (dataHeadersOptions.nID == STRUCTID_STRING_IDS_LIST) {
                 dataHeader.nSize = dataHeadersOptions.nCount * 4;
+
+                dataHeader.listRecords.append(getDataRecord(0, 4, "string_id", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+            } else if (dataHeadersOptions.nID == STRUCTID_TYPE_IDS_LIST) {
+                dataHeader.nSize = dataHeadersOptions.nCount * 4;
+
+                dataHeader.listRecords.append(getDataRecord(0, 4, "type_id", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+            } else if (dataHeadersOptions.nID == STRUCTID_PROTO_IDS_LIST) {
+                dataHeader.nSize = dataHeadersOptions.nCount * 12;
+
+                dataHeader.listRecords.append(getDataRecord(0, 4, "shorty_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(4, 4, "return_type_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(8, 4, "parameters_off", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+            } else if (dataHeadersOptions.nID == STRUCTID_FIELD_IDS_LIST) {
+                dataHeader.nSize = dataHeadersOptions.nCount * 8;
+
+                dataHeader.listRecords.append(getDataRecord(0, 2, "class_idx", VT_UINT16, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(2, 2, "type_idx", VT_UINT16, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(4, 4, "name_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+            } else if (dataHeadersOptions.nID == STRUCTID_METHOD_IDS_LIST) {
+                dataHeader.nSize = dataHeadersOptions.nCount * 8;
+
+                dataHeader.listRecords.append(getDataRecord(0, 2, "class_idx", VT_UINT16, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(2, 2, "proto_idx", VT_UINT16, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(4, 4, "name_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
             }
 
             if (dataHeader.nSize) {
