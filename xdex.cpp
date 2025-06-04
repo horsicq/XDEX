@@ -1368,6 +1368,11 @@ QString XDEX::getFileFormatExt()
     return "dex";
 }
 
+QString XDEX::getMIMEString()
+{
+    return "application/vnd.android.dex";
+}
+
 QString XDEX::structIDToString(quint32 nID)
 {
     return XBinary::XCONVERT_idToTransString(nID, _TABLE_DEX_STRUCTID, sizeof(_TABLE_DEX_STRUCTID) / sizeof(XBinary::XCONVERT));
