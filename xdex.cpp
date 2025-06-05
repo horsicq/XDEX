@@ -107,7 +107,7 @@ QString XDEX::getOsVersion()
 
     // https://source.android.com/devices/tech/dalvik/dex-format
     if (sDDEXVersion == "035") {
-        sVersion = XBinary::getAndroidVersionFromApi(14);
+        sVersion = XBinary::getAndroidVersionFromApi(14); // TODO move the function here
     }
     //        else if (sDDEXVersion=="036")
     //        {
@@ -115,11 +115,11 @@ QString XDEX::getOsVersion()
     //            // Dex version 036 is not valid for any version of Android and never will be.
     //        }
     else if (sDDEXVersion == "037") {
-        sVersion = XBinary::getAndroidVersionFromApi(24);
+        sVersion = XBinary::getAndroidVersionFromApi(24); // TODO move the function here
     } else if (sDDEXVersion == "038") {
-        sVersion = XBinary::getAndroidVersionFromApi(26);
+        sVersion = XBinary::getAndroidVersionFromApi(26); // TODO move the function here
     } else if (sDDEXVersion == "039") {
-        sVersion = XBinary::getAndroidVersionFromApi(28);
+        sVersion = XBinary::getAndroidVersionFromApi(28); // TODO move the function here
     } else {
         sVersion = sDDEXVersion;
     }
