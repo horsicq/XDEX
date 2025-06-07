@@ -107,7 +107,7 @@ QString XDEX::getOsVersion()
 
     // https://source.android.com/devices/tech/dalvik/dex-format
     if (sDDEXVersion == "035") {
-        sVersion = XBinary::getAndroidVersionFromApi(14); // TODO move the function here
+        sVersion = XBinary::getAndroidVersionFromApi(14);  // TODO move the function here
     }
     //        else if (sDDEXVersion=="036")
     //        {
@@ -115,11 +115,11 @@ QString XDEX::getOsVersion()
     //            // Dex version 036 is not valid for any version of Android and never will be.
     //        }
     else if (sDDEXVersion == "037") {
-        sVersion = XBinary::getAndroidVersionFromApi(24); // TODO move the function here
+        sVersion = XBinary::getAndroidVersionFromApi(24);  // TODO move the function here
     } else if (sDDEXVersion == "038") {
-        sVersion = XBinary::getAndroidVersionFromApi(26); // TODO move the function here
+        sVersion = XBinary::getAndroidVersionFromApi(26);  // TODO move the function here
     } else if (sDDEXVersion == "039") {
-        sVersion = XBinary::getAndroidVersionFromApi(28); // TODO move the function here
+        sVersion = XBinary::getAndroidVersionFromApi(28);  // TODO move the function here
     } else {
         sVersion = sDDEXVersion;
     }
@@ -1417,7 +1417,7 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                 dataHeader.listRecords.append(
                     getDataRecord(offsetof(XDEX_DEF::HEADER, checksum), 4, "checksum", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(
-                    getDataRecord(offsetof(XDEX_DEF::HEADER, signature), 20, "signature", VT_BYTEARRAY, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                    getDataRecord(offsetof(XDEX_DEF::HEADER, signature), 20, "signature", VT_BYTE_ARRAY, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(
                     getDataRecord(offsetof(XDEX_DEF::HEADER, file_size), 4, "file_size", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(
