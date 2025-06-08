@@ -1368,6 +1368,11 @@ QString XDEX::getFileFormatExt()
     return "dex";
 }
 
+QString XDEX::getFileFormatExtsString()
+{
+    return "DEX(dex)";
+}
+
 QString XDEX::getMIMEString()
 {
     return "application/vnd.android.dex";
