@@ -306,19 +306,6 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
 
             result.listRecords.append(record);
         }
-
-        if ((header.data_off + header.data_size) < header.file_size) {
-            _MEMORY_RECORD recordOverlay = {};
-            recordOverlay.nAddress = -1;
-            recordOverlay.segment = ADDRESS_SEGMENT_FLAT;
-            recordOverlay.nOffset = (header.data_off + header.data_size);
-            recordOverlay.nSize = nTotalSize - (header.data_off + header.data_size);
-            recordOverlay.nIndex = nIndex++;
-            recordOverlay.type = MMT_OVERLAY;
-            recordOverlay.sName = tr("Overlay");
-
-            result.listRecords.append(recordOverlay);
-        }
     } else if (mapMode == MAPMODE_MAPS) {
         QMap<quint64, QString> mapTypes = getTypes();
 
@@ -363,6 +350,8 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         //     result.listRecords.append(recordOverlay);
         // }
     }
+
+    _handleOverlay(&result);
 
     return result;
 }
