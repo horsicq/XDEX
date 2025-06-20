@@ -167,13 +167,6 @@ QList<XBinary::MAPMODE> XDEX::getMapModesList()
 
 XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
 {
-    XBinary::PDSTRUCT pdStructEmpty = {};
-
-    if (!pPdStruct) {
-        pdStructEmpty = XBinary::createPdStruct();
-        pPdStruct = &pdStructEmpty;
-    }
-
     _MEMORY_MAP result = {};
 
     qint64 nTotalSize = getSize();
