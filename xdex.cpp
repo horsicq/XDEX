@@ -1374,7 +1374,7 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
         _dataHeadersOptions.bChildren = true;
         _dataHeadersOptions.dsID_parent = _addDefaultHeaders(&listResult, pPdStruct);
         _dataHeadersOptions.dhMode = XBinary::DHMODE_HEADER;
-
+        _dataHeadersOptions.fileType = dataHeadersOptions.pMemoryMap->fileType;
         _dataHeadersOptions.nID = STRUCTID_HEADER;
         _dataHeadersOptions.nLocation = 0;
         _dataHeadersOptions.locType = XBinary::LT_OFFSET;
@@ -1384,15 +1384,7 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
         qint64 nStartOffset = locationToOffset(dataHeadersOptions.pMemoryMap, dataHeadersOptions.locType, dataHeadersOptions.nLocation);
 
         if (nStartOffset != -1) {
-            XBinary::DATA_HEADER dataHeader = {};
-            dataHeader.dsID_parent = dataHeadersOptions.dsID_parent;
-            dataHeader.dsID.sGUID = generateUUID();
-            dataHeader.dsID.fileType = dataHeadersOptions.pMemoryMap->fileType;
-            dataHeader.dsID.nID = dataHeadersOptions.nID;
-            dataHeader.locType = dataHeadersOptions.locType;
-            dataHeader.nLocation = dataHeadersOptions.nLocation;
-            dataHeader.sName = structIDToString(dataHeadersOptions.nID);
-            dataHeader.dhMode = dataHeadersOptions.dhMode;
+            XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
 
             if (dataHeadersOptions.nID == STRUCTID_HEADER) {
                 dataHeader.nSize = sizeof(XDEX_DEF::HEADER);
