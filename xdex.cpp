@@ -1377,9 +1377,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
         qint64 nStartOffset = locationToOffset(dataHeadersOptions.pMemoryMap, dataHeadersOptions.locType, dataHeadersOptions.nLocation);
 
         if (nStartOffset != -1) {
-            XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
-
             if (dataHeadersOptions.nID == STRUCTID_HEADER) {
+                XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
                 dataHeader.nSize = sizeof(XDEX_DEF::HEADER);
 
                 dataHeader.listRecords.append(
@@ -1430,157 +1429,170 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                     getDataRecord(offsetof(XDEX_DEF::HEADER, data_size), 4, "data_size", VT_UINT32, DRF_SIZE, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(
                     getDataRecord(offsetof(XDEX_DEF::HEADER, data_off), 4, "data_off", VT_UINT32, DRF_OFFSET, dataHeadersOptions.pMemoryMap->endian));
+
+                listResult.append(dataHeader);
+
+                if (dataHeadersOptions.bChildren && isPdStructNotCanceled(pPdStruct)) {
+                    if (dataHeadersOptions.nID == STRUCTID_HEADER) {
+                        XDEX_DEF::HEADER header = _readHEADER(nStartOffset);
+
+                        if (header.string_ids_off && header.string_ids_size) {
+                            DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
+                            _dataHeadersOptions.bChildren = true;
+                            _dataHeadersOptions.dsID_parent = dataHeader.dsID;
+                            _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
+                            _dataHeadersOptions.nID = STRUCTID_STRING_IDS_LIST;
+                            _dataHeadersOptions.nLocation = dataHeader.nLocation + header.string_ids_off;
+                            _dataHeadersOptions.locType = dataHeader.locType;
+                            _dataHeadersOptions.nCount = header.string_ids_size;
+                            _dataHeadersOptions.nSize = header.string_ids_size * 4;
+
+                            listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
+                        }
+                        if (header.type_ids_off && header.type_ids_size) {
+                            DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
+                            _dataHeadersOptions.bChildren = true;
+                            _dataHeadersOptions.dsID_parent = dataHeader.dsID;
+                            _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
+                            _dataHeadersOptions.nID = STRUCTID_TYPE_IDS_LIST;
+                            _dataHeadersOptions.nLocation = dataHeader.nLocation + header.type_ids_off;
+                            _dataHeadersOptions.locType = dataHeader.locType;
+                            _dataHeadersOptions.nCount = header.type_ids_size;
+                            _dataHeadersOptions.nSize = header.type_ids_size * 4;
+
+                            listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
+                        }
+                        if (header.proto_ids_off && header.proto_ids_size) {
+                            DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
+                            _dataHeadersOptions.bChildren = true;
+                            _dataHeadersOptions.dsID_parent = dataHeader.dsID;
+                            _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
+                            _dataHeadersOptions.nID = STRUCTID_PROTO_IDS_LIST;
+                            _dataHeadersOptions.nLocation = dataHeader.nLocation + header.proto_ids_off;
+                            _dataHeadersOptions.locType = dataHeader.locType;
+                            _dataHeadersOptions.nCount = header.proto_ids_size;
+                            _dataHeadersOptions.nSize = header.proto_ids_size * 12;
+
+                            listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
+                        }
+                        if (header.field_ids_off && header.field_ids_size) {
+                            DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
+                            _dataHeadersOptions.bChildren = true;
+                            _dataHeadersOptions.dsID_parent = dataHeader.dsID;
+                            _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
+                            _dataHeadersOptions.nID = STRUCTID_FIELD_IDS_LIST;
+                            _dataHeadersOptions.nLocation = dataHeader.nLocation + header.field_ids_off;
+                            _dataHeadersOptions.locType = dataHeader.locType;
+                            _dataHeadersOptions.nCount = header.field_ids_size;
+                            _dataHeadersOptions.nSize = header.field_ids_size * 8;
+
+                            listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
+                        }
+                        if (header.method_ids_off && header.method_ids_size) {
+                            DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
+                            _dataHeadersOptions.bChildren = true;
+                            _dataHeadersOptions.dsID_parent = dataHeader.dsID;
+                            _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
+                            _dataHeadersOptions.nID = STRUCTID_METHOD_IDS_LIST;
+                            _dataHeadersOptions.nLocation = dataHeader.nLocation + header.method_ids_off;
+                            _dataHeadersOptions.locType = dataHeader.locType;
+                            _dataHeadersOptions.nCount = header.method_ids_size;
+                            _dataHeadersOptions.nSize = header.method_ids_size * 8;
+
+                            listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
+                        }
+                        if (header.class_defs_off && header.class_defs_size) {
+                            DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
+                            _dataHeadersOptions.bChildren = true;
+                            _dataHeadersOptions.dsID_parent = dataHeader.dsID;
+                            _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
+                            _dataHeadersOptions.nID = STRUCTID_CLASS_DEFS_LIST;
+                            _dataHeadersOptions.nLocation = dataHeader.nLocation + header.class_defs_off;
+                            _dataHeadersOptions.locType = dataHeader.locType;
+                            _dataHeadersOptions.nCount = header.class_defs_size;
+                            _dataHeadersOptions.nSize = header.class_defs_size * 32;
+
+                            listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
+                        }
+                        if (header.data_off && header.data_size) {
+                            DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
+                            _dataHeadersOptions.bChildren = true;
+                            _dataHeadersOptions.dsID_parent = dataHeader.dsID;
+                            _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
+                            _dataHeadersOptions.nID = STRUCTID_DATA_LIST;
+                            _dataHeadersOptions.nLocation = dataHeader.nLocation + header.data_off;
+                            _dataHeadersOptions.locType = dataHeader.locType;
+                            _dataHeadersOptions.nCount = header.data_size;
+
+                            listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
+                        }
+                        if (header.link_off && header.link_size) {
+                            DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
+                            _dataHeadersOptions.bChildren = true;
+                            _dataHeadersOptions.dsID_parent = dataHeader.dsID;
+                            _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
+                            _dataHeadersOptions.nID = STRUCTID_LINK_LIST;
+                            _dataHeadersOptions.nLocation = dataHeader.nLocation + header.link_off;
+                            _dataHeadersOptions.locType = dataHeader.locType;
+                            _dataHeadersOptions.nCount = header.link_size;
+
+                            listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
+                        }
+                        if (header.map_off) {
+                            DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
+                            _dataHeadersOptions.bChildren = true;
+                            _dataHeadersOptions.dsID_parent = dataHeader.dsID;
+                            _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
+                            _dataHeadersOptions.nID = STRUCTID_MAP_LIST;
+                            _dataHeadersOptions.nLocation = dataHeader.nLocation + header.map_off;
+                            _dataHeadersOptions.locType = dataHeader.locType;
+                            // _dataHeadersOptions.nCount = header.map_size;
+
+                            listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
+                        }
+                    }
+                }
             } else if (dataHeadersOptions.nID == STRUCTID_STRING_IDS_LIST) {
+                XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
                 dataHeader.nSize = dataHeadersOptions.nCount * 4;
 
                 dataHeader.listRecords.append(getDataRecord(0, 4, "string_id", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+
+                listResult.append(dataHeader);
             } else if (dataHeadersOptions.nID == STRUCTID_TYPE_IDS_LIST) {
+                XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
                 dataHeader.nSize = dataHeadersOptions.nCount * 4;
 
                 dataHeader.listRecords.append(getDataRecord(0, 4, "type_id", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+
+                listResult.append(dataHeader);
             } else if (dataHeadersOptions.nID == STRUCTID_PROTO_IDS_LIST) {
+                XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
                 dataHeader.nSize = dataHeadersOptions.nCount * 12;
 
                 dataHeader.listRecords.append(getDataRecord(0, 4, "shorty_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(getDataRecord(4, 4, "return_type_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(getDataRecord(8, 4, "parameters_off", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+
+                listResult.append(dataHeader);
             } else if (dataHeadersOptions.nID == STRUCTID_FIELD_IDS_LIST) {
+                XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
                 dataHeader.nSize = dataHeadersOptions.nCount * 8;
 
                 dataHeader.listRecords.append(getDataRecord(0, 2, "class_idx", VT_UINT16, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(getDataRecord(2, 2, "type_idx", VT_UINT16, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(getDataRecord(4, 4, "name_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+
+                listResult.append(dataHeader);
             } else if (dataHeadersOptions.nID == STRUCTID_METHOD_IDS_LIST) {
+                XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
                 dataHeader.nSize = dataHeadersOptions.nCount * 8;
 
                 dataHeader.listRecords.append(getDataRecord(0, 2, "class_idx", VT_UINT16, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(getDataRecord(2, 2, "proto_idx", VT_UINT16, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(getDataRecord(4, 4, "name_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
-            }
 
-            if (dataHeader.nSize) {
                 listResult.append(dataHeader);
-            }
-
-            if (dataHeadersOptions.bChildren && isPdStructNotCanceled(pPdStruct)) {
-                if (dataHeadersOptions.nID == STRUCTID_HEADER) {
-                    XDEX_DEF::HEADER header = _readHEADER(nStartOffset);
-
-                    if (header.string_ids_off && header.string_ids_size) {
-                        DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
-                        _dataHeadersOptions.bChildren = true;
-                        _dataHeadersOptions.dsID_parent = dataHeader.dsID;
-                        _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
-                        _dataHeadersOptions.nID = STRUCTID_STRING_IDS_LIST;
-                        _dataHeadersOptions.nLocation = dataHeader.nLocation + header.string_ids_off;
-                        _dataHeadersOptions.locType = dataHeader.locType;
-                        _dataHeadersOptions.nCount = header.string_ids_size;
-                        _dataHeadersOptions.nSize = header.string_ids_size * 4;
-
-                        listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
-                    }
-                    if (header.type_ids_off && header.type_ids_size) {
-                        DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
-                        _dataHeadersOptions.bChildren = true;
-                        _dataHeadersOptions.dsID_parent = dataHeader.dsID;
-                        _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
-                        _dataHeadersOptions.nID = STRUCTID_TYPE_IDS_LIST;
-                        _dataHeadersOptions.nLocation = dataHeader.nLocation + header.type_ids_off;
-                        _dataHeadersOptions.locType = dataHeader.locType;
-                        _dataHeadersOptions.nCount = header.type_ids_size;
-                        _dataHeadersOptions.nSize = header.type_ids_size * 4;
-
-                        listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
-                    }
-                    if (header.proto_ids_off && header.proto_ids_size) {
-                        DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
-                        _dataHeadersOptions.bChildren = true;
-                        _dataHeadersOptions.dsID_parent = dataHeader.dsID;
-                        _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
-                        _dataHeadersOptions.nID = STRUCTID_PROTO_IDS_LIST;
-                        _dataHeadersOptions.nLocation = dataHeader.nLocation + header.proto_ids_off;
-                        _dataHeadersOptions.locType = dataHeader.locType;
-                        _dataHeadersOptions.nCount = header.proto_ids_size;
-                        _dataHeadersOptions.nSize = header.proto_ids_size * 12;
-
-                        listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
-                    }
-                    if (header.field_ids_off && header.field_ids_size) {
-                        DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
-                        _dataHeadersOptions.bChildren = true;
-                        _dataHeadersOptions.dsID_parent = dataHeader.dsID;
-                        _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
-                        _dataHeadersOptions.nID = STRUCTID_FIELD_IDS_LIST;
-                        _dataHeadersOptions.nLocation = dataHeader.nLocation + header.field_ids_off;
-                        _dataHeadersOptions.locType = dataHeader.locType;
-                        _dataHeadersOptions.nCount = header.field_ids_size;
-                        _dataHeadersOptions.nSize = header.field_ids_size * 8;
-
-                        listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
-                    }
-                    if (header.method_ids_off && header.method_ids_size) {
-                        DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
-                        _dataHeadersOptions.bChildren = true;
-                        _dataHeadersOptions.dsID_parent = dataHeader.dsID;
-                        _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
-                        _dataHeadersOptions.nID = STRUCTID_METHOD_IDS_LIST;
-                        _dataHeadersOptions.nLocation = dataHeader.nLocation + header.method_ids_off;
-                        _dataHeadersOptions.locType = dataHeader.locType;
-                        _dataHeadersOptions.nCount = header.method_ids_size;
-                        _dataHeadersOptions.nSize = header.method_ids_size * 8;
-
-                        listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
-                    }
-                    if (header.class_defs_off && header.class_defs_size) {
-                        DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
-                        _dataHeadersOptions.bChildren = true;
-                        _dataHeadersOptions.dsID_parent = dataHeader.dsID;
-                        _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
-                        _dataHeadersOptions.nID = STRUCTID_CLASS_DEFS_LIST;
-                        _dataHeadersOptions.nLocation = dataHeader.nLocation + header.class_defs_off;
-                        _dataHeadersOptions.locType = dataHeader.locType;
-                        _dataHeadersOptions.nCount = header.class_defs_size;
-                        _dataHeadersOptions.nSize = header.class_defs_size * 32;
-
-                        listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
-                    }
-                    if (header.data_off && header.data_size) {
-                        DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
-                        _dataHeadersOptions.bChildren = true;
-                        _dataHeadersOptions.dsID_parent = dataHeader.dsID;
-                        _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
-                        _dataHeadersOptions.nID = STRUCTID_DATA_LIST;
-                        _dataHeadersOptions.nLocation = dataHeader.nLocation + header.data_off;
-                        _dataHeadersOptions.locType = dataHeader.locType;
-                        _dataHeadersOptions.nCount = header.data_size;
-
-                        listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
-                    }
-                    if (header.link_off && header.link_size) {
-                        DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
-                        _dataHeadersOptions.bChildren = true;
-                        _dataHeadersOptions.dsID_parent = dataHeader.dsID;
-                        _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
-                        _dataHeadersOptions.nID = STRUCTID_LINK_LIST;
-                        _dataHeadersOptions.nLocation = dataHeader.nLocation + header.link_off;
-                        _dataHeadersOptions.locType = dataHeader.locType;
-                        _dataHeadersOptions.nCount = header.link_size;
-
-                        listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
-                    }
-                    if (header.map_off) {
-                        DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
-                        _dataHeadersOptions.bChildren = true;
-                        _dataHeadersOptions.dsID_parent = dataHeader.dsID;
-                        _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
-                        _dataHeadersOptions.nID = STRUCTID_MAP_LIST;
-                        _dataHeadersOptions.nLocation = dataHeader.nLocation + header.map_off;
-                        _dataHeadersOptions.locType = dataHeader.locType;
-                        // _dataHeadersOptions.nCount = header.map_size;
-
-                        listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
-                    }
-                }
             }
         }
     }
