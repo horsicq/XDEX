@@ -187,11 +187,10 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
 
         _MEMORY_RECORD recordHeader = {};
         recordHeader.nAddress = -1;
-        recordHeader.segment = ADDRESS_SEGMENT_FLAT;
         recordHeader.nOffset = 0;
         recordHeader.nSize = header.header_size;
         recordHeader.nIndex = nIndex++;
-        recordHeader.type = MMT_HEADER;
+        recordHeader.filePart = FILEPART_HEADER;
         recordHeader.sName = tr("Header");
 
         result.listRecords.append(recordHeader);
@@ -199,11 +198,10 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         if (header.link_size) {
             _MEMORY_RECORD record = {};
             record.nAddress = -1;
-            record.segment = ADDRESS_SEGMENT_FLAT;
             record.nOffset = header.link_off;
             record.nSize = header.link_size;
             record.nIndex = nIndex++;
-            record.type = MMT_FILESEGMENT;
+            record.filePart = FILEPART_REGION;
             record.sName = "link";
 
             result.listRecords.append(record);
@@ -212,11 +210,10 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         if (header.string_ids_size) {
             _MEMORY_RECORD record = {};
             record.nAddress = -1;
-            record.segment = ADDRESS_SEGMENT_FLAT;
             record.nOffset = header.string_ids_off;
             record.nSize = (header.string_ids_size) * sizeof(XDEX_DEF::STRING_ITEM_ID);
             record.nIndex = nIndex++;
-            record.type = MMT_FILESEGMENT;
+            record.filePart = FILEPART_REGION;
             record.sName = "string_ids";
 
             result.listRecords.append(record);
@@ -225,11 +222,11 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         if (header.type_ids_size) {
             _MEMORY_RECORD record = {};
             record.nAddress = -1;
-            record.segment = ADDRESS_SEGMENT_FLAT;
+
             record.nOffset = header.type_ids_off;
             record.nSize = (header.type_ids_size) * sizeof(XDEX_DEF::TYPE_ITEM_ID);
             record.nIndex = nIndex++;
-            record.type = MMT_FILESEGMENT;
+            record.filePart = FILEPART_REGION;
             record.sName = "type_ids";
 
             result.listRecords.append(record);
@@ -238,11 +235,11 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         if (header.proto_ids_size) {
             _MEMORY_RECORD record = {};
             record.nAddress = -1;
-            record.segment = ADDRESS_SEGMENT_FLAT;
+
             record.nOffset = header.proto_ids_off;
             record.nSize = (header.proto_ids_size) * sizeof(XDEX_DEF::PROTO_ITEM_ID);
             record.nIndex = nIndex++;
-            record.type = MMT_FILESEGMENT;
+            record.filePart = FILEPART_REGION;
             record.sName = "proto_ids";
 
             result.listRecords.append(record);
@@ -251,11 +248,11 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         if (header.field_ids_size) {
             _MEMORY_RECORD record = {};
             record.nAddress = -1;
-            record.segment = ADDRESS_SEGMENT_FLAT;
+
             record.nOffset = header.field_ids_off;
             record.nSize = (header.field_ids_size) * sizeof(XDEX_DEF::FIELD_ITEM_ID);
             record.nIndex = nIndex++;
-            record.type = MMT_FILESEGMENT;
+            record.filePart = FILEPART_REGION;
             record.sName = "field_ids";
 
             result.listRecords.append(record);
@@ -264,11 +261,11 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         if (header.method_ids_size) {
             _MEMORY_RECORD record = {};
             record.nAddress = -1;
-            record.segment = ADDRESS_SEGMENT_FLAT;
+
             record.nOffset = header.method_ids_off;
             record.nSize = (header.method_ids_size) * sizeof(XDEX_DEF::METHOD_ITEM_ID);
             record.nIndex = nIndex++;
-            record.type = MMT_FILESEGMENT;
+            record.filePart = FILEPART_REGION;
             record.sName = "method_ids";
 
             result.listRecords.append(record);
@@ -277,11 +274,11 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         if (header.class_defs_size) {
             _MEMORY_RECORD record = {};
             record.nAddress = -1;
-            record.segment = ADDRESS_SEGMENT_FLAT;
+
             record.nOffset = header.class_defs_off;
             record.nSize = (header.class_defs_size) * sizeof(XDEX_DEF::CLASS_ITEM_DEF);
             record.nIndex = nIndex++;
-            record.type = MMT_FILESEGMENT;
+            record.filePart = FILEPART_REGION;
             record.sName = "class_defs";
 
             result.listRecords.append(record);
@@ -290,11 +287,11 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         if (header.data_size) {
             _MEMORY_RECORD record = {};
             record.nAddress = -1;
-            record.segment = ADDRESS_SEGMENT_FLAT;
+
             record.nOffset = header.data_off;
             record.nSize = header.data_size;
             record.nIndex = nIndex++;
-            record.type = MMT_FILESEGMENT;
+            record.filePart = FILEPART_REGION;
             record.sName = "data";
 
             result.listRecords.append(record);
@@ -314,11 +311,11 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
 
             _MEMORY_RECORD record = {};
             record.nAddress = -1;
-            record.segment = ADDRESS_SEGMENT_FLAT;
+
             record.nOffset = mapItem.nOffset;
             record.nSize = getDataSizeByType(mapItem.nType, mapItem.nOffset, mapItem.nCount, result.endian == XBinary::ENDIAN_BIG, pPdStruct);
             record.nIndex = nIndex;
-            record.type = MMT_UNKNOWN;
+            record.filePart = FILEPART_REGION;
             record.sName = mapTypes.value(mapItem.nType);
 
             result.listRecords.append(record);
@@ -333,11 +330,11 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
         // if (nMaxOffset < header.file_size) {
         //     _MEMORY_RECORD recordOverlay = {};
         //     recordOverlay.nAddress = -1;
-        //     recordOverlay.segment = ADDRESS_SEGMENT_FLAT;
+        //     recordOverlay
         //     recordOverlay.nOffset = nMaxOffset;
         //     recordOverlay.nSize = nTotalSize - nMaxOffset;
         //     recordOverlay.nIndex = nIndex++;
-        //     recordOverlay.type = MMT_OVERLAY;
+        //     recordOverlay.filePart = FILEPART_OVERLAY;
         //     recordOverlay.sName = tr("Overlay");
 
         //     result.listRecords.append(recordOverlay);
