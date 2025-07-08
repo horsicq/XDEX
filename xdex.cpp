@@ -1355,6 +1355,27 @@ QString XDEX::structIDToString(quint32 nID)
     return XBinary::XCONVERT_idToTransString(nID, _TABLE_DEX_STRUCTID, sizeof(_TABLE_DEX_STRUCTID) / sizeof(XBinary::XCONVERT));
 }
 
+QList<XBinary::FPART> XDEX::getFileParts(quint32 nFileParts, qint32 nLimit, PDSTRUCT *pPdStruct)
+{
+    QList<XBinary::FPART> listResult;
+
+    XDEX_DEF::HEADER header = getHeader();
+
+    if (nFileParts & FILEPART_HEADER) {
+
+        FPART record = {};
+        record.filePart = FILEPART_HEADER;
+        record.nFileOffset = 0;
+        record.nFileSize = header.header_size;
+        record.nVirtualAddress = -1;
+        record.sOriginalName = tr("Header");
+
+        listResult.append(record);
+    }
+
+    return listResult;
+}
+
 QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dataHeadersOptions, PDSTRUCT *pPdStruct)
 {
     QList<XBinary::DATA_HEADER> listResult;
