@@ -1417,6 +1417,7 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.data_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
                             _dataHeadersOptions.nCount = header.data_size;
+                            _dataHeadersOptions.nSize = header.data_size;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1429,6 +1430,7 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.link_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
                             _dataHeadersOptions.nCount = header.link_size;
+                            _dataHeadersOptions.nSize = header.link_size;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
