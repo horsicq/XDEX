@@ -160,188 +160,24 @@ QList<XBinary::MAPMODE> XDEX::getMapModesList()
     QList<MAPMODE> listResult;
 
     listResult.append(MAPMODE_REGIONS);
-    listResult.append(MAPMODE_MAPS);
+    listResult.append(MAPMODE_SECTIONS);
 
     return listResult;
 }
 
 XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
 {
-    _MEMORY_MAP result = {};
+    XBinary::_MEMORY_MAP result = {};
 
-    qint64 nTotalSize = getSize();
-
-    result.nModuleAddress = getModuleAddress();
-    result.nBinarySize = nTotalSize;
-    result.nImageSize = nTotalSize;
-    result.fileType = FT_DEX;
-    result.mode = getMode();
-    result.sArch = getArch();
-    result.endian = getEndian();
-    result.sType = getTypeAsString();
-
-    XDEX_DEF::HEADER header = getHeader();
-
-    if ((mapMode == MAPMODE_REGIONS) || (mapMode == MAPMODE_UNKNOWN)) {
-        qint32 nIndex = 0;
-
-        _MEMORY_RECORD recordHeader = {};
-        recordHeader.nAddress = -1;
-        recordHeader.nOffset = 0;
-        recordHeader.nSize = header.header_size;
-        recordHeader.nIndex = nIndex++;
-        recordHeader.filePart = FILEPART_HEADER;
-        recordHeader.sName = tr("Header");
-
-        result.listRecords.append(recordHeader);
-
-        if (header.link_size) {
-            _MEMORY_RECORD record = {};
-            record.nAddress = -1;
-            record.nOffset = header.link_off;
-            record.nSize = header.link_size;
-            record.nIndex = nIndex++;
-            record.filePart = FILEPART_REGION;
-            record.sName = "link";
-
-            result.listRecords.append(record);
-        }
-
-        if (header.string_ids_size) {
-            _MEMORY_RECORD record = {};
-            record.nAddress = -1;
-            record.nOffset = header.string_ids_off;
-            record.nSize = (header.string_ids_size) * sizeof(XDEX_DEF::STRING_ITEM_ID);
-            record.nIndex = nIndex++;
-            record.filePart = FILEPART_REGION;
-            record.sName = "string_ids";
-
-            result.listRecords.append(record);
-        }
-
-        if (header.type_ids_size) {
-            _MEMORY_RECORD record = {};
-            record.nAddress = -1;
-
-            record.nOffset = header.type_ids_off;
-            record.nSize = (header.type_ids_size) * sizeof(XDEX_DEF::TYPE_ITEM_ID);
-            record.nIndex = nIndex++;
-            record.filePart = FILEPART_REGION;
-            record.sName = "type_ids";
-
-            result.listRecords.append(record);
-        }
-
-        if (header.proto_ids_size) {
-            _MEMORY_RECORD record = {};
-            record.nAddress = -1;
-
-            record.nOffset = header.proto_ids_off;
-            record.nSize = (header.proto_ids_size) * sizeof(XDEX_DEF::PROTO_ITEM_ID);
-            record.nIndex = nIndex++;
-            record.filePart = FILEPART_REGION;
-            record.sName = "proto_ids";
-
-            result.listRecords.append(record);
-        }
-
-        if (header.field_ids_size) {
-            _MEMORY_RECORD record = {};
-            record.nAddress = -1;
-
-            record.nOffset = header.field_ids_off;
-            record.nSize = (header.field_ids_size) * sizeof(XDEX_DEF::FIELD_ITEM_ID);
-            record.nIndex = nIndex++;
-            record.filePart = FILEPART_REGION;
-            record.sName = "field_ids";
-
-            result.listRecords.append(record);
-        }
-
-        if (header.method_ids_size) {
-            _MEMORY_RECORD record = {};
-            record.nAddress = -1;
-
-            record.nOffset = header.method_ids_off;
-            record.nSize = (header.method_ids_size) * sizeof(XDEX_DEF::METHOD_ITEM_ID);
-            record.nIndex = nIndex++;
-            record.filePart = FILEPART_REGION;
-            record.sName = "method_ids";
-
-            result.listRecords.append(record);
-        }
-
-        if (header.class_defs_size) {
-            _MEMORY_RECORD record = {};
-            record.nAddress = -1;
-
-            record.nOffset = header.class_defs_off;
-            record.nSize = (header.class_defs_size) * sizeof(XDEX_DEF::CLASS_ITEM_DEF);
-            record.nIndex = nIndex++;
-            record.filePart = FILEPART_REGION;
-            record.sName = "class_defs";
-
-            result.listRecords.append(record);
-        }
-
-        if (header.data_size) {
-            _MEMORY_RECORD record = {};
-            record.nAddress = -1;
-
-            record.nOffset = header.data_off;
-            record.nSize = header.data_size;
-            record.nIndex = nIndex++;
-            record.filePart = FILEPART_REGION;
-            record.sName = "data";
-
-            result.listRecords.append(record);
-        }
-    } else if (mapMode == MAPMODE_MAPS) {
-        QMap<quint64, QString> mapTypes = getTypes();
-
-        QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems(pPdStruct);
-
-        qint32 nNumberOfRecords = listMapItems.count();
-
-        qint64 nMaxOffset = 0;
-        qint32 nIndex = 0;
-
-        for (qint32 i = 0; (i < nNumberOfRecords) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
-            XDEX_DEF::MAP_ITEM mapItem = listMapItems.at(i);
-
-            _MEMORY_RECORD record = {};
-            record.nAddress = -1;
-
-            record.nOffset = mapItem.nOffset;
-            record.nSize = getDataSizeByType(mapItem.nType, mapItem.nOffset, mapItem.nCount, result.endian == XBinary::ENDIAN_BIG, pPdStruct);
-            record.nIndex = nIndex;
-            record.filePart = FILEPART_REGION;
-            record.sName = mapTypes.value(mapItem.nType);
-
-            result.listRecords.append(record);
-
-            if (record.nOffset + record.nSize > nMaxOffset) {
-                nMaxOffset = record.nOffset + record.nSize;
-            }
-
-            nIndex++;
-        }
-
-        // if (nMaxOffset < header.file_size) {
-        //     _MEMORY_RECORD recordOverlay = {};
-        //     recordOverlay.nAddress = -1;
-        //     recordOverlay
-        //     recordOverlay.nOffset = nMaxOffset;
-        //     recordOverlay.nSize = nTotalSize - nMaxOffset;
-        //     recordOverlay.nIndex = nIndex++;
-        //     recordOverlay.filePart = FILEPART_OVERLAY;
-        //     recordOverlay.sName = tr("Overlay");
-
-        //     result.listRecords.append(recordOverlay);
-        // }
+    if (mapMode == MAPMODE_UNKNOWN) {
+        mapMode = MAPMODE_REGIONS;  // Default mode
     }
 
-    _handleOverlay(&result);
+    if (mapMode == MAPMODE_REGIONS) {
+        result = _getMemoryMap(FILEPART_HEADER | FILEPART_REGION | FILEPART_OVERLAY, pPdStruct);
+    } else if (mapMode == MAPMODE_SECTIONS) {
+        result = _getMemoryMap(FILEPART_HEADER | FILEPART_SECTION | FILEPART_OVERLAY, pPdStruct);
+    }
 
     return result;
 }
@@ -1362,15 +1198,55 @@ QList<XBinary::FPART> XDEX::getFileParts(quint32 nFileParts, qint32 nLimit, PDST
     XDEX_DEF::HEADER header = getHeader();
 
     if (nFileParts & FILEPART_HEADER) {
+        listResult.append(getFPART(FILEPART_HEADER, tr("Header"), 0, header.header_size, -1, 0));
+    }
 
-        FPART record = {};
-        record.filePart = FILEPART_HEADER;
-        record.nFileOffset = 0;
-        record.nFileSize = header.header_size;
-        record.nVirtualAddress = -1;
-        record.sOriginalName = tr("Header");
+    if (nFileParts & FILEPART_REGION) {
+        if (header.link_size) listResult.append(getFPART(FILEPART_REGION, "link", header.link_off, header.link_size, -1, 0));
+        if (header.string_ids_size) listResult.append(getFPART(FILEPART_REGION, "string_ids", header.string_ids_off, header.string_ids_size * 4, -1, 0));
+        if (header.type_ids_size) listResult.append(getFPART(FILEPART_REGION, "type_ids", header.type_ids_off, header.type_ids_size * 4, -1, 0));
+        if (header.proto_ids_size) listResult.append(getFPART(FILEPART_REGION, "proto_ids", header.proto_ids_off, header.proto_ids_size * 12, -1, 0));
+        if (header.field_ids_size) listResult.append(getFPART(FILEPART_REGION, "field_ids", header.field_ids_off, header.field_ids_size * 8, -1, 0));
+        if (header.method_ids_size) listResult.append(getFPART(FILEPART_REGION, "method_ids", header.method_ids_off, header.method_ids_size * 8, -1, 0));
+        if (header.class_defs_size) listResult.append(getFPART(FILEPART_REGION, "class_defs", header.class_defs_off, header.class_defs_size * 32, -1, 0));
+        if (header.data_size) listResult.append(getFPART(FILEPART_REGION, "data", header.data_off, header.data_size, -1, 0));
+    }
 
-        listResult.append(record);
+    if ((nFileParts & FILEPART_SECTION) || (nFileParts & FILEPART_OVERLAY)) {
+        QMap<quint64, QString> mapTypes = getTypes();
+        bool bIsBigEndian = isBigEndian();
+
+        QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems(pPdStruct);
+
+        qint32 nNumberOfRecords = listMapItems.count();
+
+        qint64 nMaxOffset = 0;
+
+        for (qint32 i = 0; (i < nNumberOfRecords) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
+            XDEX_DEF::MAP_ITEM mapItem = listMapItems.at(i);
+
+            FPART record = {};
+            record.nFileOffset = mapItem.nOffset;
+            record.nFileSize = getDataSizeByType(mapItem.nType, mapItem.nOffset, mapItem.nCount, bIsBigEndian, pPdStruct);
+
+            if (nFileParts & FILEPART_SECTION) {
+                record.nVirtualAddress = -1;
+                record.filePart = FILEPART_SECTION;
+                record.sOriginalName= mapTypes.value(mapItem.nType);
+                listResult.append(record);
+            }
+
+            if (record.nFileOffset + record.nFileSize > nMaxOffset) {
+                nMaxOffset = record.nFileOffset + record.nFileSize;
+            }
+
+        }
+
+        if (nFileParts & FILEPART_OVERLAY) {
+            if (nMaxOffset < getSize()) {
+                listResult.append(getFPART(FILEPART_OVERLAY, tr("Overlay"), nMaxOffset, getSize() - nMaxOffset, -1, 0));
+            }
+        }
     }
 
     return listResult;
