@@ -344,7 +344,6 @@ QString XAndroidBinary::getDecoded(QByteArray *pbaData, PDSTRUCT *pPdStruct)
     QString sResult;
 
     QBuffer buffer;
-
     buffer.setBuffer(pbaData);
 
     if (buffer.open(QIODevice::ReadOnly)) {
