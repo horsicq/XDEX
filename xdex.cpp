@@ -71,7 +71,7 @@ quint32 XDEX::_getVersion()
 
 QString XDEX::getVersion()
 {
-    return read_ansiString(4);  // mb Check
+    return read_ansiString(4);  // TODO Check
 }
 
 XBinary::ENDIAN XDEX::getEndian()
