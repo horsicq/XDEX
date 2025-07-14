@@ -50,7 +50,7 @@ public:
     XANDROIDBINARY_DEF::HEADER_XML_END readHeaderXmlEnd(qint64 nOffset);
     QList<XANDROIDBINARY_DEF::HEADER> getHeaders(PDSTRUCT *pPdStruct);
     RECORD getRecord(qint64 nOffset, PDSTRUCT *pPdStruct);
-    QString recordToString(RECORD *pRecord);
+    QString recordToString(RECORD *pRecord, PDSTRUCT *pPdStruct);
     static QString getDecoded(QIODevice *pDevice, PDSTRUCT *pPdStruct);
     static QString getDecoded(const QString &sFileName, PDSTRUCT *pPdStruct);
     static QString getDecoded(QByteArray *pbaData, PDSTRUCT *pPdStruct);

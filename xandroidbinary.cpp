@@ -175,7 +175,7 @@ XAndroidBinary::RECORD XAndroidBinary::getRecord(qint64 nOffset, PDSTRUCT *pPdSt
     return result;
 }
 
-QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
+QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord, PDSTRUCT *pPdStruct)
 {
     QString sResult;
 
@@ -191,14 +191,14 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
         QStack<QString> stackPrefix;
         QStack<QString> stackURI;
 
-        for (qint32 i = 0; i < nNumberOfChildren; i++) {
+        for (qint32 i = 0; (i < nNumberOfChildren) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
             if (pRecord->listChildren.at(i).header.type == XANDROIDBINARY_DEF::RES_STRING_POOL_TYPE) {
                 XANDROIDBINARY_DEF::HEADER_STRING_POOL headerStringPool = readHeaderStringPool(pRecord->listChildren.at(i).nOffset);
 
                 qint64 nCurrentOffset = pRecord->listChildren.at(i).nOffset + headerStringPool.header.header_size;
                 qint64 nStringsDataOffset = pRecord->listChildren.at(i).nOffset + headerStringPool.stringsStart;
 
-                for (quint32 j = 0; j < headerStringPool.stringCount; j++) {
+                for (quint32 j = 0; (j < headerStringPool.stringCount) && XBinary::isPdStructNotCanceled(pPdStruct); j++) {
                     qint64 nStringOffset = nStringsDataOffset + read_int32(nCurrentOffset + j * sizeof(quint32));
 
                     QString sString;
@@ -217,7 +217,7 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
 
                 qint64 nCurrentOffset = pRecord->listChildren.at(i).nOffset + sizeof(XANDROIDBINARY_DEF::HEADER);
 
-                for (qint32 j = 0; j < nNumberOfResources; j++) {
+                for (qint32 j = 0; (j < nNumberOfResources) && XBinary::isPdStructNotCanceled(pPdStruct); j++) {
                     quint32 nID = read_uint32(nCurrentOffset + j * sizeof(quint32));
 
                     //                    qDebug("Resource ID %x",nID);
@@ -250,7 +250,7 @@ QString XAndroidBinary::recordToString(XAndroidBinary::RECORD *pRecord)
 
                 qint64 nCurrentOffset = pRecord->listChildren.at(i).nOffset + sizeof(XANDROIDBINARY_DEF::HEADER_XML_START);
 
-                for (qint32 j = 0; j < headerXmlStart.attributeCount; j++) {
+                for (qint32 j = 0; (j < headerXmlStart.attributeCount) && XBinary::isPdStructNotCanceled(pPdStruct); j++) {
                     XANDROIDBINARY_DEF::HEADER_XML_ATTRIBUTE headerXmlAttribute = readHeaderXmlAttribute(nCurrentOffset);
 
                     QString sValue;
@@ -319,7 +319,7 @@ QString XAndroidBinary::getDecoded(QIODevice *pDevice, PDSTRUCT *pPdStruct)
 
     XAndroidBinary xab(pDevice);
     RECORD record = xab.getRecord(0, pPdStruct);
-    sResult = xab.recordToString(&record);
+    sResult = xab.recordToString(&record, pPdStruct);
 
     return sResult;
 }
