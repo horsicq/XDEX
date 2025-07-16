@@ -1337,8 +1337,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_STRING_IDS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.string_ids_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.string_ids_size;
-                            _dataHeadersOptions.nSize = header.string_ids_size * 4;
+                            _dataHeadersOptions.nCount = header.string_ids_size / 4;
+                            _dataHeadersOptions.nSize = header.string_ids_size;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1350,8 +1350,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_TYPE_IDS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.type_ids_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.type_ids_size;
-                            _dataHeadersOptions.nSize = header.type_ids_size * 4;
+                            _dataHeadersOptions.nCount = header.type_ids_size / 4;
+                            _dataHeadersOptions.nSize = header.type_ids_size;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1363,8 +1363,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_PROTO_IDS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.proto_ids_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.proto_ids_size;
-                            _dataHeadersOptions.nSize = header.proto_ids_size * 12;
+                            _dataHeadersOptions.nCount = header.proto_ids_size / 12;
+                            _dataHeadersOptions.nSize = header.proto_ids_size;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1376,8 +1376,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_FIELD_IDS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.field_ids_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.field_ids_size;
-                            _dataHeadersOptions.nSize = header.field_ids_size * 8;
+                            _dataHeadersOptions.nCount = header.field_ids_size / 8;
+                            _dataHeadersOptions.nSize = header.field_ids_size;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1389,8 +1389,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_METHOD_IDS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.method_ids_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.method_ids_size;
-                            _dataHeadersOptions.nSize = header.method_ids_size * 8;
+                            _dataHeadersOptions.nCount = header.method_ids_size / 8;
+                            _dataHeadersOptions.nSize = header.method_ids_size;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1402,8 +1402,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_CLASS_DEFS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.class_defs_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.class_defs_size;
-                            _dataHeadersOptions.nSize = header.class_defs_size * 32;
+                            _dataHeadersOptions.nCount = header.class_defs_size / 32;
+                            _dataHeadersOptions.nSize = header.class_defs_size;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
