@@ -925,10 +925,6 @@ QList<QString> XDEX::getTypeItemStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, QL
 
             listResult.append(sString);
         }
-        //        else
-        //        {
-        //            qDebug("Error");
-        //        }
 
         XBinary::setPdStructCurrentIncrement(pPdStruct, _nFreeIndex);
     }
