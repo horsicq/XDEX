@@ -1227,7 +1227,7 @@ QList<XBinary::FPART> XDEX::getFileParts(quint32 nFileParts, qint32 nLimit, PDST
             if (nFileParts & FILEPART_SECTION) {
                 record.nVirtualAddress = -1;
                 record.filePart = FILEPART_SECTION;
-                record.sOriginalName = mapTypes.value(mapItem.nType);
+                record.sName = mapTypes.value(mapItem.nType);
                 listResult.append(record);
             }
 
