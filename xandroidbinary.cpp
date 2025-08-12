@@ -30,8 +30,8 @@ bool XAndroidBinary::isValid(PDSTRUCT *pPdStruct)
 
     _MEMORY_MAP memoryMap = XBinary::getMemoryMap(MAPMODE_UNKNOWN, pPdStruct);
 
-    bIsValid = compareSignature(&memoryMap, "00000800", 0, pPdStruct) || compareSignature(&memoryMap, "03000800", 0, pPdStruct) ||
-               compareSignature(&memoryMap, "02000C00", 0, pPdStruct);
+    bIsValid = compareSignature(&memoryMap, "00000800........0100", 0, pPdStruct) || compareSignature(&memoryMap, "03000800........0100", 0, pPdStruct) ||
+               compareSignature(&memoryMap, "02000C00........0100", 0, pPdStruct);
 
     return bIsValid;
 }
@@ -355,13 +355,16 @@ QString XAndroidBinary::getDecoded(QByteArray *pbaData, PDSTRUCT *pPdStruct)
     return sResult;
 }
 
+QString XAndroidBinary::getFileFormatExt()
+{
+    return "xml"; // TODO
+}
+
 XBinary::FT XAndroidBinary::getFileType()
 {
     XBinary::FT result = FT_ANDROIDXML;
 
-    _MEMORY_MAP memoryMap = XBinary::getMemoryMap(MAPMODE_UNKNOWN);
-
-    if (compareSignature(&memoryMap, "02000C00", 0)) {
+    if (read_uint32(0, true) == 0x02000C00) {
         result = FT_ANDROIDASRC;
     }
 

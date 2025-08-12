@@ -55,6 +55,7 @@ public:
     static QString getDecoded(const QString &sFileName, PDSTRUCT *pPdStruct);
     static QString getDecoded(QByteArray *pbaData, PDSTRUCT *pPdStruct);
     virtual FT getFileType();
+    virtual QString getFileFormatExt();
 };
 
 #endif  // XANDROIDBINARY_H
