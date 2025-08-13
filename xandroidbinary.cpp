@@ -357,7 +357,7 @@ QString XAndroidBinary::getDecoded(QByteArray *pbaData, PDSTRUCT *pPdStruct)
 
 QString XAndroidBinary::getFileFormatExt()
 {
-    return "xml"; // TODO
+    return "xml";  // TODO
 }
 
 XBinary::FT XAndroidBinary::getFileType()
