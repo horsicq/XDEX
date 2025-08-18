@@ -499,7 +499,7 @@ QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems(PDSTRUCT *pPdStruct)
     return listResult;
 }
 
-bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> *pListIDs)
+bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> *pListIDs, PDSTRUCT *pPdStruct)
 {
     bool bResult = false;
 
@@ -509,7 +509,7 @@ bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> 
     qint32 nCurrentMapItem = 0;
     qint32 nCurrentID = 0;
 
-    while ((nCurrentMapItem < nNumberOfMapItems) && (nCurrentID < nNumberOfIDs)) {
+    while ((nCurrentMapItem < nNumberOfMapItems) && (nCurrentID < nNumberOfIDs) && XBinary::isPdStructNotCanceled(pPdStruct)) {
         bResult = false;
 
         if (pListMaps->at(nCurrentMapItem).nType == pListIDs->at(nCurrentID)) {
