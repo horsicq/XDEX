@@ -154,6 +154,20 @@ QString XDEX::typeIdToString(qint32 nType)
     return sResult;
 }
 
+QString XDEX::getInfo(PDSTRUCT *pPdStruct)
+{
+    // Provide a compact info string; include mapHash computed from MAP_ITEMs
+    QString sResult;
+
+    QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems(pPdStruct);
+    if (!listMapItems.isEmpty() && XBinary::isPdStructNotCanceled(pPdStruct)) {
+        quint32 nHash = getMapItemsHash(&listMapItems, pPdStruct);
+        sResult = QString("mapHash=%1").arg(XBinary::valueToHex(nHash, false));
+    }
+
+    return sResult;
+}
+
 QList<XBinary::MAPMODE> XDEX::getMapModesList()
 {
     QList<MAPMODE> listResult;
@@ -526,15 +540,42 @@ bool XDEX::compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> 
     return bResult;
 }
 
-quint64 XDEX::getMapItemsHash(QList<XDEX_DEF::MAP_ITEM> *pListMaps, PDSTRUCT *pPdStruct)
+quint32 XDEX::getMapItemsHash(QList<XDEX_DEF::MAP_ITEM> *pListMaps, PDSTRUCT *pPdStruct)
 {
-    quint64 nResult = 0;
+    quint32 nResult = 0;
 
-    qint32 nNumberOfMapItems = pListMaps->count();
-
-    for (qint32 i = 0; (i < nNumberOfMapItems) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
-        nResult += (quint64)i * getStringCustomCRC32(QString::number(pListMaps->at(i).nType));
+    if (!pListMaps) {
+        return 0;
     }
+
+    const qint32 nCount = pListMaps->count();
+
+    // Initialize CRC32 (EDB88320) with standard init value
+    quint32 nCrc = 0xFFFFFFFF;
+    quint32 *pTable = XBinary::_getCRC32Table_EDB88320();
+
+    qint32 _nFreeIndex = XBinary::getFreeIndex(pPdStruct);
+    XBinary::setPdStructInit(pPdStruct, _nFreeIndex, nCount);
+
+    for (qint32 i = 0; (i < nCount) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
+        const XDEX_DEF::MAP_ITEM &mi = pListMaps->at(i);
+
+        // Serialize only the type (sequence of types) in little-endian order
+        char b16[2] = {static_cast<char>(mi.nType & 0xFF), static_cast<char>((mi.nType >> 8) & 0xFF)};
+
+        nCrc = XBinary::_getCRC32(b16, 2, nCrc, pTable);
+
+        XBinary::setPdStructCurrentIncrement(pPdStruct, _nFreeIndex);
+    }
+
+    XBinary::setPdStructFinished(pPdStruct, _nFreeIndex);
+
+    if (XBinary::isPdStructStopped(pPdStruct)) {
+        return 0;
+    }
+
+    // Finalize CRC
+    nResult = nCrc ^ 0xFFFFFFFF;
 
     return nResult;
 }

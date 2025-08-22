@@ -65,6 +65,7 @@ public:
     virtual qint32 getType();
     virtual QString typeIdToString(qint32 nType);
     virtual QString getMIMEString();
+    virtual QString getInfo(PDSTRUCT *pPdStruct = nullptr);
 
     virtual QList<MAPMODE> getMapModesList();
     virtual _MEMORY_MAP getMemoryMap(MAPMODE mapMode = MAPMODE_UNKNOWN, PDSTRUCT *pPdStruct = nullptr);
@@ -125,7 +126,7 @@ public:
     QList<XDEX_DEF::MAP_ITEM> getMapItems(PDSTRUCT *pPdStruct = nullptr);
 
     static bool compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> *pListIDs, PDSTRUCT *pPdStruct = nullptr);
-    quint64 getMapItemsHash(QList<XDEX_DEF::MAP_ITEM> *pListMaps, PDSTRUCT *pPdStruct);
+    quint32 getMapItemsHash(QList<XDEX_DEF::MAP_ITEM> *pListMaps, PDSTRUCT *pPdStruct);
     static bool isMapItemPresent(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct = nullptr);
 
     static QMap<quint64, QString> getTypes();
