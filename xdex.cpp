@@ -162,7 +162,7 @@ QString XDEX::getInfo(PDSTRUCT *pPdStruct)
     QList<XDEX_DEF::MAP_ITEM> listMapItems = getMapItems(pPdStruct);
     if (!listMapItems.isEmpty() && XBinary::isPdStructNotCanceled(pPdStruct)) {
         quint32 nHash = getMapItemsHash(&listMapItems, pPdStruct);
-        sResult = QString("mapHash=%1").arg(XBinary::valueToHex(nHash, false));
+        sResult = QString("%1").arg(XBinary::valueToHex(nHash, false));
     }
 
     return sResult;
