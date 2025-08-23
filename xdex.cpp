@@ -119,6 +119,8 @@ QString XDEX::getOsVersion()
         sVersion = XBinary::getAndroidVersionFromApi(26);  // TODO move the function here
     } else if (sDDEXVersion == "039") {
         sVersion = XBinary::getAndroidVersionFromApi(28);  // TODO move the function here
+    } else if (sDDEXVersion == "040") {
+        sVersion = XBinary::getAndroidVersionFromApi(29);  // TODO move the function here
     } else {
         sVersion = sDDEXVersion;
     }
@@ -1237,6 +1239,8 @@ QList<XBinary::FPART> XDEX::getFileParts(quint32 nFileParts, qint32 nLimit, PDST
         listResult.append(getFPART(FILEPART_HEADER, tr("Header"), 0, header.header_size, -1, 0));
     }
 
+    qint64 nMaxOffset = header.data_off + header.data_size;
+
     if (nFileParts & FILEPART_REGION) {
         if (header.link_size) listResult.append(getFPART(FILEPART_REGION, "link", header.link_off, header.link_size, -1, 0));
         if (header.string_ids_size) listResult.append(getFPART(FILEPART_REGION, "string_ids", header.string_ids_off, header.string_ids_size * 4, -1, 0));
@@ -1256,8 +1260,6 @@ QList<XBinary::FPART> XDEX::getFileParts(quint32 nFileParts, qint32 nLimit, PDST
 
         qint32 nNumberOfRecords = listMapItems.count();
 
-        qint64 nMaxOffset = 0;
-
         for (qint32 i = 0; (i < nNumberOfRecords) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
             XDEX_DEF::MAP_ITEM mapItem = listMapItems.at(i);
 
@@ -1276,11 +1278,11 @@ QList<XBinary::FPART> XDEX::getFileParts(quint32 nFileParts, qint32 nLimit, PDST
                 nMaxOffset = record.nFileOffset + record.nFileSize;
             }
         }
+    }
 
-        if (nFileParts & FILEPART_OVERLAY) {
-            if (nMaxOffset < getSize()) {
-                listResult.append(getFPART(FILEPART_OVERLAY, tr("Overlay"), nMaxOffset, getSize() - nMaxOffset, -1, 0));
-            }
+    if (nFileParts & FILEPART_OVERLAY) {
+        if (nMaxOffset < getSize()) {
+            listResult.append(getFPART(FILEPART_OVERLAY, tr("Overlay"), nMaxOffset, getSize() - nMaxOffset, -1, 0));
         }
     }
 
