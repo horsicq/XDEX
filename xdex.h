@@ -126,7 +126,7 @@ public:
     QList<XDEX_DEF::MAP_ITEM> getMapItems(PDSTRUCT *pPdStruct = nullptr);
 
     static bool compareMapItems(QList<XDEX_DEF::MAP_ITEM> *pListMaps, QList<quint16> *pListIDs, PDSTRUCT *pPdStruct = nullptr);
-    quint32 getMapItemsHash(QList<XDEX_DEF::MAP_ITEM> *pListMaps, PDSTRUCT *pPdStruct);
+    static quint32 getMapItemsHash(QList<XDEX_DEF::MAP_ITEM> *pListMaps, PDSTRUCT *pPdStruct);
     static bool isMapItemPresent(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct = nullptr);
 
     static QMap<quint64, QString> getTypes();
