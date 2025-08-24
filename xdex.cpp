@@ -199,10 +199,29 @@ XBinary::_MEMORY_MAP XDEX::getMemoryMap(MAPMODE mapMode, PDSTRUCT *pPdStruct)
 
 qint64 XDEX::getFileFormatSize(PDSTRUCT *pPdStruct)
 {
-    Q_UNUSED(pPdStruct)
     qint64 nResult = 0;
 
-    nResult = getHeader_file_size();  // TODO check mn _getRawSize
+    // Validate basic structure first
+    if (!isValid(pPdStruct)) {
+        return 0;
+    }
+
+    const qint64 nActualSize = getSize();
+    const quint32 nHeaderSize = getHeader_header_size();
+    const quint32 nFileSizeField = getHeader_file_size();
+
+    // Sanity: header must not exceed actual file and must be at least the header struct
+    if ((nHeaderSize < sizeof(XDEX_DEF::HEADER)) || ((qint64)nHeaderSize > nActualSize)) {
+        // Fallback: unknown header, return clamped field or actual size
+        return qMin<qint64>(nActualSize, (qint64)nFileSizeField);
+    }
+
+    // DEX format size should be the header's file_size; clamp to actual size and enforce header_size lower bound
+    if ((nFileSizeField == 0) || (nFileSizeField < nHeaderSize)) {
+        nResult = nActualSize;  // invalid field, fallback to actual
+    } else {
+        nResult = qMin<qint64>(nActualSize, (qint64)nFileSizeField);
+    }
 
     return nResult;
 }
