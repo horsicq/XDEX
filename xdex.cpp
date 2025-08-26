@@ -28,6 +28,10 @@ XBinary::XCONVERT _TABLE_DEX_STRUCTID[] = {
     {XDEX::STRUCTID_PROTO_IDS_LIST, "PROTO_IDS_LIST", QString("PROTO_IDS_LIST")},
     {XDEX::STRUCTID_FIELD_IDS_LIST, "FIELD_IDS_LIST", QString("FIELD_IDS_LIST")},
     {XDEX::STRUCTID_METHOD_IDS_LIST, "METHOD_IDS_LIST", QString("METHOD_IDS_LIST")},
+    {XDEX::STRUCTID_CLASS_DEFS_LIST, "CLASS_DEFS_LIST", QString("CLASS_DEFS_LIST")},
+    {XDEX::STRUCTID_DATA_LIST, "DATA_LIST", QString("DATA_LIST")},
+    {XDEX::STRUCTID_LINK_LIST, "LINK_LIST", QString("LINK_LIST")},
+    {XDEX::STRUCTID_MAP_LIST, "MAP_LIST", QString("MAP_LIST")}
 };
 
 XDEX::XDEX(QIODevice *pDevice) : XBinary(pDevice)
@@ -1468,7 +1472,7 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
                             _dataHeadersOptions.bChildren = true;
                             _dataHeadersOptions.dsID_parent = dataHeader.dsID;
-                            _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
+                            _dataHeadersOptions.dhMode = XBinary::DHMODE_HEX;
                             _dataHeadersOptions.nID = STRUCTID_DATA_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.data_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
@@ -1481,7 +1485,7 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             DATA_HEADERS_OPTIONS _dataHeadersOptions = dataHeadersOptions;
                             _dataHeadersOptions.bChildren = true;
                             _dataHeadersOptions.dsID_parent = dataHeader.dsID;
-                            _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
+                            _dataHeadersOptions.dhMode = XBinary::DHMODE_HEX;
                             _dataHeadersOptions.nID = STRUCTID_LINK_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.link_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
@@ -1496,9 +1500,11 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.dsID_parent = dataHeader.dsID;
                             _dataHeadersOptions.dhMode = XBinary::DHMODE_TABLE;
                             _dataHeadersOptions.nID = STRUCTID_MAP_LIST;
-                            _dataHeadersOptions.nLocation = dataHeader.nLocation + header.map_off;
+                            _dataHeadersOptions.nLocation = dataHeader.nLocation + header.map_off + 4;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            // _dataHeadersOptions.nCount = header.map_size;
+
+                            _dataHeadersOptions.nCount = read_uint32(nStartOffset + header.map_off, (dataHeadersOptions.pMemoryMap->endian == ENDIAN_BIG));
+                            _dataHeadersOptions.nCount = qMin(_dataHeadersOptions.nCount, (qint32)1000);  // to avoid crazy values
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1543,6 +1549,15 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                 dataHeader.listRecords.append(getDataRecord(0, 2, "class_idx", VT_UINT16, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(getDataRecord(2, 2, "proto_idx", VT_UINT16, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
                 dataHeader.listRecords.append(getDataRecord(4, 4, "name_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+
+                listResult.append(dataHeader);
+            } else if (dataHeadersOptions.nID == STRUCTID_MAP_LIST) {
+                XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
+
+                dataHeader.listRecords.append(getDataRecord(0, 2, "type", VT_USHORT, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(2, 2, "unused", VT_USHORT, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(4, 4, "size", VT_UINT, DRF_SIZE, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(8, 4, "offset", VT_UINT, DRF_OFFSET, dataHeadersOptions.pMemoryMap->endian));
 
                 listResult.append(dataHeader);
             }
