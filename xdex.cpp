@@ -20,19 +20,17 @@
  */
 #include "xdex.h"
 
-XBinary::XCONVERT _TABLE_DEX_STRUCTID[] = {
-    {XDEX::STRUCTID_UNKNOWN, "Unknown", QObject::tr("Unknown")},
-    {XDEX::STRUCTID_HEADER, "HEADER", QString("HEADER")},
-    {XDEX::STRUCTID_STRING_IDS_LIST, "STRING_IDS_LIST", QString("STRING_IDS_LIST")},
-    {XDEX::STRUCTID_TYPE_IDS_LIST, "TYPE_IDS_LIST", QString("TYPE_IDS_LIST")},
-    {XDEX::STRUCTID_PROTO_IDS_LIST, "PROTO_IDS_LIST", QString("PROTO_IDS_LIST")},
-    {XDEX::STRUCTID_FIELD_IDS_LIST, "FIELD_IDS_LIST", QString("FIELD_IDS_LIST")},
-    {XDEX::STRUCTID_METHOD_IDS_LIST, "METHOD_IDS_LIST", QString("METHOD_IDS_LIST")},
-    {XDEX::STRUCTID_CLASS_DEFS_LIST, "CLASS_DEFS_LIST", QString("CLASS_DEFS_LIST")},
-    {XDEX::STRUCTID_DATA_LIST, "DATA_LIST", QString("DATA_LIST")},
-    {XDEX::STRUCTID_LINK_LIST, "LINK_LIST", QString("LINK_LIST")},
-    {XDEX::STRUCTID_MAP_LIST, "MAP_LIST", QString("MAP_LIST")}
-};
+XBinary::XCONVERT _TABLE_DEX_STRUCTID[] = {{XDEX::STRUCTID_UNKNOWN, "Unknown", QObject::tr("Unknown")},
+                                           {XDEX::STRUCTID_HEADER, "HEADER", QString("HEADER")},
+                                           {XDEX::STRUCTID_STRING_IDS_LIST, "STRING_IDS_LIST", QString("STRING_IDS_LIST")},
+                                           {XDEX::STRUCTID_TYPE_IDS_LIST, "TYPE_IDS_LIST", QString("TYPE_IDS_LIST")},
+                                           {XDEX::STRUCTID_PROTO_IDS_LIST, "PROTO_IDS_LIST", QString("PROTO_IDS_LIST")},
+                                           {XDEX::STRUCTID_FIELD_IDS_LIST, "FIELD_IDS_LIST", QString("FIELD_IDS_LIST")},
+                                           {XDEX::STRUCTID_METHOD_IDS_LIST, "METHOD_IDS_LIST", QString("METHOD_IDS_LIST")},
+                                           {XDEX::STRUCTID_CLASS_DEFS_LIST, "CLASS_DEFS_LIST", QString("CLASS_DEFS_LIST")},
+                                           {XDEX::STRUCTID_DATA_LIST, "DATA_LIST", QString("DATA_LIST")},
+                                           {XDEX::STRUCTID_LINK_LIST, "LINK_LIST", QString("LINK_LIST")},
+                                           {XDEX::STRUCTID_MAP_LIST, "MAP_LIST", QString("MAP_LIST")}};
 
 XDEX::XDEX(QIODevice *pDevice) : XBinary(pDevice)
 {
