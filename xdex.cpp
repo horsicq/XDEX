@@ -511,27 +511,45 @@ QList<XDEX_DEF::MAP_ITEM> XDEX::getMapItems(PDSTRUCT *pPdStruct)
 {
     QList<XDEX_DEF::MAP_ITEM> listResult;
 
-    qint64 nOffset = getHeader_map_off();
+    qint64 nMapOff = getHeader_map_off();
+    if (nMapOff == 0) {
+        return listResult;
+    }
+
+    const qint64 nFileSize = getSize();
+    if ((nMapOff < 0) || (nMapOff > (nFileSize - 4))) {  // need at least 4 bytes for size
+        return listResult;
+    }
 
     bool bIsBigEndian = isBigEndian();
 
-    quint32 nNumberOfItems = read_uint32(nOffset, bIsBigEndian);
+    quint32 nDeclaredItems = read_uint32(nMapOff, bIsBigEndian);
+    qint64 nOffset = nMapOff + 4;
 
-    nOffset += 4;
+    // Compute maximum possible entries given file size to avoid OOB
+    qint64 nAvail = nFileSize - nOffset;
+    qint64 nMaxItemsBySize = (nAvail >= 0) ? (nAvail / 12) : 0;
+    quint32 nItems = static_cast<quint32>(qMin<qint64>(nDeclaredItems, qMin<qint64>(nMaxItemsBySize, 0x10000)));
 
-    if (nNumberOfItems < 0x100) {
-        for (quint32 i = 0; (i < nNumberOfItems) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
-            XDEX_DEF::MAP_ITEM map_item = {};
+    qint32 _nFreeIndex = XBinary::getFreeIndex(pPdStruct);
+    XBinary::setPdStructInit(pPdStruct, _nFreeIndex, nItems);
 
-            map_item.nType = read_uint16(nOffset, bIsBigEndian);
-            map_item.nCount = read_uint32(nOffset + 4, bIsBigEndian);
-            map_item.nOffset = read_uint32(nOffset + 8, bIsBigEndian);
+    for (quint32 i = 0; (i < nItems) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
+        XDEX_DEF::MAP_ITEM map_item = {};
 
-            listResult.append(map_item);
+        map_item.nType = read_uint16(nOffset, bIsBigEndian);
+        // skip 2 bytes reserved/unused at +2
+        map_item.nCount = read_uint32(nOffset + 4, bIsBigEndian);
+        map_item.nOffset = read_uint32(nOffset + 8, bIsBigEndian);
 
-            nOffset += 12;
-        }
+        listResult.append(map_item);
+
+        nOffset += 12;
+
+        XBinary::setPdStructCurrentIncrement(pPdStruct, _nFreeIndex);
     }
+
+    XBinary::setPdStructFinished(pPdStruct, _nFreeIndex);
 
     return listResult;
 }
