@@ -53,23 +53,23 @@ public:
     XDEX(QIODevice *pDevice);
 
     static MODE getMode(QIODevice *pDevice);
-    virtual bool isValid(PDSTRUCT *pPdStruct = nullptr);
+    virtual bool isValid(PDSTRUCT *pPdStruct = nullptr) override;
     quint32 _getVersion();
-    virtual QString getVersion();
-    virtual ENDIAN getEndian();
-    virtual MODE getMode();
-    virtual QString getArch();
-    virtual OSNAME getOsName();
-    virtual QString getOsVersion();
-    virtual FT getFileType();
-    virtual qint32 getType();
-    virtual QString typeIdToString(qint32 nType);
-    virtual QString getMIMEString();
-    virtual QString getInfo(PDSTRUCT *pPdStruct = nullptr);
+    virtual QString getVersion() override;
+    virtual ENDIAN getEndian() override;
+    virtual MODE getMode() override;
+    virtual QString getArch() override;
+    virtual OSNAME getOsName() override;
+    virtual QString getOsVersion() override;
+    virtual FT getFileType() override;
+    virtual qint32 getType() override;
+    virtual QString typeIdToString(qint32 nType) override;
+    virtual QString getMIMEString() override;
+    virtual QString getInfo(PDSTRUCT *pPdStruct = nullptr) override;
 
-    virtual QList<MAPMODE> getMapModesList();
-    virtual _MEMORY_MAP getMemoryMap(MAPMODE mapMode = MAPMODE_UNKNOWN, PDSTRUCT *pPdStruct = nullptr);
-    virtual qint64 getFileFormatSize(PDSTRUCT *pPdStruct);
+    virtual QList<MAPMODE> getMapModesList() override;
+    virtual _MEMORY_MAP getMemoryMap(MAPMODE mapMode = MAPMODE_UNKNOWN, PDSTRUCT *pPdStruct = nullptr) override;
+    virtual qint64 getFileFormatSize(PDSTRUCT *pPdStruct) override;
 
     quint32 getHeader_magic();
     quint32 getHeader_version();
@@ -169,13 +169,13 @@ public:
 
     qint64 getDataSizeByType(qint32 nType, qint64 nOffset, qint32 nCount, bool bIsBigEndian, PDSTRUCT *pPdStruct);
 
-    virtual QString getFileFormatExt();
-    virtual QString getFileFormatExtsString();
+    virtual QString getFileFormatExt() override;
+    virtual QString getFileFormatExtsString() override;
 
-    virtual QString structIDToString(quint32 nID);
-    virtual QList<DATA_HEADER> getDataHeaders(const DATA_HEADERS_OPTIONS &dataHeadersOptions, PDSTRUCT *pPdStruct);
+    virtual QString structIDToString(quint32 nID) override;
+    virtual QList<DATA_HEADER> getDataHeaders(const DATA_HEADERS_OPTIONS &dataHeadersOptions, PDSTRUCT *pPdStruct) override;
 
-    virtual QList<FPART> getFileParts(quint32 nFileParts, qint32 nLimit = -1, PDSTRUCT *pPdStruct = nullptr);
+    virtual QList<FPART> getFileParts(quint32 nFileParts, qint32 nLimit = -1, PDSTRUCT *pPdStruct = nullptr) override;
 };
 
 #endif  // XDEX_H
