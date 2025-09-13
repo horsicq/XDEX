@@ -39,9 +39,9 @@ public:
 
     XAndroidBinary(QIODevice *pDevice);
 
-    virtual bool isValid(PDSTRUCT *pPdStruct = nullptr);
-    virtual ENDIAN getEndian();
-    virtual QString getVersion();
+    virtual bool isValid(PDSTRUCT *pPdStruct = nullptr) override;
+    virtual ENDIAN getEndian() override;
+    virtual QString getVersion() override;
     XANDROIDBINARY_DEF::HEADER readHeader(qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_STRING_POOL readHeaderStringPool(qint64 nOffset);
     XANDROIDBINARY_DEF::HEADER_NAMESPACE readHeaderNamespace(qint64 nOffset);
@@ -54,8 +54,8 @@ public:
     static QString getDecoded(QIODevice *pDevice, PDSTRUCT *pPdStruct);
     static QString getDecoded(const QString &sFileName, PDSTRUCT *pPdStruct);
     static QString getDecoded(QByteArray *pbaData, PDSTRUCT *pPdStruct);
-    virtual FT getFileType();
-    virtual QString getFileFormatExt();
+    virtual FT getFileType() override;
+    virtual QString getFileFormatExt() override;
 };
 
 #endif  // XANDROIDBINARY_H
