@@ -366,6 +366,17 @@ QString XAndroidBinary::getFileFormatExt()
     return sResult;
 }
 
+QString XAndroidBinary::getMIMEString()
+{
+    QString sResult = "application/xml";
+
+    if (read_uint32(0, true) == 0x02000C00) {
+        sResult = "application/octet-stream";
+    }
+
+    return sResult;
+}
+
 XBinary::FT XAndroidBinary::getFileType()
 {
     XBinary::FT result = FT_ANDROIDXML;

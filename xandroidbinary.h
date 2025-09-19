@@ -56,6 +56,7 @@ public:
     static QString getDecoded(QByteArray *pbaData, PDSTRUCT *pPdStruct);
     virtual FT getFileType() override;
     virtual QString getFileFormatExt() override;
+    virtual QString getMIMEString() override;
 };
 
 #endif  // XANDROIDBINARY_H
