@@ -1593,3 +1593,13 @@ bool XDEX::isStringPoolSorted(PDSTRUCT *pPdStruct)
 
     return isStringPoolSorted(&mapItems, pPdStruct);
 }
+
+QList<QString> XDEX::getSearchSignatures()
+{
+    return XBinary::getSearchSignatures();
+}
+
+XBinary *XDEX::createInstance(QIODevice *pDevice, bool bIsImage, XADDR nModuleAddress)
+{
+    return XBinary::createInstance(pDevice, bIsImage, nModuleAddress);
+}
