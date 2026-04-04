@@ -163,6 +163,8 @@ public:
     static QMap<quint64, QString> getHeaderVersions();
     static QMap<quint64, QString> getHeaderEndianTags();
 
+    static const QString PREFIX_Type;
+
     bool isStringPoolSorted(PDSTRUCT *pPdStruct);
     bool isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct);
     bool isFieldNamesUnicode(QList<XDEX_DEF::FIELD_ITEM_ID> *pListIDs, QList<QString> *pListStrings, PDSTRUCT *pPdStruct);

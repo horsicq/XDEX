@@ -20,6 +20,49 @@
  */
 #include "xdex.h"
 
+XBinary::XIDSTRING _TABLE_XDEX_Types[] = {
+    {0x0000, "HEADER_ITEM"},
+    {0x0001, "STRING_ID_ITEM"},
+    {0x0002, "TYPE_ID_ITEM"},
+    {0x0003, "PROTO_ID_ITEM"},
+    {0x0004, "FIELD_ID_ITEM"},
+    {0x0005, "METHOD_ID_ITEM"},
+    {0x0006, "CLASS_DEF_ITEM"},
+    {0x0007, "CALL_SITE_ID_ITEM"},
+    {0x0008, "METHOD_HANDLE_ITEM"},
+    {0x1000, "MAP_LIST"},
+    {0x1001, "TYPE_LIST"},
+    {0x1002, "ANNOTATION_SET_REF_LIST"},
+    {0x1003, "ANNOTATION_SET_ITEM"},
+    {0x2000, "CLASS_DATA_ITEM"},
+    {0x2001, "CODE_ITEM"},
+    {0x2002, "STRING_DATA_ITEM"},
+    {0x2003, "DEBUG_INFO_ITEM"},
+    {0x2004, "ANNOTATION_ITEM"},
+    {0x2005, "ENCODED_ARRAY_ITEM"},
+    {0x2006, "ANNOTATIONS_DIRECTORY_ITEM"},
+    {0xF000, "HIDDENAPI_CLASS_DATA_ITEM"},
+};
+
+XBinary::XIDSTRING _TABLE_XDEX_HeaderMagics[] = {
+    {0x0A786564, "Magic"},
+};
+
+XBinary::XIDSTRING _TABLE_XDEX_HeaderVersions[] = {
+    {0x00353330, "035"},
+    {0x00373330, "037"},
+    {0x00383330, "038"},
+    {0x00393330, "039"},
+    {0x00303430, "040"},
+};
+
+XBinary::XIDSTRING _TABLE_XDEX_HeaderEndianTags[] = {
+    {0x12345678, "Little endian"},
+    {0x78563412, "Big endian"},
+};
+
+const QString XDEX::PREFIX_Type = "TYPE";
+
 XBinary::XCONVERT _TABLE_DEX_STRUCTID[] = {{XDEX::STRUCTID_UNKNOWN, "Unknown", QObject::tr("Unknown")},
                                            {XDEX::STRUCTID_HEADER, "HEADER", QString("HEADER")},
                                            {XDEX::STRUCTID_STRING_IDS_LIST, "STRING_IDS_LIST", QString("STRING_IDS_LIST")},
@@ -54,7 +97,7 @@ bool XDEX::isValid(PDSTRUCT *pPdStruct)
     // TODO More checks(sizes,mb hashes)
 
     _MEMORY_MAP memoryMap = XBinary::getSimpleMemoryMap();
-    bIsValid = compareSignature(&memoryMap, "'dex\n'......00", 0, pPdStruct);
+    bIsValid = compareSignature(&memoryMap, "'dex\n'...00", 0, pPdStruct);
 
     if (bIsValid) {
         bIsValid = (_getVersion() >= 35);
@@ -499,9 +542,9 @@ XDEX_DEF::HEADER XDEX::_readHEADER(qint64 nOffset)
     result.method_ids_size = read_uint32(nOffset + offsetof(XDEX_DEF::HEADER, method_ids_size), bIsBigEndian);
     result.method_ids_off = read_uint32(nOffset + offsetof(XDEX_DEF::HEADER, method_ids_off), bIsBigEndian);
     result.class_defs_size = read_uint32(nOffset + offsetof(XDEX_DEF::HEADER, class_defs_size), bIsBigEndian);
-    result.class_defs_off = read_uint32(offsetof(XDEX_DEF::HEADER, class_defs_off), bIsBigEndian);
-    result.data_size = read_uint32(offsetof(XDEX_DEF::HEADER, data_size), bIsBigEndian);
-    result.data_off = read_uint32(offsetof(XDEX_DEF::HEADER, data_off), bIsBigEndian);
+    result.class_defs_off = read_uint32(nOffset + offsetof(XDEX_DEF::HEADER, class_defs_off), bIsBigEndian);
+    result.data_size = read_uint32(nOffset + offsetof(XDEX_DEF::HEADER, data_size), bIsBigEndian);
+    result.data_off = read_uint32(nOffset + offsetof(XDEX_DEF::HEADER, data_off), bIsBigEndian);
 
     return result;
 }
@@ -644,60 +687,12 @@ bool XDEX::isMapItemPresent(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems,
 
 QMap<quint64, QString> XDEX::getTypes()
 {
-    QMap<quint64, QString> mapResult;
-
-    mapResult.insert(0x0000, "TYPE_HEADER_ITEM");
-    mapResult.insert(0x0001, "TYPE_STRING_ID_ITEM");
-    mapResult.insert(0x0002, "TYPE_TYPE_ID_ITEM");
-    mapResult.insert(0x0003, "TYPE_PROTO_ID_ITEM");
-    mapResult.insert(0x0004, "TYPE_FIELD_ID_ITEM");
-    mapResult.insert(0x0005, "TYPE_METHOD_ID_ITEM");
-    mapResult.insert(0x0006, "TYPE_CLASS_DEF_ITEM");
-    mapResult.insert(0x0007, "TYPE_CALL_SITE_ID_ITEM");
-    mapResult.insert(0x0008, "TYPE_METHOD_HANDLE_ITEM");
-    mapResult.insert(0x1000, "TYPE_MAP_LIST");
-    mapResult.insert(0x1001, "TYPE_TYPE_LIST");
-    mapResult.insert(0x1002, "TYPE_ANNOTATION_SET_REF_LIST");
-    mapResult.insert(0x1003, "TYPE_ANNOTATION_SET_ITEM");
-    mapResult.insert(0x2000, "TYPE_CLASS_DATA_ITEM");
-    mapResult.insert(0x2001, "TYPE_CODE_ITEM");
-    mapResult.insert(0x2002, "TYPE_STRING_DATA_ITEM");
-    mapResult.insert(0x2003, "TYPE_DEBUG_INFO_ITEM");
-    mapResult.insert(0x2004, "TYPE_ANNOTATION_ITEM");
-    mapResult.insert(0x2005, "TYPE_ENCODED_ARRAY_ITEM");
-    mapResult.insert(0x2006, "TYPE_ANNOTATIONS_DIRECTORY_ITEM");
-    mapResult.insert(0xF000, "TYPE_HIDDENAPI_CLASS_DATA_ITEM");
-
-    return mapResult;
+    return XBinary::XIDSTRING_createMapPrefix(_TABLE_XDEX_Types, sizeof(_TABLE_XDEX_Types) / sizeof(XBinary::XIDSTRING), PREFIX_Type);
 }
 
 QMap<quint64, QString> XDEX::getTypesS()
 {
-    QMap<quint64, QString> mapResult;
-
-    mapResult.insert(0x0000, "HEADER_ITEM");
-    mapResult.insert(0x0001, "STRING_ID_ITEM");
-    mapResult.insert(0x0002, "TYPE_ID_ITEM");
-    mapResult.insert(0x0003, "PROTO_ID_ITEM");
-    mapResult.insert(0x0004, "FIELD_ID_ITEM");
-    mapResult.insert(0x0005, "METHOD_ID_ITEM");
-    mapResult.insert(0x0006, "CLASS_DEF_ITEM");
-    mapResult.insert(0x0007, "CALL_SITE_ID_ITEM");
-    mapResult.insert(0x0008, "METHOD_HANDLE_ITEM");
-    mapResult.insert(0x1000, "MAP_LIST");
-    mapResult.insert(0x1001, "TYPE_LIST");
-    mapResult.insert(0x1002, "ANNOTATION_SET_REF_LIST");
-    mapResult.insert(0x1003, "ANNOTATION_SET_ITEM");
-    mapResult.insert(0x2000, "CLASS_DATA_ITEM");
-    mapResult.insert(0x2001, "CODE_ITEM");
-    mapResult.insert(0x2002, "STRING_DATA_ITEM");
-    mapResult.insert(0x2003, "DEBUG_INFO_ITEM");
-    mapResult.insert(0x2004, "ANNOTATION_ITEM");
-    mapResult.insert(0x2005, "ENCODED_ARRAY_ITEM");
-    mapResult.insert(0x2006, "ANNOTATIONS_DIRECTORY_ITEM");
-    mapResult.insert(0xF000, "HIDDENAPI_CLASS_DATA_ITEM");
-
-    return mapResult;
+    return XBinary::XIDSTRING_createMap(_TABLE_XDEX_Types, sizeof(_TABLE_XDEX_Types) / sizeof(XBinary::XIDSTRING));
 }
 
 XDEX_DEF::MAP_ITEM XDEX::getMapItem(quint16 nType, QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct)
@@ -1069,7 +1064,7 @@ QString XDEX::getStringItemIdString(QList<XDEX_DEF::STRING_ITEM_ID> *pList, qint
 {
     QString sResult;
 
-    if ((nIndex > 0) && (nIndex < pList->count())) {
+    if ((nIndex >= 0) && (nIndex < pList->count())) {
         sResult = getStringItemIdString(pList->at(nIndex), pData, nDataSize, nDataOffset);
     }
 
@@ -1103,7 +1098,7 @@ QString XDEX::getTypeItemIdString(QList<XDEX_DEF::TYPE_ITEM_ID> *pList, qint32 n
 {
     QString sResult;
 
-    if ((nIndex > 0) && (nIndex < pList->count())) {
+    if ((nIndex >= 0) && (nIndex < pList->count())) {
         sResult = getTypeItemIdString(pList->at(nIndex), pMapItemStrings, pData, nDataSize, nDataOffset);
     }
 
@@ -1125,34 +1120,17 @@ QString XDEX::getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId, XDEX_DEF
 
 QMap<quint64, QString> XDEX::getHeaderMagics()
 {
-    QMap<quint64, QString> mapResult;
-
-    mapResult.insert(0x0A786564, "Magic");
-
-    return mapResult;
+    return XBinary::XIDSTRING_createMap(_TABLE_XDEX_HeaderMagics, sizeof(_TABLE_XDEX_HeaderMagics) / sizeof(XBinary::XIDSTRING));
 }
 
 QMap<quint64, QString> XDEX::getHeaderVersions()
 {
-    QMap<quint64, QString> mapResult;
-
-    mapResult.insert(0x00353330, "035");
-    // 036 invalid
-    mapResult.insert(0x00373330, "037");
-    mapResult.insert(0x00383330, "038");
-    mapResult.insert(0x00393330, "039");
-
-    return mapResult;
+    return XBinary::XIDSTRING_createMap(_TABLE_XDEX_HeaderVersions, sizeof(_TABLE_XDEX_HeaderVersions) / sizeof(XBinary::XIDSTRING));
 }
 
 QMap<quint64, QString> XDEX::getHeaderEndianTags()
 {
-    QMap<quint64, QString> mapResult;
-
-    mapResult.insert(0x12345678, "Little endian");
-    mapResult.insert(0x78563412, "Big endian");
-
-    return mapResult;
+    return XBinary::XIDSTRING_createMap(_TABLE_XDEX_HeaderEndianTags, sizeof(_TABLE_XDEX_HeaderEndianTags) / sizeof(XBinary::XIDSTRING));
 }
 
 bool XDEX::isStringPoolSorted(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct)
@@ -1418,8 +1396,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_STRING_IDS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.string_ids_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.string_ids_size / 4;
-                            _dataHeadersOptions.nSize = header.string_ids_size;
+                            _dataHeadersOptions.nCount = header.string_ids_size;
+                            _dataHeadersOptions.nSize = header.string_ids_size * 4;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1431,8 +1409,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_TYPE_IDS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.type_ids_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.type_ids_size / 4;
-                            _dataHeadersOptions.nSize = header.type_ids_size;
+                            _dataHeadersOptions.nCount = header.type_ids_size;
+                            _dataHeadersOptions.nSize = header.type_ids_size * 4;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1444,8 +1422,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_PROTO_IDS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.proto_ids_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.proto_ids_size / 12;
-                            _dataHeadersOptions.nSize = header.proto_ids_size;
+                            _dataHeadersOptions.nCount = header.proto_ids_size;
+                            _dataHeadersOptions.nSize = header.proto_ids_size * 12;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1457,8 +1435,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_FIELD_IDS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.field_ids_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.field_ids_size / 8;
-                            _dataHeadersOptions.nSize = header.field_ids_size;
+                            _dataHeadersOptions.nCount = header.field_ids_size;
+                            _dataHeadersOptions.nSize = header.field_ids_size * 8;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1470,8 +1448,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_METHOD_IDS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.method_ids_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.method_ids_size / 8;
-                            _dataHeadersOptions.nSize = header.method_ids_size;
+                            _dataHeadersOptions.nCount = header.method_ids_size;
+                            _dataHeadersOptions.nSize = header.method_ids_size * 8;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1483,8 +1461,8 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                             _dataHeadersOptions.nID = STRUCTID_CLASS_DEFS_LIST;
                             _dataHeadersOptions.nLocation = dataHeader.nLocation + header.class_defs_off;
                             _dataHeadersOptions.locType = dataHeader.locType;
-                            _dataHeadersOptions.nCount = header.class_defs_size / 32;
-                            _dataHeadersOptions.nSize = header.class_defs_size;
+                            _dataHeadersOptions.nCount = header.class_defs_size;
+                            _dataHeadersOptions.nSize = header.class_defs_size * 32;
 
                             listResult.append(getDataHeaders(_dataHeadersOptions, pPdStruct));
                         }
@@ -1571,6 +1549,20 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                 dataHeader.listRecords.append(getDataRecord(4, 4, "name_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
 
                 listResult.append(dataHeader);
+            } else if (dataHeadersOptions.nID == STRUCTID_CLASS_DEFS_LIST) {
+                XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
+                dataHeader.nSize = dataHeadersOptions.nCount * 32;
+
+                dataHeader.listRecords.append(getDataRecord(0,  4, "class_idx",         VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(4,  4, "access_flags",      VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(8,  4, "superclass_idx",    VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(12, 4, "interfaces_off",    VT_UINT32, DRF_OFFSET,  dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(16, 4, "source_file_idx",   VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(20, 4, "annotations_off",   VT_UINT32, DRF_OFFSET,  dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(24, 4, "class_data_off",    VT_UINT32, DRF_OFFSET,  dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(28, 4, "static_values_off", VT_UINT32, DRF_OFFSET,  dataHeadersOptions.pMemoryMap->endian));
+
+                listResult.append(dataHeader);
             } else if (dataHeadersOptions.nID == STRUCTID_MAP_LIST) {
                 XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
 
@@ -1596,10 +1588,14 @@ bool XDEX::isStringPoolSorted(PDSTRUCT *pPdStruct)
 
 QList<QString> XDEX::getSearchSignatures()
 {
-    return XBinary::getSearchSignatures();
+    QList<QString> listResult;
+    listResult.append("'dex\n'...00");
+    return listResult;
 }
 
 XBinary *XDEX::createInstance(QIODevice *pDevice, bool bIsImage, XADDR nModuleAddress)
 {
-    return XBinary::createInstance(pDevice, bIsImage, nModuleAddress);
+    Q_UNUSED(bIsImage)
+    Q_UNUSED(nModuleAddress)
+    return new XDEX(pDevice);
 }
