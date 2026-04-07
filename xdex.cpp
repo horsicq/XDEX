@@ -106,6 +106,13 @@ bool XDEX::isValid(PDSTRUCT *pPdStruct)
     return bIsValid;
 }
 
+bool XDEX::isValid(QIODevice *pDevice)
+{
+    XDEX xdex(pDevice);
+
+    return xdex.isValid();
+}
+
 quint32 XDEX::_getVersion()
 {
     quint32 nVersion = 0;
@@ -974,7 +981,7 @@ QList<quint32> XDEX::_getTypeList(qint64 nOffset, bool bIsBigEndian, PDSTRUCT *p
         quint32 nCount = read_uint32(nOffset, bIsBigEndian);
 
         for (quint32 i = 0; (i < nCount) && XBinary::isPdStructNotCanceled(pPdStruct); i++) {
-            quint32 nType = read_uint32(nOffset + sizeof(quint32) * (1 + i), bIsBigEndian);
+            quint32 nType = read_uint16(nOffset + sizeof(quint32) + sizeof(quint16) * i, bIsBigEndian);
             listResult.append(nType);
         }
     }
@@ -1218,9 +1225,28 @@ qint64 XDEX::getDataSizeByType(qint32 nType, qint64 nOffset, qint32 nCount, bool
         nCount = read_uint32(nOffset, bIsBigEndian);
         nResult = 4 + (nCount * 12);
     } else if (nType == XDEX_DEF::TYPE_TYPE_LIST) {
-        nResult = 4 + (nCount * 2);
+        qint64 nCurrentOffset = nOffset;
+
+        for (qint32 i = 0; i < nCount; i++) {
+            quint32 nListCount = read_uint32(nCurrentOffset, bIsBigEndian);
+            nCurrentOffset += 4 + (qint64)nListCount * 2;
+
+            // type_list items are 4-byte aligned
+            if (nCurrentOffset % 4) {
+                nCurrentOffset += 2;
+            }
+        }
+
+        nResult = nCurrentOffset - nOffset;
     } else if ((nType == XDEX_DEF::TYPE_ANNOTATION_SET_REF_LIST) || (nType == XDEX_DEF::TYPE_ANNOTATION_SET_ITEM)) {
-        nResult = 4 + (nCount * 4);
+        qint64 nCurrentOffset = nOffset;
+
+        for (qint32 i = 0; i < nCount; i++) {
+            quint32 nListCount = read_uint32(nCurrentOffset, bIsBigEndian);
+            nCurrentOffset += 4 + (qint64)nListCount * 4;
+        }
+
+        nResult = nCurrentOffset - nOffset;
     } else if ((nType == XDEX_DEF::TYPE_CLASS_DATA_ITEM) || (nType == XDEX_DEF::TYPE_CODE_ITEM) || (nType == XDEX_DEF::TYPE_STRING_DATA_ITEM) ||
                (nType == XDEX_DEF::TYPE_DEBUG_INFO_ITEM) || (nType == XDEX_DEF::TYPE_ANNOTATION_ITEM) || (nType == XDEX_DEF::TYPE_ENCODED_ARRAY_ITEM) ||
                (nType == XDEX_DEF::TYPE_ANNOTATIONS_DIRECTORY_ITEM) || (nType == XDEX_DEF::TYPE_HIDDENAPI_CLASS_DATA_ITEM)) {

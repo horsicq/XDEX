@@ -41,6 +41,7 @@ public:
     virtual ~XAndroidBinary();
 
     virtual bool isValid(PDSTRUCT *pPdStruct = nullptr) override;
+    static bool isValid(QIODevice *pDevice);
     virtual ENDIAN getEndian() override;
     virtual QString getVersion() override;
     XANDROIDBINARY_DEF::HEADER readHeader(qint64 nOffset);

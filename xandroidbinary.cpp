@@ -40,6 +40,13 @@ bool XAndroidBinary::isValid(PDSTRUCT *pPdStruct)
     return bIsValid;
 }
 
+bool XAndroidBinary::isValid(QIODevice *pDevice)
+{
+    XAndroidBinary xandroidbinary(pDevice);
+
+    return xandroidbinary.isValid();
+}
+
 XBinary::ENDIAN XAndroidBinary::getEndian()
 {
     return ENDIAN_LITTLE;

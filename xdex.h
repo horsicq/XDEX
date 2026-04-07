@@ -55,6 +55,7 @@ public:
 
     static MODE getMode(QIODevice *pDevice);
     virtual bool isValid(PDSTRUCT *pPdStruct = nullptr) override;
+    static bool isValid(QIODevice *pDevice);
     quint32 _getVersion();
     virtual QString getVersion() override;
     virtual ENDIAN getEndian() override;
