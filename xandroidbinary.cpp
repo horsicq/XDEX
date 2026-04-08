@@ -40,7 +40,7 @@ bool XAndroidBinary::isValid(PDSTRUCT *pPdStruct)
     return bIsValid;
 }
 
-bool XAndroidBinary::isValid(QIODevice *pDevice)
+bool XAndroidBinary::isValid(QIODevice *pDevice, PDSTRUCT *pPdStruct)
 {
     XAndroidBinary xandroidbinary(pDevice);
 
@@ -398,3 +398,4 @@ XBinary::FT XAndroidBinary::getFileType()
 
     return result;
 }
+

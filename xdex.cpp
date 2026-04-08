@@ -97,7 +97,7 @@ bool XDEX::isValid(PDSTRUCT *pPdStruct)
     // TODO More checks(sizes,mb hashes)
 
     _MEMORY_MAP memoryMap = XBinary::getSimpleMemoryMap();
-    bIsValid = compareSignature(&memoryMap, "'dex\n'...00", 0, pPdStruct);
+    bIsValid = compareSignature(&memoryMap, "'dex\n'......00", 0, pPdStruct);
 
     if (bIsValid) {
         bIsValid = (_getVersion() >= 35);
@@ -106,7 +106,7 @@ bool XDEX::isValid(PDSTRUCT *pPdStruct)
     return bIsValid;
 }
 
-bool XDEX::isValid(QIODevice *pDevice)
+bool XDEX::isValid(QIODevice *pDevice, PDSTRUCT *pPdStruct)
 {
     XDEX xdex(pDevice);
 
@@ -1615,7 +1615,7 @@ bool XDEX::isStringPoolSorted(PDSTRUCT *pPdStruct)
 QList<QString> XDEX::getSearchSignatures()
 {
     QList<QString> listResult;
-    listResult.append("'dex\n'...00");
+    listResult.append("'dex\n'......00");
     return listResult;
 }
 
@@ -1625,3 +1625,4 @@ XBinary *XDEX::createInstance(QIODevice *pDevice, bool bIsImage, XADDR nModuleAd
     Q_UNUSED(nModuleAddress)
     return new XDEX(pDevice);
 }
+

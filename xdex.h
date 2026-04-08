@@ -55,7 +55,7 @@ public:
 
     static MODE getMode(QIODevice *pDevice);
     virtual bool isValid(PDSTRUCT *pPdStruct = nullptr) override;
-    static bool isValid(QIODevice *pDevice);
+    static bool isValid(QIODevice *pDevice, PDSTRUCT *pPdStruct = nullptr);
     quint32 _getVersion();
     virtual QString getVersion() override;
     virtual ENDIAN getEndian() override;
@@ -186,3 +186,4 @@ public:
 };
 
 #endif  // XDEX_H
+
