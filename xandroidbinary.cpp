@@ -398,4 +398,3 @@ XBinary::FT XAndroidBinary::getFileType()
 
     return result;
 }
-

@@ -49,11 +49,7 @@ XBinary::XIDSTRING _TABLE_XDEX_HeaderMagics[] = {
 };
 
 XBinary::XIDSTRING _TABLE_XDEX_HeaderVersions[] = {
-    {0x00353330, "035"},
-    {0x00373330, "037"},
-    {0x00383330, "038"},
-    {0x00393330, "039"},
-    {0x00303430, "040"},
+    {0x00353330, "035"}, {0x00373330, "037"}, {0x00383330, "038"}, {0x00393330, "039"}, {0x00303430, "040"},
 };
 
 XBinary::XIDSTRING _TABLE_XDEX_HeaderEndianTags[] = {
@@ -1402,13 +1398,13 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                         };
 
                         appendChild(XBinary::DHMODE_TABLE, STRUCTID_STRING_IDS_LIST, header.string_ids_off, header.string_ids_size, header.string_ids_size * 4);
-                        appendChild(XBinary::DHMODE_TABLE, STRUCTID_TYPE_IDS_LIST,   header.type_ids_off,   header.type_ids_size,   header.type_ids_size * 4);
-                        appendChild(XBinary::DHMODE_TABLE, STRUCTID_PROTO_IDS_LIST,  header.proto_ids_off,  header.proto_ids_size,  header.proto_ids_size * 12);
-                        appendChild(XBinary::DHMODE_TABLE, STRUCTID_FIELD_IDS_LIST,  header.field_ids_off,  header.field_ids_size,  header.field_ids_size * 8);
+                        appendChild(XBinary::DHMODE_TABLE, STRUCTID_TYPE_IDS_LIST, header.type_ids_off, header.type_ids_size, header.type_ids_size * 4);
+                        appendChild(XBinary::DHMODE_TABLE, STRUCTID_PROTO_IDS_LIST, header.proto_ids_off, header.proto_ids_size, header.proto_ids_size * 12);
+                        appendChild(XBinary::DHMODE_TABLE, STRUCTID_FIELD_IDS_LIST, header.field_ids_off, header.field_ids_size, header.field_ids_size * 8);
                         appendChild(XBinary::DHMODE_TABLE, STRUCTID_METHOD_IDS_LIST, header.method_ids_off, header.method_ids_size, header.method_ids_size * 8);
                         appendChild(XBinary::DHMODE_TABLE, STRUCTID_CLASS_DEFS_LIST, header.class_defs_off, header.class_defs_size, header.class_defs_size * 32);
-                        appendChild(XBinary::DHMODE_HEX,   STRUCTID_DATA_LIST,       header.data_off,       header.data_size,       header.data_size);
-                        appendChild(XBinary::DHMODE_HEX,   STRUCTID_LINK_LIST,       header.link_off,       header.link_size,       header.link_size);
+                        appendChild(XBinary::DHMODE_HEX, STRUCTID_DATA_LIST, header.data_off, header.data_size, header.data_size);
+                        appendChild(XBinary::DHMODE_HEX, STRUCTID_LINK_LIST, header.link_off, header.link_size, header.link_size);
 
                         if (header.map_off) {
                             DATA_HEADERS_OPTIONS opts = dataHeadersOptions;
@@ -1468,14 +1464,14 @@ QList<XBinary::DATA_HEADER> XDEX::getDataHeaders(const DATA_HEADERS_OPTIONS &dat
                 XBinary::DATA_HEADER dataHeader = _initDataHeader(dataHeadersOptions, XDEX::structIDToString(dataHeadersOptions.nID));
                 dataHeader.nSize = dataHeadersOptions.nCount * 32;
 
-                dataHeader.listRecords.append(getDataRecord(0,  4, "class_idx",         VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
-                dataHeader.listRecords.append(getDataRecord(4,  4, "access_flags",      VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
-                dataHeader.listRecords.append(getDataRecord(8,  4, "superclass_idx",    VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
-                dataHeader.listRecords.append(getDataRecord(12, 4, "interfaces_off",    VT_UINT32, DRF_OFFSET,  dataHeadersOptions.pMemoryMap->endian));
-                dataHeader.listRecords.append(getDataRecord(16, 4, "source_file_idx",   VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
-                dataHeader.listRecords.append(getDataRecord(20, 4, "annotations_off",   VT_UINT32, DRF_OFFSET,  dataHeadersOptions.pMemoryMap->endian));
-                dataHeader.listRecords.append(getDataRecord(24, 4, "class_data_off",    VT_UINT32, DRF_OFFSET,  dataHeadersOptions.pMemoryMap->endian));
-                dataHeader.listRecords.append(getDataRecord(28, 4, "static_values_off", VT_UINT32, DRF_OFFSET,  dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(0, 4, "class_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(4, 4, "access_flags", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(8, 4, "superclass_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(12, 4, "interfaces_off", VT_UINT32, DRF_OFFSET, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(16, 4, "source_file_idx", VT_UINT32, DRF_UNKNOWN, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(20, 4, "annotations_off", VT_UINT32, DRF_OFFSET, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(24, 4, "class_data_off", VT_UINT32, DRF_OFFSET, dataHeadersOptions.pMemoryMap->endian));
+                dataHeader.listRecords.append(getDataRecord(28, 4, "static_values_off", VT_UINT32, DRF_OFFSET, dataHeadersOptions.pMemoryMap->endian));
 
                 listResult.append(dataHeader);
             } else if (dataHeadersOptions.nID == STRUCTID_MAP_LIST) {
@@ -1514,4 +1510,3 @@ XBinary *XDEX::createInstance(QIODevice *pDevice, bool bIsImage, XADDR nModuleAd
     Q_UNUSED(nModuleAddress)
     return new XDEX(pDevice);
 }
-
