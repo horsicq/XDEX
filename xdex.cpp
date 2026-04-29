@@ -1610,27 +1610,27 @@ QList<XBinary::XFRECORD> XDEX::getXFRecords(FT fileType, quint32 nStructID, cons
     } else if (nStructID == STRUCTID_STRING_IDS_LIST) {
         listResult.append({"string_data_off", (qint32)offsetof(XDEX_DEF::STRING_ITEM_ID, string_data_off), 4, XFRECORD_FLAG_OFFSET | XFRECORD_FLAG_OFFSET_MUTF8STRING, VT_UINT32});
     } else if (nStructID == STRUCTID_TYPE_IDS_LIST) {
-        qint64 nSpOff = (qint64)getHeader_string_ids_off();
-        qint32 nSpSize = (qint32)getHeader_string_ids_size();
-        listResult.append({"descriptor_idx", (qint32)offsetof(XDEX_DEF::TYPE_ITEM_ID, descriptor_idx), 4, XFRECORD_FLAG_STRING_POOL_IDX, VT_UINT32, nSpOff, nSpSize});
+        // qint64 nSpOff = (qint64)getHeader_string_ids_off();
+        // qint32 nSpSize = (qint32)getHeader_string_ids_size();
+        listResult.append({"descriptor_idx", (qint32)offsetof(XDEX_DEF::TYPE_ITEM_ID, descriptor_idx), 4, XFRECORD_FLAG_STRING_POOL_IDX, VT_UINT32});
     } else if (nStructID == STRUCTID_PROTO_IDS_LIST) {
         qint64 nSpOff = (qint64)getHeader_string_ids_off();
         qint32 nSpSize = (qint32)getHeader_string_ids_size();
-        listResult.append({"shorty_idx",      (qint32)offsetof(XDEX_DEF::PROTO_ITEM_ID, shorty_idx),      4, XFRECORD_FLAG_STRING_POOL_IDX, VT_UINT32, nSpOff, nSpSize});
+        listResult.append({"shorty_idx",      (qint32)offsetof(XDEX_DEF::PROTO_ITEM_ID, shorty_idx),      4, XFRECORD_FLAG_STRING_POOL_IDX, VT_UINT32});
         listResult.append({"return_type_idx", (qint32)offsetof(XDEX_DEF::PROTO_ITEM_ID, return_type_idx), 4, XFRECORD_FLAG_NONE,            VT_UINT32});
         listResult.append({"parameters_off",  (qint32)offsetof(XDEX_DEF::PROTO_ITEM_ID, parameters_off),  4, XFRECORD_FLAG_OFFSET,          VT_UINT32});
     } else if (nStructID == STRUCTID_FIELD_IDS_LIST) {
-        qint64 nSpOff = (qint64)getHeader_string_ids_off();
-        qint32 nSpSize = (qint32)getHeader_string_ids_size();
+        // qint64 nSpOff = (qint64)getHeader_string_ids_off();
+        // qint32 nSpSize = (qint32)getHeader_string_ids_size();
         listResult.append({"class_idx", (qint32)offsetof(XDEX_DEF::FIELD_ITEM_ID, class_idx), 2, XFRECORD_FLAG_NONE,            VT_UINT16});
         listResult.append({"type_idx",  (qint32)offsetof(XDEX_DEF::FIELD_ITEM_ID, type_idx),  2, XFRECORD_FLAG_NONE,            VT_UINT16});
-        listResult.append({"name_idx",  (qint32)offsetof(XDEX_DEF::FIELD_ITEM_ID, name_idx),  4, XFRECORD_FLAG_STRING_POOL_IDX, VT_UINT32, nSpOff, nSpSize});
+        listResult.append({"name_idx",  (qint32)offsetof(XDEX_DEF::FIELD_ITEM_ID, name_idx),  4, XFRECORD_FLAG_STRING_POOL_IDX, VT_UINT32});
     } else if (nStructID == STRUCTID_METHOD_IDS_LIST) {
-        qint64 nSpOff = (qint64)getHeader_string_ids_off();
-        qint32 nSpSize = (qint32)getHeader_string_ids_size();
+        // qint64 nSpOff = (qint64)getHeader_string_ids_off();
+        // qint32 nSpSize = (qint32)getHeader_string_ids_size();
         listResult.append({"class_idx", (qint32)offsetof(XDEX_DEF::METHOD_ITEM_ID, class_idx), 2, XFRECORD_FLAG_NONE,            VT_UINT16});
         listResult.append({"proto_idx", (qint32)offsetof(XDEX_DEF::METHOD_ITEM_ID, proto_idx), 2, XFRECORD_FLAG_NONE,            VT_UINT16});
-        listResult.append({"name_idx",  (qint32)offsetof(XDEX_DEF::METHOD_ITEM_ID, name_idx),  4, XFRECORD_FLAG_STRING_POOL_IDX, VT_UINT32, nSpOff, nSpSize});
+        listResult.append({"name_idx",  (qint32)offsetof(XDEX_DEF::METHOD_ITEM_ID, name_idx),  4, XFRECORD_FLAG_STRING_POOL_IDX, VT_UINT32});
     } else if (nStructID == STRUCTID_CLASS_DEFS_LIST) {
         listResult.append({"class_idx",        (qint32)offsetof(XDEX_DEF::CLASS_ITEM_DEF, class_idx),        4, XFRECORD_FLAG_NONE,   VT_UINT32});
         listResult.append({"access_flags",     (qint32)offsetof(XDEX_DEF::CLASS_ITEM_DEF, access_flags),     4, XFRECORD_FLAG_NONE,   VT_UINT32});
