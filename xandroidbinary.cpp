@@ -502,6 +502,43 @@ QList<XBinary::XFHEADER> XAndroidBinary::getXFHeaders(const XFSTRUCT &xfStruct, 
     return listResult;
 }
 
+bool XAndroidBinary::handleInternalInfo(PDSTRUCT *pPdStruct)
+{
+    bool bResult = true;
+
+    if (!isInternalInfoHandled()) {
+        bResult = XBinary::handleInternalInfo(pPdStruct);
+
+        if (bResult) {
+            static_cast<XBinary::INTERNAL_INFO &>(m_internalInfo) =
+                *static_cast<XBinary::INTERNAL_INFO *>(XBinary::getInternalInfo(pPdStruct));
+            setIsInternalInfoHandled(true);
+        }
+    }
+
+    return bResult;
+}
+
+void *XAndroidBinary::getInternalInfo(PDSTRUCT *pPdStruct)
+{
+    handleInternalInfo(pPdStruct);
+
+    return &m_internalInfo;
+}
+
+void XAndroidBinary::setInternalInfo(void *pInternalInfo)
+{
+    if (pInternalInfo) {
+        m_internalInfo = *static_cast<INTERNAL_INFO *>(pInternalInfo);
+        XBinary::setInternalInfo(static_cast<XBinary::INTERNAL_INFO *>(&m_internalInfo));
+        setIsInternalInfoHandled(true);
+    } else {
+        m_internalInfo = INTERNAL_INFO();
+        XBinary::setInternalInfo(nullptr);
+        setIsInternalInfoHandled(false);
+    }
+}
+
 QList<XBinary::XFRECORD> XAndroidBinary::getXFRecords(FT fileType, quint32 nStructID, const XLOC &xLoc)
 {
     Q_UNUSED(fileType)

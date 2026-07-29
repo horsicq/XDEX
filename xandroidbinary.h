@@ -31,6 +31,12 @@ class XAndroidBinary : public XBinary {
     Q_OBJECT
 
 public:
+    struct INTERNAL_INFO : XBinary::INTERNAL_INFO {};
+
+    virtual bool handleInternalInfo(PDSTRUCT *pPdStruct) override;
+    virtual void *getInternalInfo(PDSTRUCT *pPdStruct) override;
+    virtual void setInternalInfo(void *pInternalInfo) override;
+
     struct RECORD {
         qint64 nOffset;
         XANDROIDBINARY_DEF::HEADER header;
@@ -70,6 +76,9 @@ public:
     virtual quint32 ftStringToStructID(const QString &sFtString) override;
     virtual QList<XFHEADER> getXFHeaders(const XFSTRUCT &xfStruct, PDSTRUCT *pPdStruct) override;
     virtual QList<XFRECORD> getXFRecords(FT fileType, quint32 nStructID, const XLOC &xLoc) override;
+private:
+    INTERNAL_INFO m_internalInfo;
+
 };
 
 #endif  // XANDROIDBINARY_H

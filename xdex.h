@@ -28,6 +28,12 @@ class XDEX : public XBinary {
     Q_OBJECT
 
 public:
+    struct INTERNAL_INFO : XBinary::INTERNAL_INFO {};
+
+    virtual bool handleInternalInfo(PDSTRUCT *pPdStruct) override;
+    virtual void *getInternalInfo(PDSTRUCT *pPdStruct) override;
+    virtual void setInternalInfo(void *pInternalInfo) override;
+
     enum TYPE {
         TYPE_UNKNOWN = 0,
         TYPE_MAINMODULE
@@ -189,6 +195,9 @@ public:
 
 private:
     bool _hasUnicodeNameInList(const QList<quint32> &nameIndices, QList<QString> *pListStrings, PDSTRUCT *pPdStruct) const;
+private:
+    INTERNAL_INFO m_internalInfo;
+
 };
 
 #endif  // XDEX_H
