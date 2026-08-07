@@ -54,6 +54,8 @@ public:
         STRUCTID_DATA_LIST,
         STRUCTID_LINK_LIST,
         STRUCTID_MAP_LIST,
+        STRUCTID_CALL_SITE_IDS_LIST,
+        STRUCTID_METHOD_HANDLE_LIST,
     };
 
     XDEX(QIODevice *pDevice);
@@ -67,6 +69,7 @@ public:
     virtual ENDIAN getEndian() override;
     virtual MODE getMode() override;
     virtual QString getArch() override;
+    virtual bool isExecutable() override;
     virtual OSNAME getOsName() override;
     virtual QString getOsVersion() override;
     virtual FT getFileType() override;
@@ -149,6 +152,8 @@ public:
     QList<XDEX_DEF::FIELD_ITEM_ID> getList_FIELD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct = nullptr);
     QList<XDEX_DEF::METHOD_ITEM_ID> getList_METHOD_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct = nullptr);
     QList<XDEX_DEF::CLASS_ITEM_DEF> getList_CLASS_ITEM_DEF(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct = nullptr);
+    QList<XDEX_DEF::CALL_SITE_ITEM_ID> getList_CALL_SITE_ITEM_ID(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct = nullptr);
+    QList<XDEX_DEF::METHOD_HANDLE_ITEM> getList_METHOD_HANDLE_ITEM(QList<XDEX_DEF::MAP_ITEM> *pListMapItems, PDSTRUCT *pPdStruct = nullptr);
 
     QList<QString> getStrings(QList<XDEX_DEF::MAP_ITEM> *pMapItems, PDSTRUCT *pPdStruct = nullptr);
     QString _getString(XDEX_DEF::MAP_ITEM map_stringIdItem, quint32 nIndex, bool bIsBigEndian);
@@ -164,7 +169,7 @@ public:
     QString getTypeItemIdString(XDEX_DEF::TYPE_ITEM_ID typeItemId, XDEX_DEF::MAP_ITEM *pMapItemStrings, char *pData, qint32 nDataSize, qint32 nDataOffset);
     QString getTypeItemIdString(QList<XDEX_DEF::TYPE_ITEM_ID> *pList, qint32 nIndex, XDEX_DEF::MAP_ITEM *pMapItemStrings, char *pData, qint32 nDataSize,
                                 qint32 nDataOffset);
-    QString getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId, XDEX_DEF::MAP_ITEM *pMapItemStrings);
+    QString getProtoItemIdString(XDEX_DEF::PROTO_ITEM_ID protoItemId, XDEX_DEF::MAP_ITEM *pMapItemStrings, XDEX_DEF::MAP_ITEM *pMapItemTypes = nullptr);
 
     static QMap<quint64, QString> getHeaderMagics();
     static QMap<quint64, QString> getHeaderVersions();

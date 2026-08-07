@@ -61,8 +61,8 @@ XANDROIDBINARY_DEF::HEADER XAndroidBinary::readHeader(qint64 nOffset)
 {
     XANDROIDBINARY_DEF::HEADER result = {};
 
-    result.type = read_uint32(nOffset + offsetof(XANDROIDBINARY_DEF::HEADER, type));
-    result.header_size = read_uint32(nOffset + offsetof(XANDROIDBINARY_DEF::HEADER, header_size));
+    result.type = read_uint16(nOffset + offsetof(XANDROIDBINARY_DEF::HEADER, type));
+    result.header_size = read_uint16(nOffset + offsetof(XANDROIDBINARY_DEF::HEADER, header_size));
     result.data_size = read_uint32(nOffset + offsetof(XANDROIDBINARY_DEF::HEADER, data_size));
 
     return result;

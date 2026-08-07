@@ -94,6 +94,19 @@ struct CLASS_ITEM_DEF {
     quint32 static_values_off;
 };
 
+// call_site_id_item (DEX 038+), 4 bytes on disk
+struct CALL_SITE_ITEM_ID {
+    quint32 call_site_off;  // offset to a call_site_item (encoded_array_item) in the data section
+};
+
+// method_handle_item (DEX 038+), 8 bytes on disk
+struct METHOD_HANDLE_ITEM {
+    quint16 method_handle_type;  // XDEX_DEF::METHOD_HANDLE_TYPE
+    quint16 unused1;
+    quint16 field_or_method_id;  // field id (static/instance) or method id (invoke), by type
+    quint16 unused2;
+};
+
 const quint16 TYPE_HEADER_ITEM = 0x0000;
 const quint16 TYPE_STRING_ID_ITEM = 0x0001;
 const quint16 TYPE_TYPE_ID_ITEM = 0x0002;
@@ -115,5 +128,16 @@ const quint16 TYPE_ANNOTATION_ITEM = 0x2004;
 const quint16 TYPE_ENCODED_ARRAY_ITEM = 0x2005;
 const quint16 TYPE_ANNOTATIONS_DIRECTORY_ITEM = 0x2006;
 const quint16 TYPE_HIDDENAPI_CLASS_DATA_ITEM = 0xF000;
+
+// method_handle_type codes (method_handle_item.method_handle_type)
+const quint16 METHOD_HANDLE_TYPE_STATIC_PUT = 0x00;
+const quint16 METHOD_HANDLE_TYPE_STATIC_GET = 0x01;
+const quint16 METHOD_HANDLE_TYPE_INSTANCE_PUT = 0x02;
+const quint16 METHOD_HANDLE_TYPE_INSTANCE_GET = 0x03;
+const quint16 METHOD_HANDLE_TYPE_INVOKE_STATIC = 0x04;
+const quint16 METHOD_HANDLE_TYPE_INVOKE_INSTANCE = 0x05;
+const quint16 METHOD_HANDLE_TYPE_INVOKE_CONSTRUCTOR = 0x06;
+const quint16 METHOD_HANDLE_TYPE_INVOKE_DIRECT = 0x07;
+const quint16 METHOD_HANDLE_TYPE_INVOKE_INTERFACE = 0x08;
 }  // namespace XDEX_DEF
 #endif  // XDEX_DEF_H
